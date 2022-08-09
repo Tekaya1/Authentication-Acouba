@@ -11,7 +11,7 @@ let UserN = sessionStorage.getItem('emailid')
  
 
 const TypeConges = [
-    { value: "CONGE_PAYE" ,label:"CONGÉ PAYÉ"},
+    { value: "CONGt_PAYE" ,label:"CONGÉ PAYÉ"},
     { value: "CONGE_INDIVIDUEL_DE_FORMATION", label:"CONGÉ INDIVIDUEL DE FORMATION"},
     { value: "CONGE_FORMATION_ECONOMIQUE_SOCIALE ET SYNDICALE" ,label:"CONGÉ FORMATION ÉCONOMIQUE, SOCIALE ET SYNDICALE"},
     { value: "CONGÉ_D-ENSEIGNEMENt_ET_DE_RECHERCHE" ,label:"CONGÉ D’ENSEIGNEMENT ET DE RECHERCHE"},
