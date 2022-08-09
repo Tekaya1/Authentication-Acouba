@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import "../App.css";
 import "../AUTH.css";
-
+import PasswordStrengthBar from 'react-password-strength-bar';
 export default function Registration() {
   const [usernameReg, setUsernameReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
@@ -71,10 +71,11 @@ export default function Registration() {
             setPasswordReg(e.target.value);
           }}
         />
+        <PasswordStrengthBar password={passwordReg} />
          <br />
          <br />
       </div>
-      <button onClick={register}> Register </button>
+      <button onClick={register} style={{top: "88%"}}> Register </button>
     </div>
   );
 }

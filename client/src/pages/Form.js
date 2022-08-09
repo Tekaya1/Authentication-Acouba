@@ -4,14 +4,12 @@ import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import emailjs from '@emailjs/browser';
-import Alert from 'react-popup-alert'
-
-
+import logo from './acoba.png';
 let UserN = sessionStorage.getItem('emailid')
- 
+
 
 const TypeConges = [
-    { value: "CONGt_PAYE" ,label:"CONGÉ PAYÉ"},
+    { value: "CONGE_PAYE" ,label:"CONGÉ PAYÉ"},
     { value: "CONGE_INDIVIDUEL_DE_FORMATION", label:"CONGÉ INDIVIDUEL DE FORMATION"},
     { value: "CONGE_FORMATION_ECONOMIQUE_SOCIALE ET SYNDICALE" ,label:"CONGÉ FORMATION ÉCONOMIQUE, SOCIALE ET SYNDICALE"},
     { value: "CONGÉ_D-ENSEIGNEMENt_ET_DE_RECHERCHE" ,label:"CONGÉ D’ENSEIGNEMENT ET DE RECHERCHE"},
@@ -28,16 +26,23 @@ export default function Form() {
   const [StartDateReg, setStartDateReg] = useState(new Date());
   const [EndDateReg, setEndDateReg] = useState(new Date());
   const [User, SetUser] = useState("");
+  const [NameReg, setNameReg] = useState("");
+  const [SurnameReg, setSurnameReg] = useState("");
+  const [EmailReg, setEmailReg] = useState("");
 
 
 
   const submitRev = () => {
     Axios.post('http://localhost:3001/Email/Insert',{
+      Name:NameReg,
+      SurName:SurnameReg,
       username:User,
       Select:SelectReg,
       TextArea:TextAreaReg,
       StartDate:StartDateReg,
-      EndDate:EndDateReg}).then(()=> {
+      EndDate:EndDateReg,
+      Email:EmailReg
+    }).then(()=> {
         alert("Email has been send");
       })
   }
@@ -88,7 +93,7 @@ export default function Form() {
     const sendEmail = (e) => {
     e.preventDefault();
 
-    emailjs.sendForm('servie_a7ylvfp', 'template_ywg2ae8', form.current, 'hjTAUdY8_qNmjQvmL')
+    emailjs.sendForm('servic_a7ylvfp', 'template_ywg2ae8', form.current, 'hjTAUdY8_qNmjQvmL')
       .then((result) => {
           console.log(result.text);
       }, (error) => {
@@ -97,32 +102,65 @@ export default function Form() {
   };
 
 
+  const [EmailData, setEmailData] = useState([]);
+  const fetchEmail= () => {
+    Axios.post('http://localhost:3001/EmailFetch', {
+      User:UserN
+    })
+    .then((response) => {
+      return response.data
+    })
+    .then(data => {
+      setEmailData(data)
+      // alert("Data fetched")
+    })
+  }
+
+
+  useState(() => {
+    fetchEmail()
+  }, [])
 
 
 
-
+ 
   
-
 
   return ( 
    <div className="App">
       <div className="Form">
       <form ref={form} onSubmit={sendEmail}>
         <h1>Formulaire de congé</h1>
+        
+
+        {EmailData.map(auth => (
+                       <>
+                       
         <label>User: </label><br />
-        <input type="text"  value={UserN} onFocus={(e) => { SetUser(e.target.value); }} autoFocus></input>
+        <input type="text"  value={UserN} style={{background: "#ccc"}} onFocus={(e) => { SetUser(e.target.value); }} autoFocus ></input><br />
         <label>Email: </label><br />
-        {/* <input type="text"  value={UserN} onFocus={(e) => { SetUser(e.target.value); }} autoFocus></input> */}
+        <input type="email"  value={auth.Email} style={{background: "#ccc"}} onFocus={(e) => { setEmailReg(e.target.value); }} autoFocus key={auth.id} name="Hello"></input>
+        <div hidden={true}>
+        <label>Name: </label>
+        <input type="text"  value={auth.Name}  onFocus={(e) => { setNameReg(e.target.value); }}  autoFocus key={auth.id} name="EName" hidden={true}></input>
+        <label>Surname: </label>
+        <input type="text"  value={auth.SurName} onFocus={(e) => { setSurnameReg(e.target.value); }} autoFocus key={auth.id} name="SName" hidden={true}></input>
+        </div></>
+                  ))}
+        
         
         <br />
         <label>Type De Conge: </label>
         <Select options={TypeConges}  onChange={Conge}   isSearchable={false}  name="typeC" ></Select>  
       
-        <button onClick={fetchData}> Confirm
+        <button onClick={fetchData} style={{top: "65%"}}> Confirm
         </button><br /> 
-        {
-        showhide==="CONGE_PAYE" && (
 
+       
+        {
+         
+        showhide===SelectReg && (
+        
           <>
           <div>
               
@@ -160,6 +198,7 @@ export default function Form() {
               </>
           )
       }
+      
       </form>
       </div>
     </div>

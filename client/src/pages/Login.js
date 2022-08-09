@@ -1,14 +1,16 @@
 import React, { useEffect, useReducer, useState } from "react";
 import {useHistory} from 'react-router-dom'
 import Axios from "axios";
+import PasswordStrengthBar from 'react-password-strength-bar';
 import "../App.css";
 import "../AUTH.css";
+
 import Cookies from "js-cookie";
 export default function Login() {
     
 const history = useHistory()
 const [username, setUsername] = useState("");
-const [password, setPassword] = useState("");
+const [password, setPassword] = useState("");   
 const [email,setemail] = useState("");
 const [loginStatus, setLoginStatus] = useState("");
 Axios.defaults.withCredentials= true
@@ -30,7 +32,6 @@ useEffect(() => {
     Axios.get("http://localhost:3001/login").then((response)  => 
     {   if(response.data.loggedIn == true){
             setLoginStatus(response.data.email[0].username)
-            window.location=  '/Form'
         }
     })
 })
@@ -43,7 +44,7 @@ return (
     <><div className="login">
         <h1>Login</h1>
         
-
+        
         
         <input
             type="email"
@@ -59,10 +60,17 @@ return (
             placeholder="Password..."
             onChange={(e) => {
                 setPassword(e.target.value);
-            } }/>
-            
+            } } />
+        
         <button type="submit" onClick={login}> Login </button>
         
-    </div><h1>{loginStatus}</h1></>
+    </div>
+    
+    
+    <h1>{loginStatus}</h1>
+
+    
+   
+    </>
 )
 }

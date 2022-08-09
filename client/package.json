@@ -4,6 +4,9 @@
   "private": true,
   "dependencies": {
     "@emailjs/browser": "^3.6.2",
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
+    "@mui/material": "^5.10.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -17,6 +20,7 @@
     "react": "^16.13.1",
     "react-datepicker": "^4.8.0",
     "react-dom": "^16.13.1",
+    "react-password-strength-bar": "^0.4.1",
     "react-popup-alert": "^2.0.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^5.0.1",

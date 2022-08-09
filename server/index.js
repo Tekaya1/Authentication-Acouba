@@ -96,7 +96,7 @@ app.post("/login", (req, res) => {
           // session.userid=req.body.email;
             req.session.email = result
             // console.log(req.session.email);
-            res.send(result)
+            res.send(result);
           
           } else {
             res.send({ message: "Wrong Email or password "});
@@ -110,13 +110,16 @@ app.post("/login", (req, res) => {
 });
 
 app.post('/Email/Insert',(req,res) => {
+    const Name = req.body.Name
+    const Surname = req.body.SurName
     const user = req.body.username 
     const Select = req.body.Select
     const TextArea = req.body.TextArea
     const StartDate = req.body.StartDate
     const EndDate = req.body.EndDate
-      const query = "insert into congerequest (username,TypeConge,Requests,StartDate,EndDate) values (?,?,?,?,?)"
-      db.query(query,[user,Select,TextArea,StartDate,EndDate],(err,result)=> {
+    const Email = req.body.Email
+      const query = "insert into congerequest (username,Email,TypeConge,Requests,StartDate,EndDate,Name,SurName) values (?,?,?,?,?,?,?,?)"
+      db.query(query,[user,Email,Select,TextArea,StartDate,EndDate,Name,Surname],(err,result)=> {
         res.send(result)
       })
 })
@@ -137,6 +140,20 @@ app.post('/Data', (req,res)=> {
   })
 })
 
+app.post('/EmailFetch', (req,res)=> {
+  user = req.body.User
+  console.log(Select);
+  const queryData = "select * from auth where username= ?"
+  db.query(queryData,[user],(err,result)=>{
+    if(err) {
+      console.log(err)
+    }else {
+      res.send(result)
+      console.log(result)
+      
+    }
+  })
+})
 
 
 
