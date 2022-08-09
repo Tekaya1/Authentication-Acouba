@@ -32,8 +32,12 @@ app.use(sessions({
     resave: false,
     saveUninitialized : false,
     cookie: {
+      path: '/',
       expires: 60 * 60 * 24,
+      overwrite: false,
+      anyKey: '/'
     },
+    
 
 }))
 const db = mysql.createConnection({
@@ -65,6 +69,14 @@ app.post("/register", (req, res) => {
     
   });
 
+  Router.use(function (req, res, next) {
+    if (req.session.email) {
+        next();
+    } else {
+        res.status(403).send("OOPS Session is timeout");
+        res.redirect('/')
+    }
+})
 
 
 app.get("/login", (req, res) => {
@@ -154,7 +166,6 @@ app.post('/EmailFetch', (req,res)=> {
     }
   })
 })
-
 
 
 

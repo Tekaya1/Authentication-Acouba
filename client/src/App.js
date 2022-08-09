@@ -8,7 +8,11 @@ import Login from "./pages/Login";
 
 function App() {
   return (
+    
+    
+    
     <Router>
+      
       <Route path="/registration" exact render={(props) => <Registration />} />
       <Route path="/Form" exact render={(props) => <Form />} />
       <Route path="/" exact render={(props) => <Login />} />

@@ -2,9 +2,7 @@ import React, { useEffect, useReducer, useState } from "react";
 import {useHistory} from 'react-router-dom'
 import Axios from "axios";
 import PasswordStrengthBar from 'react-password-strength-bar';
-import "../App.css";
-import "../AUTH.css";
-
+import '../AUTH.css'
 import Cookies from "js-cookie";
 export default function Login() {
     
@@ -39,38 +37,45 @@ useEffect(() => {
 
 
 
-
 return (
-    <><div className="login">
-        <h1>Login</h1>
-        
-        
-        
-        <input
+    <>
+    <div class="container" onclick="onclick">
+  <div class="top"></div>
+  <div class="bottom"></div>
+  <div class="center">
+    <h2> Sign In </h2>
+    <input
             type="email"
             placeholder="Email..."
             onChange={(e) => {
                 setemail(e.target.value);
-            } } />
+            } } /><br />
 
-
-            
-        <input
+<input
             type="password"
             placeholder="Password..."
             onChange={(e) => {
                 setPassword(e.target.value);
             } } />
+        <button   onClick={login}>Submit</button>
+        {/* <button type="submit" onClick={login}> Login </button> */}
+        <h1>{loginStatus}</h1>
+  
+  </div>
+</div>
+</>
         
-        <button type="submit" onClick={login}> Login </button>
+       
         
-    </div>
+        
+        
     
     
-    <h1>{loginStatus}</h1>
+    
+
 
     
    
-    </>
+    
 )
 }
