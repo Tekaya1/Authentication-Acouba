@@ -134,17 +134,16 @@ export default function Form() {
         
 
         {EmailData.map(auth => (
-                       <>
-                       
+                       <>      
         <label>User: </label><br />
         <input type="text"  value={auth.username} style={{background: "#ccc"}} onFocus={(e) => { SetUser(e.target.value); }} autoFocus ></input><br />
         <label>Email: </label><br />
-        <input type="email"  value={auth.Email} style={{background: "#ccc"}} onFocus={(e) => { setEmailReg(e.target.value); }} autoFocus key={auth.id} name="Hello"></input>
+        <input type="email"  value={auth.Email} style={{background: "#ccc"}} onFocus={(e) => { setEmailReg(e.target.value); }} autoFocus name="Hello"></input>
         <div hidden={true} key={auth.id}>
         <label>Name: </label>
-        <input type="text"  value={auth.Name}  onFocus={(e) => { setNameReg(e.target.value); }}  autoFocus key={auth.id} name="EName" hidden={true}></input>
+        <input type="text"  value={auth.Name}  onFocus={(e) => { setNameReg(e.target.value); }}  autoFocus  name="EName" hidden={true} ></input>
         <label>Surname: </label>
-        <input type="text"  value={auth.SurName} onFocus={(e) => { setSurnameReg(e.target.value); }} autoFocus key={auth.id} name="SName" hidden={true}></input>
+        <input type="text"  value={auth.SurName} onFocus={(e) => { setSurnameReg(e.target.value); }} autoFocus name="SName" hidden={true} ></input>
         </div></>
                   ))}
         

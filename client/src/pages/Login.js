@@ -37,7 +37,7 @@ Axios.post("http://localhost:3001/login",{
 //     })
 // })
 
-// check user has been authenticated or not
+
 const userauth  = () => {
     Axios.get('http://localhost:3001/UserIsAuth', {
         headers:
@@ -47,6 +47,10 @@ const userauth  = () => {
         console.log(response);
     })
 }
+
+
+
+
 return (
     <>
     <div className="container" >
