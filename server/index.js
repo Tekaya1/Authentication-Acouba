@@ -96,6 +96,8 @@ app.get('/UserIsAuth',verifyJWT,(req,res)=> {
 });
 
 
+
+
 app.get("/login", (req, res) => {
   
   if (req.session.email) {
@@ -136,6 +138,7 @@ app.post("/login", (req, res) => {
             res.json({auth: true, token: token, result: result})
             storage.setItem('emailid', result[0].Email)
            
+           
             
           } else {
             res.json({ auth: false, message: "email or  password incorrect"});
@@ -147,7 +150,7 @@ app.post("/login", (req, res) => {
 }
 );
 });
-console.log(json);
+
 app.post('/Email/Insert',(req,res) => {
     const Name = req.body.Name
     const Surname = req.body.SurName
@@ -189,7 +192,7 @@ app.post('/EmailFetch', (req,res)=> {
       console.log(err)
     }else {
       res.send(result)
-      console.log(result);
+      // console.log(result);
       
       
     }
@@ -197,10 +200,8 @@ app.post('/EmailFetch', (req,res)=> {
 })
 
 app.post('/logout',(req,res) => {
-  const result = storage.removeItem('emailid')
-  jwt.destroy(verifyJWT)
+  const result = storage.removeItem('emailid'); 
   res.send(result)
-  
 })
 
 

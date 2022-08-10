@@ -13,29 +13,31 @@ const [email,setemail] = useState("");
 const [loginStatus, setLoginStatus] = useState(false);
 Axios.defaults.withCredentials= true
 
+//login function 
 const login = () => {
 Axios.post("http://localhost:3001/login",{
     email: email,
     password : password}).then((response) => { 
         if (!response.data.auth) {
-            setLoginStatus(false);
+            setLoginStatus(response.data.message);
             
         } else {
-            console.log(response.data);
             localStorage.setItem('token',response.data.token)
-            setLoginStatus(true)      
+            setLoginStatus(true)
+            window.location.href = '/Form'      
         }
     })
 }
-useEffect(() => {
-    Axios.get("http://localhost:3001/login").then((response)  => 
-    {   if(response.data.loggedIn == true){
-            setLoginStatus(response.data.email[0].username)
+// useEffect(() => {
+//     Axios.get("http://localhost:3001/login").then((response)  => 
+//     {   if(response.data.loggedIn == true){
+//             setLoginStatus(response.data.email[0].username)
             
-        }
-    })
-})
+//         }
+//     })
+// })
 
+// check user has been authenticated or not
 const userauth  = () => {
     Axios.get('http://localhost:3001/UserIsAuth', {
         headers:
@@ -45,10 +47,6 @@ const userauth  = () => {
         console.log(response);
     })
 }
-
-
-
-
 return (
     <>
     <div className="container" >
@@ -74,9 +72,8 @@ return (
         
   
   </div>
-  {loginStatus && (
-    <button onClick={userauth}>check if auth</button>
-)}
+  <h1>{loginStatus}</h1>
+
 </div>
 </>
         

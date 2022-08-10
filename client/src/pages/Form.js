@@ -4,10 +4,10 @@ import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import emailjs from '@emailjs/browser';
-// import { useCookies } from "react-cookie";
 
 
 
+// type conges array \
 const TypeConges = [
     { value: "CONGE_PAYE" ,label:"CONGÉ PAYÉ"},
     { value: "CONGE_INDIVIDUEL_DE_FORMATION", label:"CONGÉ INDIVIDUEL DE FORMATION"},
@@ -29,10 +29,9 @@ export default function Form() {
   const [NameReg, setNameReg] = useState("");
   const [SurnameReg, setSurnameReg] = useState("");
   const [EmailReg, setEmailReg] = useState("");
+ 
 
-
-
-
+  //Form submission
   const submitRev = () => {
     Axios.post('http://localhost:3001/Email/Insert',{
       Name:NameReg,
@@ -51,17 +50,15 @@ export default function Form() {
   
 
 
-
+  // function show textarea
   const [showhide,setshowhide] = useState('');
   const showhandler = (e) =>{
     const getuser = e.value;
     setshowhide(getuser);
   }
 
-
+  //fetching data (importing typeconge)
   const [Data, setData] = useState([]);
-
-  
   const fetchData = () => {
     Axios.post('http://localhost:3001/Data', {
       list:SelectReg
@@ -75,13 +72,13 @@ export default function Form() {
     })
   }
 
-
+  // tracking function fetchData()
   useState(() => {
     fetchData()
   }, [])
 
 
-
+  // show list conge with show hide option
   const Conge = e => {
     setSelectReg(e.value);
     showhandler(e);
@@ -89,7 +86,7 @@ export default function Form() {
 
 
 
-  
+    //Email service by emailjs
     const form = useRef();
     const sendEmail = (e) => {
     e.preventDefault();
@@ -102,7 +99,7 @@ export default function Form() {
       });
   };
 
-
+  // fetching email with users 
   const [EmailData, setEmailData] = useState([]);
   const fetchEmail= () => {
     Axios.post('http://localhost:3001/EmailFetch', {
@@ -117,22 +114,18 @@ export default function Form() {
     })
   }
 
-
+  //tracking function fetchemail
   useState(() => {
     fetchEmail()
   }, [])
 
-
+  // logout function  
   const logout = () => {
     Axios.post('http://localhost:3001/logout').then((response)=> {
-      console.log(response);
+      window.localStorage.clear()
+      window.location.href = '/'
     })
   }
-
-
- 
-  
-
   return ( 
    <div className="App">
       <div className="Form">
@@ -147,7 +140,7 @@ export default function Form() {
         <input type="text"  value={auth.username} style={{background: "#ccc"}} onFocus={(e) => { SetUser(e.target.value); }} autoFocus ></input><br />
         <label>Email: </label><br />
         <input type="email"  value={auth.Email} style={{background: "#ccc"}} onFocus={(e) => { setEmailReg(e.target.value); }} autoFocus key={auth.id} name="Hello"></input>
-        <div hidden={true}>
+        <div hidden={true} key={auth.id}>
         <label>Name: </label>
         <input type="text"  value={auth.Name}  onFocus={(e) => { setNameReg(e.target.value); }}  autoFocus key={auth.id} name="EName" hidden={true}></input>
         <label>Surname: </label>
