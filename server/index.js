@@ -9,7 +9,9 @@ const bcrypt = require("bcrypt");
 const session = require('express-session');
 const saltRounds = 10;
 const app = express();
-const storage = require('node-sessionstorage')
+const jwt = require('jsonwebtoken')
+const storage = require('node-sessionstorage');
+const { json } = require('body-parser');
 
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -63,20 +65,35 @@ app.post("/register", (req, res) => {
       [name,Surname,username, hash, email],
       (err, result) => {
         res.send(result)
+        
       }
     );
     })
     
   });
 
-  Router.use(function (req, res, next) {
-    if (req.session.email) {
-        next();
-    } else {
-        res.status(403).send("OOPS Session is timeout");
-        res.redirect('/')
-    }
-})
+
+const verifyJWT= (req, res, next) => {
+const token = req.headers["x-access-token"]
+  if(!token) {
+    res.send('you need a token')
+  } else {
+    jwt.verify(token, "jwtsecret" , (err, decoded) =>{
+      if(err){
+        res.json({auth:false, message :'you are not authenticated' })
+      } else{
+        req.userid = decoded.id
+        next()
+      }
+    });
+  }
+}
+
+
+
+app.get('/UserIsAuth',verifyJWT,(req,res)=> {
+  res.send('you are authenticated')
+});
 
 
 app.get("/login", (req, res) => {
@@ -88,6 +105,13 @@ app.get("/login", (req, res) => {
     res.send({ loggedIn: false });
   }
 });
+
+
+
+
+
+
+
 
 
 app.post("/login", (req, res) => {
@@ -104,23 +128,26 @@ app.post("/login", (req, res) => {
       if (result.length>0) {
         bcrypt.compare(password, result[0].password, (err, response) => {
           if(response)  {
-          // session=req.session;
-          // session.userid=req.body.email;
             req.session.email = result
-            // console.log(req.session.email);
-            res.send(result);
-          
+            const id = result[0].id
+            const token  = jwt.sign({id},'jwtsecret', {
+              expiresIn:300,
+            })
+            res.json({auth: true, token: token, result: result})
+            storage.setItem('emailid', result[0].Email)
+           
+            
           } else {
-            res.send({ message: "Wrong Email or password "});
+            res.json({ auth: false, message: "email or  password incorrect"});
           }       
         });
 } else {
-  res.send({ message: "User Does not exist  "});
+  res.json({ auth: false , message: "User Does not exist  "});
 }
 }
 );
 });
-
+console.log(json);
 app.post('/Email/Insert',(req,res) => {
     const Name = req.body.Name
     const Surname = req.body.SurName
@@ -133,6 +160,7 @@ app.post('/Email/Insert',(req,res) => {
       const query = "insert into congerequest (username,Email,TypeConge,Requests,StartDate,EndDate,Name,SurName) values (?,?,?,?,?,?,?,?)"
       db.query(query,[user,Email,Select,TextArea,StartDate,EndDate,Name,Surname],(err,result)=> {
         res.send(result)
+        
       })
 })
 
@@ -155,16 +183,24 @@ app.post('/Data', (req,res)=> {
 app.post('/EmailFetch', (req,res)=> {
   user = req.body.User
   console.log(Select);
-  const queryData = "select * from auth where username= ?"
-  db.query(queryData,[user],(err,result)=>{
+  const queryData = "select * from auth where Email= ?"
+  db.query(queryData,[storage.getItem('emailid')],(err,result)=>{
     if(err) {
       console.log(err)
     }else {
       res.send(result)
-      console.log(result)
+      console.log(result);
+      
       
     }
   })
+})
+
+app.post('/logout',(req,res) => {
+  const result = storage.removeItem('emailid')
+  jwt.destroy(verifyJWT)
+  res.send(result)
+  
 })
 
 

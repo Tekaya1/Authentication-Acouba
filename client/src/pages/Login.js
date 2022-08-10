@@ -10,19 +10,20 @@ const history = useHistory()
 const [username, setUsername] = useState("");
 const [password, setPassword] = useState("");   
 const [email,setemail] = useState("");
-const [loginStatus, setLoginStatus] = useState("");
+const [loginStatus, setLoginStatus] = useState(false);
 Axios.defaults.withCredentials= true
 
 const login = () => {
 Axios.post("http://localhost:3001/login",{
     email: email,
     password : password}).then((response) => { 
-        if (response.data.message) {
-            setLoginStatus(response.data.message)
-        } else {
-            setLoginStatus(response.data[0].username)
-            sessionStorage.setItem('emailid',response.data[0].username)
+        if (!response.data.auth) {
+            setLoginStatus(false);
             
+        } else {
+            console.log(response.data);
+            localStorage.setItem('token',response.data.token)
+            setLoginStatus(true)      
         }
     })
 }
@@ -30,19 +31,30 @@ useEffect(() => {
     Axios.get("http://localhost:3001/login").then((response)  => 
     {   if(response.data.loggedIn == true){
             setLoginStatus(response.data.email[0].username)
+            
         }
     })
 })
+
+const userauth  = () => {
+    Axios.get('http://localhost:3001/UserIsAuth', {
+        headers:
+        {"x-access-token":localStorage.getItem('token')
+
+    }}).then((response)=>{
+        console.log(response);
+    })
+}
 
 
 
 
 return (
     <>
-    <div class="container" onclick="onclick">
-  <div class="top"></div>
-  <div class="bottom"></div>
-  <div class="center">
+    <div className="container" >
+  <div className="top"></div>
+  <div className="bottom"></div>
+  <div className="center">
     <h2> Sign In </h2>
     <input
             type="email"
@@ -59,9 +71,12 @@ return (
             } } />
         <button   onClick={login}>Submit</button>
         {/* <button type="submit" onClick={login}> Login </button> */}
-        <h1>{loginStatus}</h1>
+        
   
   </div>
+  {loginStatus && (
+    <button onClick={userauth}>check if auth</button>
+)}
 </div>
 </>
         

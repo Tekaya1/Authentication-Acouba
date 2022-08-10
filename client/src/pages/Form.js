@@ -4,8 +4,8 @@ import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import emailjs from '@emailjs/browser';
-import logo from './acoba.png';
-let UserN = sessionStorage.getItem('emailid')
+// import { useCookies } from "react-cookie";
+
 
 
 const TypeConges = [
@@ -29,6 +29,7 @@ export default function Form() {
   const [NameReg, setNameReg] = useState("");
   const [SurnameReg, setSurnameReg] = useState("");
   const [EmailReg, setEmailReg] = useState("");
+
 
 
 
@@ -105,14 +106,14 @@ export default function Form() {
   const [EmailData, setEmailData] = useState([]);
   const fetchEmail= () => {
     Axios.post('http://localhost:3001/EmailFetch', {
-      User:UserN
+      email:EmailReg
     })
     .then((response) => {
       return response.data
     })
     .then(data => {
       setEmailData(data)
-      // alert("Data fetched")
+      
     })
   }
 
@@ -121,6 +122,12 @@ export default function Form() {
     fetchEmail()
   }, [])
 
+
+  const logout = () => {
+    Axios.post('http://localhost:3001/logout').then((response)=> {
+      console.log(response);
+    })
+  }
 
 
  
@@ -137,7 +144,7 @@ export default function Form() {
                        <>
                        
         <label>User: </label><br />
-        <input type="text"  value={UserN} style={{background: "#ccc"}} onFocus={(e) => { SetUser(e.target.value); }} autoFocus ></input><br />
+        <input type="text"  value={auth.username} style={{background: "#ccc"}} onFocus={(e) => { SetUser(e.target.value); }} autoFocus ></input><br />
         <label>Email: </label><br />
         <input type="email"  value={auth.Email} style={{background: "#ccc"}} onFocus={(e) => { setEmailReg(e.target.value); }} autoFocus key={auth.id} name="Hello"></input>
         <div hidden={true}>
@@ -175,6 +182,7 @@ export default function Form() {
        endDate={EndDateReg}
        onChange={date => setStartDateReg(date)} name="STD"/>
      <label>End: </label>
+     <button onClick={logout}>logout</button>
      <DatePicker
        selected={EndDateReg}
        selectsEnd
