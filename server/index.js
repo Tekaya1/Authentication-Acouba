@@ -56,13 +56,15 @@ app.post("/register", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const email = req.body.Email
+  const Phone = req.body.Phone
+  const Gender  = req.body.Gender
   bcrypt.hash(password,saltRounds, (err, hash) => {
     if(err) {
       console.log(err)
     }
     db.query(
-      "INSERT INTO auth(Name,SurName,username, password, Email) VALUES (?,?,?,?,?)",
-      [name,Surname,username, hash, email],
+      "INSERT INTO auth(Name,SurName,username, password, Email, Phone, Gender) VALUES (?,?,?,?,?,?,?)",
+      [name,Surname,username, hash, email,Phone,Gender],
       (err, result) => {
         res.send(result)
         

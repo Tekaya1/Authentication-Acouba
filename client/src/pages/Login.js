@@ -52,36 +52,56 @@ const userauth  = () => {
 
 
 return (
-    <>
-    <div className="container" >
-  <div className="top"></div>
-  <div className="bottom"></div>
-  <div className="center">
-    <h2> Sign In </h2>
-    <input
-            type="email"
-            placeholder="Email..."
-            onChange={(e) => {
-                setemail(e.target.value);
-            } } /><br />
+//     <>
+//     <div className="container" >
+//   <div className="top"></div>
+//   <div className="bottom"></div>
+//   <div className="center">
+//     <h2> Sign In </h2>
+//     <input
+//             type="email"
+//             placeholder="Email..."
+//             onChange={(e) => {
+//                 setemail(e.target.value);
+//             } } /><br />
 
-<input
-            type="password"
-            placeholder="Password..."
-            onChange={(e) => {
-                setPassword(e.target.value);
-            } } />
-        <button   onClick={login}>Submit</button>
-        {/* <button type="submit" onClick={login}> Login </button> */}
+// <input
+//             type="password"
+//             placeholder="Password..."
+//             onChange={(e) => {
+//                 setPassword(e.target.value);
+//             } } />
+//         <button   onClick={login}>Submit</button>
+//         {/* <button type="submit" onClick={login}> Login </button> */}
         
   
-  </div>
-  <h1>{loginStatus}</h1>
+//   </div>
+//   <h1>{loginStatus}</h1>
 
-</div>
-</>
+// </div>
+// </>
         
-       
+<div class="container">
+<div class="title">Login</div>
+<div class="content">
+  <form>
+    <div class="user-details">
+      <div class="input-box">
+        <span class="details">Email</span>
+        <input type="email" onChange={(e) => {setemail(e.target.value);}}  placeholder="Enter your Email"  required/>
+      </div>
+      <div class="input-box">
+        <span class="details">Password</span>
+        <input type="password" onChange={(e) => {setPassword(e.target.value)}} placeholder="Enter your password" required ></input>
+      </div>
+    </div>
+    <div class="button">
+          <input type="submit" value="Connect" onClick={login}></input>
+        </div>
+  </form>
+  <h1>{(loginStatus)}</h1>
+</div>
+</div>
         
         
         

@@ -127,18 +127,25 @@ export default function Form() {
     })
   }
   return ( 
-   <div className="App">
-      <div className="Form">
+    <div class="container">
+    <div class="title">Registration</div>
+    <div class="content">
       <form ref={form} onSubmit={sendEmail}>
-        <h1>Formulaire de congé</h1>
+      <h1>Formulaire de congé</h1>
+        <div class="user-details">
+        
         
 
         {EmailData.map(auth => (
-                       <>      
-        <label>User: </label><br />
-        <input type="text"  value={auth.username} style={{background: "#ccc"}} onFocus={(e) => { SetUser(e.target.value); }} autoFocus ></input><br />
-        <label>Email: </label><br />
+                       <>
+                       <div class="input-box">    
+        <span class="details">User: </span>
+        <input type="text"  value={auth.username} style={{background: "#ccc"}} onFocus={(e) => { SetUser(e.target.value); }} autoFocus ></input>
+        </div>  
+        <div class="input-box">   
+        <span class="details">Email: </span>
         <input type="email"  value={auth.Email} style={{background: "#ccc"}} onFocus={(e) => { setEmailReg(e.target.value); }} autoFocus name="Hello"></input>
+        </div>
         <div hidden={true} key={auth.id}>
         <label>Name: </label>
         <input type="text"  value={auth.Name}  onFocus={(e) => { setNameReg(e.target.value); }}  autoFocus  name="EName" hidden={true} ></input>
@@ -149,11 +156,14 @@ export default function Form() {
         
         
         <br />
-        <label>Type De Conge: </label>
-        <Select options={TypeConges}  onChange={Conge}   isSearchable={false}  name="typeC" ></Select>  
-      
-        <button onClick={fetchData} style={{top: "65%"}}> Confirm
-        </button><br /> 
+        <div class="input-box">
+            <span class="details">Type Conges:</span>
+            <Select options={TypeConges}  onChange={Conge}   isSearchable={false}  name="typeC" ></Select>  
+          </div>
+        
+        <div class="button">
+        <input onClick={fetchData}  value="Confirm"> 
+        </input></div><br /> 
 
        
         {
@@ -166,15 +176,18 @@ export default function Form() {
             </div>
             {Data.length > 0 && (
                 <div>
-                  <label>Start: </label>
+                  <div class="input-box">
+            <span class="details">Start:</span>
                   <DatePicker
        selected={StartDateReg}
        selectsStart
        startDate={StartDateReg}
        endDate={EndDateReg}
        onChange={date => setStartDateReg(date)} name="STD"/>
-     <label>End: </label>
-     <button onClick={logout}>logout</button>
+       </div>
+       <div class="input-box">
+            <span class="details">end:</span>
+     {/* <button onClick={logout}>logout</button> */}
      <DatePicker
        selected={EndDateReg}
        selectsEnd
@@ -183,11 +196,13 @@ export default function Form() {
        minDate={StartDateReg}
        onChange={date => setEndDateReg(date)}
      name="END"/>
-
+      </div>
                   {Data.map(conges => (
                        <>
                       <textarea  onFocus={(e) => { setTextAreaReg(e.target.value); } } name="STE" id="text" key={conges.id} defaultValue={SelectReg.value} autoFocus>{conges.EmailCON}</textarea>
-                      <button type="submit"  onClick={submitRev}  id="button" > Submit </button></>
+                      <div class="button">
+                      <button type="submit"  onClick={submitRev}  id="button" > Submit </button>
+                      </div></>
                   ))}
                 </div>
               )}
@@ -198,7 +213,7 @@ export default function Form() {
               </>
           )
       }
-      
+      </div>
       </form>
       </div>
     </div>
