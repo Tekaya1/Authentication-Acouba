@@ -144,3 +144,28 @@ form .user-details .input-box{
     flex-direction: column;
   }
 }
+
+form .user-details .textarea{
+  margin-bottom: 15px;
+  width: calc(100% / 2 - 20px);
+}
+form .textarea span.details{
+  display: block;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+.user-details .textarea input{
+  height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+.user-details .textarea input:focus,
+.user-details .textarea input:valid{
+  border-color: #9b59b6;
+}

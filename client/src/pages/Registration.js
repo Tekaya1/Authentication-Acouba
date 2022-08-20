@@ -3,6 +3,7 @@ import Axios from "axios";
 import "../App.css";
 import "../AUTH.css";
 import PasswordStrengthBar from 'react-password-strength-bar';
+import swal from 'sweetalert';  
 export default function Registration() {
   const [usernameReg, setUsernameReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
@@ -18,7 +19,6 @@ export default function Registration() {
   // const [loginStatus, setLoginStatus] = useState("");
 
   Axios.defaults.withCredentials = true;
-
   const register = () => {
     Axios.post("http://localhost:3001/register", {
       Name: NameReg,
@@ -28,25 +28,33 @@ export default function Registration() {
       Email: EmailReg,
       Phone: PhoneReg,
       Gender: GenderReg
-    }).then(() => {
-      alert("User Regestrired")
-      window.location = '/'
+    }).then((response) => {
+     if(response.data.errno==1062) {
+          swal({
+        title: "Error",
+        text: `This email address ${EmailReg} or Phone Number ${PhoneReg} already exists, Please login using this email address or use another email`,
+        icon: "error",
+        button: `Retry`,
+      }) 
+     } else {
+      swal({
+        title: "Congratulation!",
+        text: `Welcome To Our Platform, ${usernameReg}`,
+        icon: "success",
+        button: "Go !",
+      }).then(function() {
+        window.location = "/";
+    });   
+  }     
     });
+  
   };
-
-  function checkMail(input) {
-    var check = input.value.indexOf('@') >= 0;
-    input.style.borderColor = check ? 'black' : 'red';
-    return check;
-}
- 
-
 
   return (
     <div class="container">
     <div class="title">Registration</div>
     <div class="content">
-      <form onSubmit={register}>
+      <form action="javascript:void(0);">
         <div class="user-details">
           <div class="input-box">
             <span class="details">Firstname</span>
@@ -66,7 +74,7 @@ export default function Registration() {
           </div>
           <div class="input-box">
             <span class="details">Phone Number</span>
-            <input type="text" onChange={(e) => {setPhoneReg(e.target.value)}} placeholder="Enter your number" required ></input>
+            <input type="number" onChange={(e) => {setPhoneReg(e.target.value)}} placeholder="Enter your number" required ></input>
           </div>
           <div class="input-box">
             <span class="details">Password</span>

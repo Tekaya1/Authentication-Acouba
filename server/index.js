@@ -66,13 +66,24 @@ app.post("/register", (req, res) => {
       "INSERT INTO auth(Name,SurName,username, password, Email, Phone, Gender) VALUES (?,?,?,?,?,?,?)",
       [name,Surname,username, hash, email,Phone,Gender],
       (err, result) => {
-        res.send(result)
+        if (err) {
+          console.log(err);
+          res.send(err)
+        } else {
+          console.log(result);
+          res.send(result)
+        }
+
+
         
       }
     );
     })
     
   });
+
+
+
 
 
 const verifyJWT= (req, res, next) => {

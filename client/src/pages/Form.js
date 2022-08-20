@@ -4,6 +4,7 @@ import Select from "react-select";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import emailjs from '@emailjs/browser';
+import swal from 'sweetalert';
 
 
 
@@ -43,11 +44,13 @@ export default function Form() {
       EndDate:EndDateReg,
       Email:EmailReg
     }).then(()=> {
-        alert("Email has been send");
+      swal("Good job!", "You Email Has Been Sent !", "success");
       })
   }
 
   
+
+
 
 
   // function show textarea
@@ -128,16 +131,17 @@ export default function Form() {
   }
   return ( 
     <div class="container">
-    <div class="title">Registration</div>
+    <div class="title">Formulaire de congé
+    </div>
     <div class="content">
+    
       <form ref={form} onSubmit={sendEmail}>
-      <h1>Formulaire de congé</h1>
-        <div class="user-details">
-        
-        
-
+      <div class="button">
+    <input type="submit" onClick={logout} value="Log Out"></input>
+    </div>
         {EmailData.map(auth => (
                        <>
+                       <div class="user-details">
                        <div class="input-box">    
         <span class="details">User: </span>
         <input type="text"  value={auth.username} style={{background: "#ccc"}} onFocus={(e) => { SetUser(e.target.value); }} autoFocus ></input>
@@ -146,12 +150,14 @@ export default function Form() {
         <span class="details">Email: </span>
         <input type="email"  value={auth.Email} style={{background: "#ccc"}} onFocus={(e) => { setEmailReg(e.target.value); }} autoFocus name="Hello"></input>
         </div>
+        </div>
         <div hidden={true} key={auth.id}>
         <label>Name: </label>
         <input type="text"  value={auth.Name}  onFocus={(e) => { setNameReg(e.target.value); }}  autoFocus  name="EName" hidden={true} ></input>
         <label>Surname: </label>
         <input type="text"  value={auth.SurName} onFocus={(e) => { setSurnameReg(e.target.value); }} autoFocus name="SName" hidden={true} ></input>
-        </div></>
+        </div>
+        </>
                   ))}
         
         
@@ -162,7 +168,7 @@ export default function Form() {
           </div>
         
         <div class="button">
-        <input onClick={fetchData}  value="Confirm"> 
+        <input onClick={fetchData}  value="Confirm" type="submit"> 
         </input></div><br /> 
 
        
@@ -171,13 +177,12 @@ export default function Form() {
         showhide===SelectReg && (
         
           <>
-          <div>
-              
-            </div>
+          
             {Data.length > 0 && (
-                <div>
+                <div class="user-details">
+                  
                   <div class="input-box">
-            <span class="details">Start:</span>
+                    <span class="details">Start:</span>
                   <DatePicker
        selected={StartDateReg}
        selectsStart
@@ -187,7 +192,7 @@ export default function Form() {
        </div>
        <div class="input-box">
             <span class="details">end:</span>
-     {/* <button onClick={logout}>logout</button> */}
+     {/*  */}
      <DatePicker
        selected={EndDateReg}
        selectsEnd
@@ -199,21 +204,22 @@ export default function Form() {
       </div>
                   {Data.map(conges => (
                        <>
-                      <textarea  onFocus={(e) => { setTextAreaReg(e.target.value); } } name="STE" id="text" key={conges.id} defaultValue={SelectReg.value} autoFocus>{conges.EmailCON}</textarea>
+                       <div class="user-details">
+                      {/* <textarea  onFocus={(e) => { setTextAreaReg(e.target.value); } } name="STE" id="text" key={conges.id} defaultValue={SelectReg.value} autoFocus>{conges.EmailCON}</textarea> */}
                       <div class="button">
-                      <button type="submit"  onClick={submitRev}  id="button" > Submit </button>
-                      </div></>
+                          <input type="submit" value={" Send 📨"} onClick={submitRev} ></input>
+                      </div>
+                      </div>
+                      </>
                   ))}
                 </div>
               )}
               
-            <div>
-                <br/>
-              </div>
+            
               </>
           )
       }
-      </div>
+      
       </form>
       </div>
     </div>

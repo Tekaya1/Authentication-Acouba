@@ -4,6 +4,7 @@ import Axios from "axios";
 import PasswordStrengthBar from 'react-password-strength-bar';
 import '../AUTH.css'
 import Cookies from "js-cookie";
+import swal from 'sweetalert';
 export default function Login() {
     
 const history = useHistory()
@@ -19,12 +20,26 @@ Axios.post("http://localhost:3001/login",{
     email: email,
     password : password}).then((response) => { 
         if (!response.data.auth) {
-            setLoginStatus(response.data.message);
+            // setLoginStatus(response.data.message);
+            swal({
+              title: "Error!",
+              text: response.data.message,
+              icon: "error",
+              button: "Ok !",
+            });
             
         } else {
             localStorage.setItem('token',response.data.token)
             setLoginStatus(true)
-            window.location.href = '/Form'      
+            console.log(response);
+            swal({
+              title: "Connected!",
+              text: `Welcome Back,  ${response.data.result[0].username}`,
+              icon: "success",
+              button: "Ok !",
+            }).then(function() {
+              window.location = "/Form";
+          });    
         }
     })
 }
@@ -84,7 +99,7 @@ return (
 <div class="container">
 <div class="title">Login</div>
 <div class="content">
-  <form>
+  <form action="javascript:void(0);" >
     <div class="user-details">
       <div class="input-box">
         <span class="details">Email</span>
@@ -97,8 +112,9 @@ return (
     </div>
     <div class="button">
           <input type="submit" value="Connect" onClick={login}></input>
+          <a href="/Registration">Not Registred yet</a>
         </div>
-  </form>
+        </form>
   <h1>{(loginStatus)}</h1>
 </div>
 </div>
