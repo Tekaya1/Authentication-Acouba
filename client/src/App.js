@@ -18,6 +18,7 @@ function App() {
       <Route path="/Form" exact render={(props) => <Form />} />
       <Route path="/Admin/Dashboard" exact render={(props) => <Dashboard />} />
       <Route path="/" exact render={(props) => <Login />} />
+      
 
     </Router>
   )

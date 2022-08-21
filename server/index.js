@@ -154,7 +154,7 @@ app.post("/login", (req, res) => {
            
             
           } else {
-            res.json({ auth: false, message: "email or  password incorrect"});
+            res.json({ auth: false, message: "Email or Password Incorrect"});
           }       
         });
 } else {
@@ -214,6 +214,7 @@ app.post('/EmailFetch', (req,res)=> {
 
 app.post('/logout',(req,res) => {
   const result = storage.removeItem('emailid'); 
+  storage.removeItem("token")
   res.send(result)
 })
 

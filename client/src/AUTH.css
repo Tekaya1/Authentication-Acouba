@@ -168,4 +168,8 @@ form .textarea span.details{
 .user-details .textarea input:focus,
 .user-details .textarea input:valid{
   border-color: #9b59b6;
+} 
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
