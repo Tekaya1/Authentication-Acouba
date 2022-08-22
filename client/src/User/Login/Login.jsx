@@ -2,7 +2,7 @@ import React, { useEffect, useReducer, useState } from "react";
 import {useHistory} from 'react-router-dom'
 import Axios from "axios";
 import PasswordStrengthBar from 'react-password-strength-bar';
-import '../AUTH.css'
+import './Login.css'
 import Cookies from "js-cookie";
 import swal from 'sweetalert';
 export default function Login() {
@@ -95,6 +95,8 @@ return (
 
 // </div>
 // </>
+        <body id="login">
+          
         
 <div class="container">
 <div class="title">Login</div>
@@ -118,7 +120,7 @@ return (
   <h1>{(loginStatus)}</h1>
 </div>
 </div>
-        
+</body>
         
         
     

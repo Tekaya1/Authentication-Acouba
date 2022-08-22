@@ -5,19 +5,22 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import emailjs from '@emailjs/browser';
 import swal from 'sweetalert';
+import "./Form.css"
 
 
 
 // type conges array \
 const TypeConges = [
-    { value: "CONGE_PAYE" ,label:"CONGÉ PAYÉ"},
-    { value: "CONGE_INDIVIDUEL_DE_FORMATION", label:"CONGÉ INDIVIDUEL DE FORMATION"},
-    { value: "CONGE_FORMATION_ECONOMIQUE_SOCIALE ET SYNDICALE" ,label:"CONGÉ FORMATION ÉCONOMIQUE, SOCIALE ET SYNDICALE"},
-    { value: "CONGÉ_D-ENSEIGNEMENt_ET_DE_RECHERCHE" ,label:"CONGÉ D’ENSEIGNEMENT ET DE RECHERCHE"},
+    { value: "CONGE_ANNUEL_NON_PAYE" ,label:"CONGÉ ANNUEL NON PAYÉ"},
+    { value: "CONGE_MALADIE_NON_PAYE", label:"CONGÉ MALADIE NON PAYÉ"},
+    { value: "CONGE_MALADIE_PAYE" ,label:"CONGÉ MALADIE PAYÉ"},
+    { value: "CONGE_ANNUELLE" ,label:"CONGÉ ANNUELLE"},
     { value: "CONGE_MALADIE" ,label:"CONGÉ MALADIE"},
     { value: "CONGE_MATERNITE" ,label:"CONGÉ MATERNITÉ"},
-    { value: "CONGE_CREATION_D-ENTREPRISE" ,label:"CONGÉ CRÉATION D’ENTREPRISE"},
-    { value: "CONGE_POUR_CATASTROPHE_NATURELLE" ,label:"CONGÉ POUR CATASTROPHE NATURELLE"}
+    { value: "PRESENT" ,label:"PRESENT"},
+    { value: "ABSENT" ,label:"ABSENT"},
+    { value: "JOUR_FERIER" ,label:"JOUR FERIER"},
+    { value: "JOUR_FERIER_TRAVAILLER" ,label:"JOUR FERIER TRAVAILLER"},
     
 ];
 
@@ -141,7 +144,7 @@ export default function Form() {
     }).then(()=> {
       swal("Are you sure you want to do this?",{
         title: "Good!",
-        text: `Are you Sure !`,
+        text: `Logged Out`,
         icon: "info",
         button: 'Ok',
       }).then(function() {
@@ -150,13 +153,15 @@ export default function Form() {
     }) 
   }
   return ( 
+    <body id="Form">
+      
     <div class="container">
     <div class="title">Formulaire de congé
     
     </div>
     <div class="content">
       <form ref={form} onSubmit={sendEmail}>
-      <div class="button">
+      <div class="button"style={{top:"100%"}}>
     <input type="submit" onClick={logout} value="Log Out" style={{width: "29%",float:"right"}}></input>
     </div>
         {EmailData.map(auth => (
@@ -164,11 +169,11 @@ export default function Form() {
                        <div class="user-details">
                        <div class="input-box">    
         <span class="details">User: </span>
-        <input type="text"  value={auth.username} style={{background: "#ccc"}} onFocus={(e) => { SetUser(e.target.value); }} autoFocus ></input>
+        <input type="text"  value={auth.username} style={{background: "#ccc"}}  onFocus={(e) => { SetUser(e.target.value); }} autoFocus readOnly></input>
         </div>  
         <div class="input-box">   
         <span class="details">Email: </span>
-        <input type="email"  value={auth.Email} style={{background: "#ccc"}} onFocus={(e) => { setEmailReg(e.target.value); }} autoFocus name="Hello"></input>
+        <input type="email" readOnly value={auth.Email} style={{background: "#ccc"}} onFocus={(e) => { setEmailReg(e.target.value); }} autoFocus name="Hello"></input>
         </div>
         </div>
         <div hidden={true} key={auth.id}>
@@ -189,15 +194,11 @@ export default function Form() {
         
         <div class="button">
         <input onClick={fetchData}  value="Confirm" type="submit"> 
-        </input></div><br /> 
-
-       
+        </input></div>
         {
          
         showhide===SelectReg && (
-        
           <>
-          
             {Data.length > 0 && (
                 <div class="user-details">
                   
@@ -225,23 +226,23 @@ export default function Form() {
                   {Data.map(conges => (
                        <>
                        <div class="user-details">
-                      <textarea   onFocus={(e) => { setTextAreaReg(e.target.value); } } name="STE" id="text" key={conges.id} defaultValue={SelectReg.value} autoFocus>{conges.EmailCON}</textarea>
-                      <div class="button">
-                          <input type="submit" value={" Send 📨"} onClick={submitRev} ></input>
+                        <div >
+                      <textarea style={{background: "#ccc"}}  readOnly onFocus={(e) => { setTextAreaReg(e.target.value); } } name="STE" id="text" key={conges.id} defaultValue={SelectReg.value} autoFocus>{conges.EmailCON}</textarea>
+                      </div>
+                      <div className="button"  style={{position: "inherit"}}>
+                          <input  type="submit" value={" Send 📨"} onClick={submitRev} oncap></input>
                       </div>
                       </div>
                       </>
                   ))}
                 </div>
               )}
-              
-            
               </>
           )
       }
-      
       </form>
       </div>
     </div>
+    </body>
   );
 }

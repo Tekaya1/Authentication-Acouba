@@ -5,7 +5,7 @@
   box-sizing: border-box;
   font-family: 'Poppins',sans-serif;
 }
-body{
+#Form{
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -13,8 +13,9 @@ body{
   padding: 10px;
   background: linear-gradient(135deg, #71b7e6, #9b59b6);
 }
-.container{
-  max-width: 700px;
+.container {
+  max-width: 6000px;
+  max-height: 1000px;
   width: 100%;
   background-color: #fff;
   padding: 25px 30px;

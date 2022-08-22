@@ -12,7 +12,8 @@ const app = express();
 const jwt = require('jsonwebtoken')
 const storage = require('node-sessionstorage');
 const { json } = require('body-parser');
-
+const dateObj = new Date();
+var Creation = `Date: ${dateObj.toDateString()} ${dateObj.toTimeString()}`
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 //serving public file
@@ -63,8 +64,8 @@ app.post("/register", (req, res) => {
       console.log(err)
     }
     db.query(
-      "INSERT INTO auth(Name,SurName,username, password, Email, Phone, Gender) VALUES (?,?,?,?,?,?,?)",
-      [name,Surname,username, hash, email,Phone,Gender],
+      "INSERT INTO auth(Name,SurName,username, password, Email, Phone, Gender,CreationDate) VALUES (?,?,?,?,?,?,?,?)",
+      [name,Surname,username, hash, email,Phone,Gender,Creation],
       (err, result) => {
         if (err) {
           console.log(err);
@@ -211,6 +212,70 @@ app.post('/EmailFetch', (req,res)=> {
     }
   })
 })
+app.get("/Admin/loginAdmin", (req, res) => {
+  
+  if (req.session.emailAD) {
+    res.send({ loggedIn: true , email: req.session.emailAD});
+    
+  } else {
+    res.send({ loggedIn: false });
+  }
+});
+
+
+
+app.post("/Admin/loginAdmin", (req, res) => {
+  const passwordAD = req.body.passwordadmin;
+  const emailAD = req.body.emailadmin
+  db.query(
+    "SELECT  * FROM admin WHERE AdminEmail = ? ",
+    [emailAD],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      }
+      if (result.length>0) {
+        bcrypt.compare(passwordAD, result[0].AdminPassword, (err, response) => {
+          if(response)  {
+            req.session.emailAD = result
+            const id = result[0].id
+            const token  = jwt.sign({id},'jwtsecret', {
+              expiresIn:300,
+            })
+            res.json({auth: true, token: token, result: result})
+            storage.setItem('emailid', result[0].AdminEmail)
+
+          } else {
+          
+            res.json({ auth: false, message: "Email or Password Incorrect"});
+          }       
+        });
+} else {
+  res.json({ auth: false , message: "User Does not exist  "});
+}
+}
+);
+});
+
+
+app.post('/Admin/List', (req,res)=> {
+  const queryData = "select * from congerequest"
+  db.query(queryData,(err,result)=>{
+    if(err) {
+      console.log(err)
+    }else {
+      res.send(result)
+      // console.log(result);
+      
+      
+    }
+  })
+})
+
+
+
+
+
 
 app.post('/logout',(req,res) => {
   const result = storage.removeItem('emailid'); 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
-import "../App.css";
-import "../AUTH.css";
+import "./Register.css";
 import PasswordStrengthBar from 'react-password-strength-bar';
-import swal from 'sweetalert';  
+import swal from 'sweetalert'; 
+
 export default function Registration() {
   const [usernameReg, setUsernameReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
@@ -51,6 +51,7 @@ export default function Registration() {
   };
 
   return (
+    <body id="register">
     <div class="container">
     <div class="title">Registration</div>
     <div class="content">
@@ -110,5 +111,6 @@ export default function Registration() {
       </form>
     </div>
   </div>
+  </body>
   );
 }
