@@ -8,9 +8,12 @@ import Home from "./Home"
 import  "./Table.css"
 
 
-export default function ListConges() {
 
-    const [ListData, setListData] = useState([]);
+export default function ListConges() {
+  const [Status, setstatus] = useState("")
+
+
+  const [ListData, setListData] = useState([]);
   const fetchList= () => {
     Axios.post('http://localhost:3001/Admin/List', {
     })
@@ -28,14 +31,21 @@ export default function ListConges() {
     fetchList()
   }, [])
 
+    const SetStatusApproved = (id) => {
+      Axios.put("http://localhost:3001/Admin/Status",{
+        id: id
+      }).then((response) =>{
+        console.log(response);
+      })
+    }
 
 
         return (
             <><Home />
-            <section class="home-section">
+            <section className="home-section">
                 <h1>Hello</h1>
 
-                <table border={2} class="fl-table">
+                <table border={2} className="fl-table">
                     <thead>
                     <tr>
                         <th>username</th>
@@ -44,18 +54,21 @@ export default function ListConges() {
                         <th>Requests</th>
                         <th>StartDate</th>
                         <th>EndDate</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                     
                     {ListData.map(congerequest => (
-                        <tr >
-                        <td key={congerequest.id}>{congerequest.username}</td>
-                        <td key={congerequest.id}>{congerequest.Email}</td>
-                        <td key={congerequest.id}>{congerequest.TypeConge}</td>
-                        <td key={congerequest.id}>{congerequest.Requests}</td>
-                        <td key={congerequest.id}>{congerequest.StartDate}</td>
-                        <td key={congerequest.id}>{congerequest.EndDate}</td>
-                        <td><button class="button-30" >Reject</button><button class="button-30">Accept</button></td>
+                      
+                        <tr key={congerequest.id}>
+                        <td>{congerequest.username}</td>
+                        <td>{congerequest.Email}</td>
+                        <td>{congerequest.TypeConge}</td>
+                        <td>{congerequest.Requests}</td>
+                        <td>{congerequest.StartDate}</td>
+                        <td>{congerequest.EndDate}</td>
+                        <td>{congerequest.Status}</td>
+                        <td><button className="button-30" >Reject</button><button className="button-30" onClick={()=> {SetStatusApproved(congerequest.id)}}>Accept</button></td>
 
                         </tr>
                     ))}

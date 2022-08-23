@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST","PUT"],
     credentials: true,
   })
 );
@@ -174,8 +174,8 @@ app.post('/Email/Insert',(req,res) => {
     const StartDate = req.body.StartDate
     const EndDate = req.body.EndDate
     const Email = req.body.Email
-      const query = "insert into congerequest (username,Email,TypeConge,Requests,StartDate,EndDate,Name,SurName) values (?,?,?,?,?,?,?,?)"
-      db.query(query,[user,Email,Select,TextArea,StartDate,EndDate,Name,Surname],(err,result)=> {
+      const query = "insert into congerequest (username,Email,TypeConge,Requests,StartDate,EndDate,Name,SurName,Status) values (?,?,?,?,?,?,?,?,?)"
+      db.query(query,[user,Email,Select,TextArea,StartDate,EndDate,Name,Surname,"Pending"],(err,result)=> {
         res.send(result)
         
       })
@@ -273,6 +273,17 @@ app.post('/Admin/List', (req,res)=> {
 })
 
 
+app.put("/Admin/Status", (req,res) =>{
+  const id = req.body.id
+  console.log(id);
+  db.query("UPDATE congerequest set Status = ? where id = ?",["Approved",id],(err,result)=>{
+    if(err){
+      console.log(err);
+    } else {
+      
+      res.send(result)    }
+  })
+})
 
 
 
