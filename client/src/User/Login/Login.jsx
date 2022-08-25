@@ -5,6 +5,10 @@ import PasswordStrengthBar from 'react-password-strength-bar';
 import './Login.css'
 import Cookies from "js-cookie";
 import swal from 'sweetalert';
+import Lottie from "react-lottie";
+import * as location from "../Loader/1055-world-locations.json";
+import * as success from "../Loader/1127-success.json";
+
 export default function Login() {
     
 const history = useHistory()
@@ -13,6 +17,24 @@ const [password, setPassword] = useState("");
 const [email,setemail] = useState("");
 const [loginStatus, setLoginStatus] = useState(false);
 Axios.defaults.withCredentials= true
+
+const defaultOptions1 = {
+  loop: true,
+  autoplay: true,
+  animationData: location.default,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+  },
+};
+
+const defaultOptions2 = {
+  loop: true,
+  autoplay: true,
+  animationData: success.default,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+  },
+};
 
 //login function 
 const login = () => {
@@ -63,73 +85,69 @@ const userauth  = () => {
     })
 }
 
+const [data, setData] = useState([]);
+const [loading, setloading] = useState(undefined);
+const [completed, setcompleted] = useState(undefined);
+
+  useEffect(() => {
+    setTimeout(() => {
+      fetch("https://jsonplaceholder.typicode.com/posts")
+        .then((response) => response.json())
+        .then((json) => {
+          console.log(json);
+          setData(json);
+          setloading(true);
+
+          setTimeout(() => {
+            setcompleted(true);
+          }, 1000);
+        });
+    }, 2000);
+  }, []);
 
 
 
 return (
-//     <>
-//     <div className="container" >
-//   <div className="top"></div>
-//   <div className="bottom"></div>
-//   <div className="center">
-//     <h2> Sign In </h2>
-//     <input
-//             type="email"
-//             placeholder="Email..."
-//             onChange={(e) => {
-//                 setemail(e.target.value);
-//             } } /><br />
-
-// <input
-//             type="password"
-//             placeholder="Password..."
-//             onChange={(e) => {
-//                 setPassword(e.target.value);
-//             } } />
-//         <button   onClick={login}>Submit</button>
-//         {/* <button type="submit" onClick={login}> Login </button> */}
-        
+  <>
   
-//   </div>
-//   <h1>{loginStatus}</h1>
+  {!completed ? (
+    <>
+      {!loading ? (
+        <Lottie options={defaultOptions1} height={200} width={200} />
+      ) : (
+        <Lottie options={defaultOptions2} height={100} width={100} />
+      )}
+    </>
+  ) : (
+    <>
+      <body id="login">
 
-// </div>
-// </>
-        <body id="login">
-          
-        
 <div class="container">
-<div class="title">Login</div>
-<div class="content">
-  <form action="javascript:void(0);" >
-    <div class="user-details">
-      <div class="input-box">
-        <span class="details">Email</span>
-        <input type="email" onChange={(e) => {setemail(e.target.value);}}  placeholder="Enter your Email"  required/>
-      </div>
-      <div class="input-box">
-        <span class="details">Password</span>
-        <input type="password" onChange={(e) => {setPassword(e.target.value)}} placeholder="Enter your password" required ></input>
-      </div>
-    </div>
-    <div class="button">
-          <input type="submit" value="Connect" onClick={login}></input>
-          <a href="/Registration">Not Registred yet</a>
+  <div class="title">Login</div>
+  <div class="content">
+    <form action="javascript:void(0);">
+      <div class="user-details">
+        <div class="input-box">
+          <span class="details">Email</span>
+          <input type="email" onChange={(e) => { setemail(e.target.value); } } placeholder="Enter your Email" required />
         </div>
-        </form>
-  <h1>{(loginStatus)}</h1>
-</div>
+        <div class="input-box">
+          <span class="details">Password</span>
+          <input type="password" onChange={(e) => { setPassword(e.target.value); } } placeholder="Enter your password" required></input>
+        </div>
+      </div>
+      <div class="button">
+        <input type="submit" value="Connect" onClick={login}></input>
+        <a href="/Registration">Not Registred yet</a>
+      </div>
+    </form>
+    <h1>{(loginStatus)}</h1>
+  </div>
 </div>
 </body>
-        
-        
-    
-    
-    
-
-
-    
-   
-    
-)
+    </>
+  )}
+</>
+);
+  
 }
