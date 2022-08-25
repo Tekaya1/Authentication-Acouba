@@ -227,6 +227,7 @@ export default function Form() {
                        <>
                        <div class="user-details">
                         <div >
+                          
                       <textarea style={{background: "#ccc"}}  readOnly onFocus={(e) => { setTextAreaReg(e.target.value); } } name="STE" id="text" key={conges.id} defaultValue={SelectReg.value} autoFocus>{conges.EmailCON}</textarea>
                       </div>
                       <div className="button"  style={{position: "inherit"}}>

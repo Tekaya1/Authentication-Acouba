@@ -68,7 +68,7 @@ export default function Home() {
                             <li>
                                 <div className="profile-details">
                                     <div className="profile-content">
-                                        <img src="image/profile.jpg" alt="profileImg"></img>
+                                        <img src={'/image/profile.jpeg'} alt="profileImg"></img>
                                     </div>
                                     <div className="name-job">
                                         <div className="profile_name">Prem Shahi</div>

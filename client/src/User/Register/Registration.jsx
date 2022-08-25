@@ -81,6 +81,10 @@ export default function Registration() {
             <span class="details">Password</span>
             <input type="password" onChange={(e) => {setPasswordReg(e.target.value)}} placeholder="Enter your password" required ></input>
             <PasswordStrengthBar password={passwordReg} />
+            <form action="/" enctype="multipart/form-data" method="post">
+        <input type="file" name="image" accept='image/*' ></input>
+        <input type="submit" value="Upload"></input>
+      </form> 
           </div>
           
         </div>

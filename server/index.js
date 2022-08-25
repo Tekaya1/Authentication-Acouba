@@ -8,6 +8,7 @@ const sessions = require("express-session");
 const bcrypt = require("bcrypt");
 const session = require('express-session');
 const saltRounds = 10;
+
 const app = express();
 const jwt = require('jsonwebtoken')
 const storage = require('node-sessionstorage');
@@ -273,10 +274,22 @@ app.post('/Admin/List', (req,res)=> {
 })
 
 
-app.put("/Admin/Status", (req,res) =>{
+app.put("/Admin/StatusApproved", (req,res) =>{
   const id = req.body.id
   console.log(id);
   db.query("UPDATE congerequest set Status = ? where id = ?",["Approved",id],(err,result)=>{
+    if(err){
+      console.log(err);
+    } else {
+      
+      res.send(result)    }
+  })
+})
+
+app.put("/Admin/StatusDeclined", (req,res) =>{
+  const id = req.body.id
+  console.log(id);
+  db.query("UPDATE congerequest set Status = ? where id = ?",["Declined",id],(err,result)=>{
     if(err){
       console.log(err);
     } else {
