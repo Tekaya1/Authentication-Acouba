@@ -23,7 +23,12 @@ const TypeConges = [
     { value: "JOUR_FERIER_TRAVAILLER" ,label:"JOUR FERIER TRAVAILLER"},
     
 ];
-
+var dateObj = new Date();
+var month = dateObj.getUTCMonth() + 1; //months from 1-12
+var day = dateObj.getUTCDate();
+var year = dateObj.getUTCFullYear();
+const newdate = year + "/" + month + "/" + day;
+console.log(newdate);
 export default function Form() {
   const [SelectReg, setSelectReg] = useState("");
   const [TextAreaReg, setTextAreaReg] = useState("");

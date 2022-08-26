@@ -5,6 +5,7 @@ import './home.css'
 import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button';
 import Home from "./Home";
+import swal from 'sweetalert';
 
 export default function ListConges() {
 
@@ -18,7 +19,7 @@ export default function ListConges() {
     })
     .then(data => {
         setListData(data)
-      
+
     })
   }
 
@@ -27,20 +28,52 @@ export default function ListConges() {
     fetchList()
   }, [])
 
+
     const SetStatusApproved = (id) => {
-      Axios.put("http://localhost:3001/Admin/StatusApproved",{
-        id: id
-      }).then((response) =>{
-        console.log(response);
+      swal({
+        title: "Are you sure?",
+        text: "Accept This Request",
+        icon: "info",
+        buttons: true,
+        dangerMode: true,
       })
+      .then((willDelete) => {
+        if (willDelete) {
+          swal("Request Has Been Approved", {
+            icon: "success",
+          });
+        } else {
+          swal("Action has been Canceled", {
+            icon: "error",
+          })
+        }
+      });
     }
 
     const SetStatusDeclined = (id) => {
-      Axios.put("http://localhost:3001/Admin/StatusDeclined",{
-        id: id
-      }).then((response) =>{
-        console.log(response);
+      swal({
+        title: "Are you sure?",
+        text: "Decline This Request",
+        icon: "info",
+        buttons: true,
+        dangerMode: true,
       })
+      .then((willDelete) => {
+        if (willDelete) {
+          Axios.put("http://localhost:3001/Admin/StatusDeclined",{
+            id: id
+          }).then((response) =>{
+            console.log(response);
+          })
+          swal("Request Has Been Declined", {
+            icon: "success",
+          });
+        } else {
+          swal("Action has been Canceled", {
+            icon: "error",
+          })
+        }
+      });
     }
 
 
@@ -60,7 +93,7 @@ export default function ListConges() {
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
-                    
+
                     {ListData.map(congerequest => (
                         <tr key={congerequest.id}>
                         <td>{congerequest.username}</td>
@@ -74,40 +107,40 @@ export default function ListConges() {
                         </tr>
                     ))}
                     </thead>
-                    
+
 
                 </table>
             </section>
            */}
       <Table striped bordered hover variant="dark">
       <thead>
-        <tr>
+        <tr>  <th>Action</th>
               <th>username</th>
               <th>TypeConge</th>
               <th>RequestesS</th>
               <th>StartDate</th>
                <th>EndDate</th>
                <th>Status</th>
-              <th>Action</th>
+
         </tr>
       </thead>
       <tbody>
-        
+
       {ListData.map(congerequest => (
                         <tr key={congerequest.id}>
+                                                  <td><Button variant="danger" onClick={()=> {SetStatusDeclined(congerequest.id)}}>Declined</Button><Button variant="success" onClick={()=> {SetStatusApproved(congerequest.id)}}>Accept</Button></td>
                         <td>{congerequest.username}</td>
                         <td>{congerequest.TypeConge}</td>
                         <td>{congerequest.Requests}</td>
                         <td>{congerequest.StartDate}</td>
                         <td>{congerequest.EndDate}</td>
                         <td>{congerequest.Status}</td>
-                        <td><Button variant="danger" onClick={()=> {SetStatusDeclined(congerequest.id)}}>Danger</Button><Button variant="success" onClick={()=> {SetStatusApproved(congerequest.id)}}>Accept</Button></td>
                         </tr>
                     ))}
 
       </tbody>
     </Table>
-            </> 
+            </>
         )
 
 

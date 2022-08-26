@@ -155,6 +155,7 @@ app.post("/login", (req, res) => {
             res.json({auth: true, token: token, result: result})
             storage.setItem('emailid', result[0].Email)
             
+            
            
             
           } else {
@@ -201,15 +202,13 @@ app.post('/Data', (req,res)=> {
 })
 
 app.post('/EmailFetch', (req,res)=> {
-  user = req.body.User
-  
   const queryData = "select * from auth where Email= ?"
   db.query(queryData,[storage.getItem('emailid')],(err,result)=>{
     if(err) {
       console.log(err)
     }else {
       res.send(result)
-      // console.log(result);
+      
       
       
     }
@@ -281,9 +280,8 @@ app.put("/Admin/StatusApproved", (req,res) =>{
   console.log(id);
   db.query("UPDATE congerequest set Status = ? where id = ?",["Approved",id],(err,result)=>{
     if(err){
-      console.log(err);
+      res.send(err);
     } else {
-      
       res.send(result)    }
   })
 })
@@ -293,9 +291,8 @@ app.put("/Admin/StatusDeclined", (req,res) =>{
   console.log(id);
   db.query("UPDATE congerequest set Status = ? where id = ?",["Declined",id],(err,result)=>{
     if(err){
-      console.log(err);
+      res.send(err);
     } else {
-      
       res.send(result)    }
   })
 })
@@ -334,13 +331,14 @@ app.post('/imgupload', (req, res) => {
                   return res.status(500).send(err);
               }
               else{
-
+                const password = req.body.password;
+                bcrypt.hash(password,saltRounds, (err, hash) => {
                   const imgname=num+targetFile.name
                   const data={
                     Name:req.body.Name,
                     SurName:req.body.SurName,
                     username:req.body.username,
-                    password:req.body.password,
+                    password:hash,
                     Email:req.body.Email,
                     Phone:req.body.Phone,
                     Gender:req.body.Gender,
@@ -362,6 +360,7 @@ app.post('/imgupload', (req, res) => {
                       }
                   })
               }
+                )}
       }
 
   });
