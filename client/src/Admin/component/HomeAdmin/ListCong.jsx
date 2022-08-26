@@ -75,43 +75,10 @@ export default function ListConges() {
         }
       });
     }
-
+    
 
         return (
             <>
-            {/* <section className="home-section" >
-                <h1>Hello</h1>
-
-                <table border={2} style={{marginleft: "auto",
-  marginright: "auto"}}>
-                    <thead>
-                    <tr>
-                        <th>username</th>
-                        <th>TypeConge</th>
-                        <th>StartDate</th>
-                        <th>EndDate</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-
-                    {ListData.map(congerequest => (
-                        <tr key={congerequest.id}>
-                        <td>{congerequest.username}</td>
-                        <td>{congerequest.TypeConge}</td>
-                        <td>{congerequest.Requests}</td>
-                        <td>{congerequest.StartDate}</td>
-                        <td>{congerequest.EndDate}</td>
-                        <td>{congerequest.Status}</td>
-                        <td><a href="#popup1"><button className="button-30" href="#popup1" onClick={() => {SetStatusDeclined(congerequest.id)}}>Reject</button></a><button className="button-30" onClick={()=> {SetStatusApproved(congerequest.id)}}>Accept</button></td>
-
-                        </tr>
-                    ))}
-                    </thead>
-
-
-                </table>
-            </section>
-           */}
       <Table striped bordered hover variant="dark">
       <thead>
         <tr>  <th>Action</th>
@@ -128,7 +95,7 @@ export default function ListConges() {
 
       {ListData.map(congerequest => (
                         <tr key={congerequest.id}>
-                                                  <td><Button variant="danger" onClick={()=> {SetStatusDeclined(congerequest.id)}}>Declined</Button><Button variant="success" onClick={()=> {SetStatusApproved(congerequest.id)}}>Accept</Button></td>
+                        <td><Button variant="danger" onClick={()=> {SetStatusDeclined(congerequest.id)}}>Declined</Button><Button variant="success" onClick={()=> {SetStatusApproved(congerequest.id)}}>Accept</Button></td>
                         <td>{congerequest.username}</td>
                         <td>{congerequest.TypeConge}</td>
                         <td>{congerequest.Requests}</td>

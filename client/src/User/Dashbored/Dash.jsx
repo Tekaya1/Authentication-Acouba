@@ -36,6 +36,26 @@ export default function Navbar() {
      fetchEmail()
    }, [])
 
+   const logout = () => {
+    Axios.post('http://localhost:3001/logout').then((response)=> {
+      window.localStorage.clear()
+    }).then(()=> {
+      swal("Are you sure you want to do this?",{
+        title: "Good!",
+        text: `Logged Out`,
+        icon: "info",
+        button: 'Ok',
+      }).then(function() {
+        window.location = "/";
+    });    
+    }) 
+  }
+
+  useState(() => {
+    if(localStorage.getItem("token")==null) {
+      window.location.href = "/"
+    }
+  }, [])
 
 
   return (
@@ -46,7 +66,7 @@ export default function Navbar() {
             <NavbarLink to="/Navbar">Home</NavbarLink>
             <NavbarLink to="/Form">Request Conge</NavbarLink>
             <NavbarLink to="/contact">Check Conge</NavbarLink>
-            <NavbarLink to="/">Logout</NavbarLink>
+            <NavbarLink><a onClick={logout}>Logout</a></NavbarLink>
             <OpenLinksButton
               onClick={() => {
                 setExtendNavbar((curr) => !curr);
@@ -66,7 +86,7 @@ export default function Navbar() {
       </NavbarInnerContainer>
       {extendNavbar && (
         <NavbarExtendedContainer>
-          <NavbarLinkExtended to="/"> Home</NavbarLinkExtended>
+          <NavbarLinkExtended to="/Navbar">Home</NavbarLinkExtended>
           <NavbarLinkExtended to="/products"> Products</NavbarLinkExtended>
           <NavbarLinkExtended to="/contact"> Contact Us</NavbarLinkExtended>
           <NavbarLinkExtended to="/about"> About Us</NavbarLinkExtended>
