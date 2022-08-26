@@ -12,19 +12,15 @@ import {
   NavbarLinkExtended,
 } from "./Navbar.style";
 import Axios from "axios";
- 
-
-
+import swal from 'sweetalert';
 export default function Navbar() {
-    
-    
   const [extendNavbar, setExtendNavbar] = useState(false);
    // fetching email with users 
    const [EmailData, setEmailData] = useState([]);
    const [EmailReg, setEmailReg] = useState("");
+   
    const fetchEmail= () => {
      Axios.post('http://localhost:3001/EmailFetch', {
-        email:EmailReg
      })
      .then((response) => {
        return response.data
@@ -40,6 +36,8 @@ export default function Navbar() {
      fetchEmail()
    }, [])
 
+
+
   return (
     <NavbarContainer extendNavbar={extendNavbar}>
       <NavbarInnerContainer>
@@ -48,7 +46,7 @@ export default function Navbar() {
             <NavbarLink to="/Navbar">Home</NavbarLink>
             <NavbarLink to="/Form">Request Conge</NavbarLink>
             <NavbarLink to="/contact">Check Conge</NavbarLink>
-            <NavbarLink to="/about"> Log Out </NavbarLink>
+            <NavbarLink to="/">Logout</NavbarLink>
             <OpenLinksButton
               onClick={() => {
                 setExtendNavbar((curr) => !curr);
@@ -60,9 +58,9 @@ export default function Navbar() {
         </LeftContainer>
         <RightContainer>
         {EmailData.map(auth => (
-                    <NavbarLink > Hello, {auth.username} </NavbarLink>
-
-                       ))}   
+                 <>   
+                    <NavbarLink> Hello, {auth.username} </NavbarLink><img src={process.env.PUBLIC_URL + `/upload/${auth.image}`} /></>
+                       ))} 
         </RightContainer>
  
       </NavbarInnerContainer>
