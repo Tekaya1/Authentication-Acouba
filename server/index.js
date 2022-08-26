@@ -6,15 +6,17 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const sessions = require("express-session");
 const bcrypt = require("bcrypt");
-const session = require('express-session');
 const saltRounds = 10;
-
+const fileUpload = require('express-fileupload');
 const app = express();
 const jwt = require('jsonwebtoken')
 const storage = require('node-sessionstorage');
 const { json } = require('body-parser');
-const dateObj = new Date();
-var Creation = `Date: ${dateObj.toDateString()} ${dateObj.toTimeString()}`
+const { LoginCredentials,Auth } = require("two-step-auth");
+const fs = require('fs');
+const path = require('path');
+const random = require('random')
+
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 //serving public file
@@ -29,7 +31,7 @@ app.use(
 );
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(fileUpload());
 app.use(sessions({
     key:"emailid",
     secret:"Kali",
@@ -65,8 +67,8 @@ app.post("/register", (req, res) => {
       console.log(err)
     }
     db.query(
-      "INSERT INTO auth(Name,SurName,username, password, Email, Phone, Gender,CreationDate) VALUES (?,?,?,?,?,?,?,?)",
-      [name,Surname,username, hash, email,Phone,Gender,Creation],
+      "INSERT INTO auth(Name,SurName,username, password, Email, Phone, Gender) VALUES (?,?,?,?,?,?,?,?)",
+      [name,Surname,username, hash, email,Phone,Gender],
       (err, result) => {
         if (err) {
           console.log(err);
@@ -176,7 +178,7 @@ app.post('/Email/Insert',(req,res) => {
     const EndDate = req.body.EndDate
     const Email = req.body.Email
       const query = "insert into congerequest (username,Email,TypeConge,Requests,StartDate,EndDate,Name,SurName,Status) values (?,?,?,?,?,?,?,?,?)"
-      db.query(query,[user,Email,Select,TextArea,StartDate,EndDate,Name,Surname,"Pending"],(err,result)=> {
+      db.query(query,[user,Email,Select,TextArea,StartDate,EndDate,Name,Surname,"No Action"],(err,result)=> {
         res.send(result)
         
       })
@@ -200,7 +202,7 @@ app.post('/Data', (req,res)=> {
 
 app.post('/EmailFetch', (req,res)=> {
   user = req.body.User
-  console.log(Select);
+  
   const queryData = "select * from auth where Email= ?"
   db.query(queryData,[storage.getItem('emailid')],(err,result)=>{
     if(err) {
@@ -297,6 +299,80 @@ app.put("/Admin/StatusDeclined", (req,res) =>{
       res.send(result)    }
   })
 })
+
+
+app.post('/imgupload', (req, res) => {
+ 
+  
+  if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).send('No files were uploaded.');
+  }
+
+  let targetFile = req.files.imgfile;
+  let extName = path.extname(targetFile.name);
+  const num= random.int(10000,999999);
+   let uploadDir = path.join(__dirname, '../client','public','upload', num+targetFile.name);
+  let imgList = ['.png','.jpg','.jpeg'];
+  // Checking the file type
+
+  if(!imgList.includes(extName)  ){
+      return res.json({submit:false,msg:"Only jpg ,jpeg and png"})
+  }
+
+  if(targetFile.size > 2000000 ){
+     
+     return res.json({submit:false,msg:"File should be less then 2 MB "})
+  }
+  targetFile.mv(uploadDir, (err) => {
+      if (err)
+      {
+          return res.status(500).send(err);
+      }
+      else{
+              if (err)
+              {
+                  return res.status(500).send(err);
+              }
+              else{
+
+                  const imgname=num+targetFile.name
+                  const data={
+                    Name:req.body.Name,
+                    SurName:req.body.SurName,
+                    username:req.body.username,
+                    password:req.body.password,
+                    Email:req.body.Email,
+                    Phone:req.body.Phone,
+                    Gender:req.body.Gender,
+                    image:imgname
+                  
+                  };
+                  
+                  let sql="INSERT INTO `auth` SET ?";
+                  db.query(sql,data,(err,result)=>{
+                      if(err)
+                      {
+                          res.send(err);
+                      }
+                      else{ 
+                          res.send(result);
+                          // // res.send()
+                          // res.json({submit:true,fliname:targetFile.name,name:data.name,email:data.email,newimg:newimgFile.name})
+              
+                      }
+                  })
+              }
+      }
+
+  });
+
+});
+
+
+
+
+
+
 
 
 

@@ -60,7 +60,7 @@ Axios.post("http://localhost:3001/login",{
               icon: "success",
               button: "Ok !",
             }).then(function() {
-              window.location = "/Form";
+              window.location = "/Navbar";
           });    
         }
     })
@@ -75,15 +75,15 @@ Axios.post("http://localhost:3001/login",{
 // })
 
 
-const userauth  = () => {
-    Axios.get('http://localhost:3001/UserIsAuth', {
-        headers:
-        {"x-access-token":localStorage.getItem('token')
+// const userauth  = () => {
+//     Axios.get('http://localhost:3001/UserIsAuth', {
+//         headers:
+//         {"x-access-token":localStorage.getItem('token')
 
-    }}).then((response)=>{
-        console.log(response);
-    })
-}
+//     }}).then((response)=>{
+//         console.log(response);
+//     })
+// }
 
 const [data, setData] = useState([]);
 const [loading, setloading] = useState(undefined);
@@ -94,7 +94,6 @@ const [completed, setcompleted] = useState(undefined);
       fetch("https://jsonplaceholder.typicode.com/posts")
         .then((response) => response.json())
         .then((json) => {
-          console.log(json);
           setData(json);
           setloading(true);
 
