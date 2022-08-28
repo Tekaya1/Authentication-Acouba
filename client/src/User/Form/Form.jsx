@@ -1,34 +1,12 @@
 import React, {  useState ,useRef,useEffect } from "react";
 import Axios from "axios";
 import Select from "react-select";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import emailjs from '@emailjs/browser';
 import swal from 'sweetalert';
+import DatePicker from "react-datepicker";
 import "./Form.css"
-
-
-
 // type conges array \
-const TypeConges = [
-    { value: "CONGE_ANNUEL_NON_PAYE" ,label:"CONGÉ ANNUEL NON PAYÉ"},
-    { value: "CONGE_MALADIE_NON_PAYE", label:"CONGÉ MALADIE NON PAYÉ"},
-    { value: "CONGE_MALADIE_PAYE" ,label:"CONGÉ MALADIE PAYÉ"},
-    { value: "CONGE_ANNUELLE" ,label:"CONGÉ ANNUELLE"},
-    { value: "CONGE_MALADIE" ,label:"CONGÉ MALADIE"},
-    { value: "CONGE_MATERNITE" ,label:"CONGÉ MATERNITÉ"},
-    { value: "PRESENT" ,label:"PRESENT"},
-    { value: "ABSENT" ,label:"ABSENT"},
-    { value: "JOUR_FERIER" ,label:"JOUR FERIER"},
-    { value: "JOUR_FERIER_TRAVAILLER" ,label:"JOUR FERIER TRAVAILLER"},
-    
-];
-var dateObj = new Date();
-var month = dateObj.getUTCMonth() + 1; //months from 1-12
-var day = dateObj.getUTCDate();
-var year = dateObj.getUTCFullYear();
-const newdate = year + "/" + month + "/" + day;
-console.log(newdate);
 export default function Form() {
   const [SelectReg, setSelectReg] = useState("");
   const [TextAreaReg, setTextAreaReg] = useState("");
@@ -94,11 +72,7 @@ export default function Form() {
   }, [])
 
 
-  // show list conge with show hide option
-  const Conge = e => {
-    setSelectReg(e.value);
-    showhandler(e);
-  };
+  
 
 
 
@@ -107,9 +81,10 @@ export default function Form() {
     const sendEmail = (e) => {
     e.preventDefault();
 
-    emailjs.sendForm('servic_a7ylvfp', 'template_ywg2ae8', form.current, 'hjTAUdY8_qNmjQvmL')
+    emailjs.sendForm('service_a7ylvfp', 'template_ywg2ae8', form.current, 'hjTAUdY8_qNmjQvmL')
       .then((result) => {
           console.log(result.text);
+          submitRev()
       }, (error) => {
           console.log(error.text);
       });
@@ -157,98 +132,132 @@ export default function Form() {
     });    
     }) 
   }
+
+  useEffect(() => {
+    window.onbeforeunload = confirmExit;
+    function confirmExit()
+    {
+      return logout();
+    }
+}, [])
+
   return ( 
-    <body id="Form">
-      
-    <div class="container">
-    <div class="title">Formulaire de congé
+   
+    <body id="FOR1">
     
-    </div>
-    <div class="content">
-      <form ref={form} onSubmit={sendEmail}>
-      <div class="button"style={{top:"100%"}}>
-    <input type="submit" onClick={logout} value="Log Out" style={{width: "29%",float:"right"}}></input>
-    </div>
-        {EmailData.map(auth => (
-                       <>
-                       <div class="user-details">
-                       <div class="input-box">    
-        <span class="details">User: </span>
-        <input type="text"  value={auth.username} style={{background: "#ccc"}}  onFocus={(e) => { SetUser(e.target.value); }} autoFocus readOnly></input>
-        </div>  
-        <div class="input-box">   
-        <span class="details">Email: </span>
-        <input type="email" readOnly value={auth.Email} style={{background: "#ccc"}} onFocus={(e) => { setEmailReg(e.target.value); }} autoFocus name="Hello"></input>
-        </div>
-        </div>
-        <div hidden={true} key={auth.id}>
-        <label>Name: </label>
-        <input type="text"  value={auth.Name}  onFocus={(e) => { setNameReg(e.target.value); }}  autoFocus  name="EName" hidden={true} ></input>
-        <label>Surname: </label>
-        <input type="text"  value={auth.SurName} onFocus={(e) => { setSurnameReg(e.target.value); }} autoFocus name="SName" hidden={true} ></input>
-        </div>
-        </>
-                  ))}
-        
-        
-        <br />
-        <div class="input-box">
-            <span class="details">Type Conges:</span>
-            <Select options={TypeConges}  onChange={Conge}   isSearchable={false}  name="typeC" ></Select>  
+      <div class="container1">
+        <div class="row justify-content-center">
+          <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">Conges Form 📝</h2>
+            
           </div>
-        
-        <div class="button">
-        <input onClick={fetchData}  value="Confirm" type="submit"> 
-        </input></div>
-        {
-         
-        showhide===SelectReg && (
-          <>
-            {Data.length > 0 && (
-                <div class="user-details">
-                  
-                  <div class="input-box">
-                    <span class="details">Start:</span>
-                  <DatePicker
-       selected={StartDateReg}
-       selectsStart
-       startDate={StartDateReg}
-       endDate={EndDateReg}
-       onChange={date => setStartDateReg(date)} name="STD"/>
-       </div>
-       <div class="input-box">
-            <span class="details">end:</span>
-     {/*  */}
-     <DatePicker
-       selected={EndDateReg}
-       selectsEnd
-       startDate={StartDateReg}
-       endDate={EndDateReg}
-       minDate={StartDateReg}
-       onChange={date => setEndDateReg(date)}
-     name="END"/>
-      </div>
-                  {Data.map(conges => (
-                       <>
-                       <div class="user-details">
-                        <div >
-                          
-                      <textarea style={{background: "#ccc"}}  readOnly onFocus={(e) => { setTextAreaReg(e.target.value); } } name="STE" id="text" key={conges.id} defaultValue={SelectReg.value} autoFocus>{conges.EmailCON}</textarea>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-10 col-md-12">
+            <div class="wrapper">
+              <div class="row justify-content-center">
+                <div class="col-lg-8 mb-5">
+                  <div class="row">
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-4">
+                    {EmailData.map(auth => (
+                      <div class="dbox w-100 text-center">
+                        <div class="icon d-flex align-items-center justify-content-center">
+                        
+                          <img alt="Avatar" class="avatar" style={{verticalalign: "middle",
+                          width: "100px",
+                          height:"100px",
+                          borderradius: "50%"}} src={process.env.PUBLIC_URL + `/upload/${auth.image}`} />
+                        
+                        </div> <br ></br> 
+                        
+                        <div class="text">        
+                          <span><input type="text"  id="Username" value={auth.username} class="form-control"  onFocus={(e) => { SetUser(e.target.value); }} autoFocus readOnly></input></span>
+                          <br />
+                          <button class="btn btn-primary" onClick={logout}>log out</button>
+                        </div>
                       </div>
-                      <div className="button"  style={{position: "inherit"}}>
-                          <input  type="submit" value={" Send 📨"} onClick={submitRev} oncap></input>
-                      </div>
-                      </div>
-                      </>
-                  ))}
+                      ))}
+                    </div>
+                    
+                  </div>
                 </div>
-              )}
-              </>
-          )
-      }
-      </form>
+                <div class="col-lg-8">
+                  <div class="contact-wrap">
+                    <h3 class="mb-4 text-center">Get in touch with us</h3>
+                    
+                    {EmailData.map(auth => (
+                      <form ref={form} onSubmit={sendEmail}>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <input type="text" class="form-control"  value={auth.Name}  onFocus={(e) => { setNameReg(e.target.value); }}  autoFocus  readOnly name="EName" />
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <input type="text" class="form-control"   value={auth.SurName} onFocus={(e) => { setSurnameReg(e.target.value); }} readOnly autoFocus name="SName"   />
+                          </div>
+                        </div>
+                        <div class="col-md-12"> 
+                          <div class="form-group">
+                            <input type="email" class="form-control" value={auth.Email}  onFocus={(e) => { setEmailReg(e.target.value); }} readOnly autoFocus name="Hello" />
+                          </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                          <div class="form-group">
+                         <select required style={{background: "rgba(255, 255, 255, 0.03)"}} class="form-control" onChange={(e) => {setSelectReg(e.target.value);}} name="typeC">
+                          <option value="">Select Conge</option>
+                          <option value="CONGE_ANNUEL_NON_PAYE">CONGÉ ANNUEL NON PAYÉ</option>
+                          <option value="CONGE_MALADIE_NON_PAYE">CONGÉ MALADIE NON PAYÉ</option>
+                          <option value="CONGE_MALADIE_PAYE">CONGÉ MALADIE PAYÉ</option>
+                          <option value="CONGE_ANNUELLE">CONGÉ ANNUELLE</option>
+                          <option value="CONGE_MALADIE">CONGÉ MALADIE</option>
+                          <option value="CONGE_MATERNITE">CONGÉ MATERNITÉ</option>
+                          <option value="PRESENT">PRESENT</option>
+                          <option value="ABSENT">ABSENT</option>
+                          <option value="JOUR_FERIER">JOUR FERIER</option>
+                          <option value="JOUR_FERIER_TRAVAILLER">JOUR FERIER TRAVAILLER</option>
+                         </select>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                          <input required type="date" class="form-control"  name="STD" onChange={(e) => setStartDateReg(e.target.value)}  placeholder="MM/DD/YYYY"/>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                          <input required type="date" class="form-control" placeholder="Hello" name="END" onChange={(e) => setEndDateReg(e.target.value)}/>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <textarea name="STE" class="form-control" id="message" cols="30" rows="8" placeholder="Please type the problem of the conge only" onChange={(e) => { setTextAreaReg(e.target.value); } } ></textarea>
+                          </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <input type="submit" value="Send Message" class="btn btn-primary"/>
+                            
+                            <div class="submitting"></div>
+                            
+                          </div>
+                        </div>
+                      </div>
+                      </form>))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+  
     </body>
   );
 }
