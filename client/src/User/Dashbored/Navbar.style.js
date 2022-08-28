@@ -45,7 +45,7 @@ export const NavbarLink = styled(Link)`
   margin: 10px;
 
   @media (max-width: 700px) {
-    display: none;
+    display: inline;
   }
 `;
 

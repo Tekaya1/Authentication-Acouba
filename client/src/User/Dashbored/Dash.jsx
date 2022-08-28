@@ -87,9 +87,9 @@ export default function Navbar() {
       {extendNavbar && (
         <NavbarExtendedContainer>
           <NavbarLinkExtended to="/Navbar">Home</NavbarLinkExtended>
-          <NavbarLinkExtended to="/products"> Products</NavbarLinkExtended>
-          <NavbarLinkExtended to="/contact"> Contact Us</NavbarLinkExtended>
-          <NavbarLinkExtended to="/about"> About Us</NavbarLinkExtended>
+          <NavbarLinkExtended to="/Form"> Request Conge</NavbarLinkExtended>
+          <NavbarLinkExtended to="/contact"> Check Conge</NavbarLinkExtended>
+          <NavbarLinkExtended ><a onClick={logout}>Logout</a></NavbarLinkExtended>
         </NavbarExtendedContainer>
       )}
     </NavbarContainer>

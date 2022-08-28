@@ -71,44 +71,66 @@ const [error, setError] = useState(null);
 
   return (
     <body id="register">
-    <div className="container">
-    <div className="title">Registration</div>
-    <div className="content">
-      <form  onSubmit={onSub}>
-        <div className="user-details">
-          <div className="input-box">
-            <span className="details">Firstname</span>
-            <input type="text" onChange={(e) => {setNameReg(e.target.value);}} id="N1" placeholder="Enter your Firstname" required />
+    <div class="container1">
+        <div class="row justify-content-center">
+          <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">Acoba Plateform🔒 </h2>
+            
           </div>
-          <div className="input-box">
-            <span className="details">Surname</span>
-            <input type="text" onChange={(e) => {setSurnameReg(e.target.value);}} id="S1" placeholder="Enter your Surname"  required/>
-          </div>
-          <div className="input-box">
-            <span className="details">Username</span>
-            <input type="text" onChange={(e) => {setUsernameReg(e.target.value);}}  placeholder="Enter your Username"  required />
-          </div>
-          <div className="input-box">
-            <span className="details">Email</span>
-            <input type="email" onBlur={handleChange}  onChange={(e) => {setEmailReg(e.target.value);}}  placeholder="Enter your Email"  required/>
-            {error && <h2 style={{color: 'red'}}>{error}</h2>}
-          </div>
-          <div className="input-box">
-            <span className="details">Phone Number</span>
-            <input type="number" onChange={(e) => {setPhoneReg(e.target.value)}} placeholder="Enter your number"  ></input>
-          </div>
-          <div className="input-box">
-            <span className="details">Password</span>
-            <input type="password" onChange={(e) => {setPasswordReg(e.target.value)}} placeholder="Enter your password" required ></input>
-            <PasswordStrengthBar password={passwordReg} />
-            <div className="input-box">
-            <span className="details">Upload yout image</span>
-                      <input type="file" name="imgfile" className="form-control"   onChange={(e)=>setImage(e.target.files)}  required />
-                </div>        
-          </div>
-          
         </div>
-        <div className="gender-details">
+        <div class="row justify-content-center">
+          <div class="col-lg-10 col-md-12">
+            <div class="wrapper">
+              <div class="row justify-content-center">
+                <div class="col-lg-8 mb-5">
+                  <div class="row">
+                  
+                    
+                  </div>
+                </div>
+                <div class="col-lg-8">
+                  <div class="contact-wrap">
+                    <h3 class="mb-4 text-center">Login In</h3>
+                    
+                    
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                          <input type="text" class="form-control" onChange={(e) => {setNameReg(e.target.value);}} id="N1" placeholder="Enter your Firstname" required />                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                          <input type="text" class="form-control" onChange={(e) => {setSurnameReg(e.target.value);}} id="S1" placeholder="Enter your Surname"  required/>                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                          <input type="text" class="form-control" onChange={(e) => {setUsernameReg(e.target.value);}}  placeholder="Enter your Username"  required />                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                          <input type="email" class="form-control" onBlur={handleChange}  onChange={(e) => {setEmailReg(e.target.value);}}  placeholder="Enter your Email"  required/>
+                          </div>
+                          {error && <h2 style={{color: 'red'}}>{error}</h2>}
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                          <input type="number" class="form-control" onChange={(e) => {setPhoneReg(e.target.value)}} placeholder="Enter your number"  ></input>                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                          <input type="password" class="form-control" onChange={(e) => {setPasswordReg(e.target.value)}} placeholder="Enter your password" required ></input>
+                          <PasswordStrengthBar password={passwordReg} />                          
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">                     
+                          <input type="file" name="imgfile" className="form-control"   onChange={(e)=>setImage(e.target.files)}  required />                  
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <form  onSubmit={onSub}>
+                          <div className="gender-details">
         <input type="radio" name="gender" id="dot-1" value="Male" onChange={(e) => {setGenderReg(e.target.value);}}></input>
           <input type="radio" name="gender" id="dot-2" value="Female" onChange={(e) => {setGenderReg(e.target.value);}}></input>
           <input type="radio" name="gender" id="dot-3" value="undefined" onChange={(e) => {setGenderReg(e.target.value);}}></input>
@@ -128,13 +150,25 @@ const [error, setError] = useState(null);
             </label>
           </div>
         </div>
-        <div className="button">
-          <input type="submit" value="Register"  disabled={!passwordReg}></input>
-          <a href="/">Login Here</a>
+        </form>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <input type="submit" value="register" disabled={!passwordReg} onClick={onSub}   class="btn btn-primary"/>
+                            <div class="submitting"></div>
+                          </div>
+                        </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </form>
-    </div>
-  </div>
+      </div>
+</div>
   </body>
   );
 }

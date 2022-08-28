@@ -1,9 +1,7 @@
 import React, { useEffect, useReducer, useState } from "react";
 import {useHistory} from 'react-router-dom'
 import Axios from "axios";
-import PasswordStrengthBar from 'react-password-strength-bar';
-import './Login.css'
-import Cookies from "js-cookie";
+
 import swal from 'sweetalert';
 import Lottie from "react-lottie";
 import * as location from "../Loader/1055-world-locations.json";
@@ -121,27 +119,62 @@ return (
     <>
       <body id="login">
 
-<div class="container">
-  <div class="title">Login</div>
-  <div class="content">
-    <form action="javascript:void(0);">
-      <div class="user-details">
-        <div class="input-box">
-          <span class="details">Email</span>
-          <input type="email" onChange={(e) => { setemail(e.target.value); } } placeholder="Enter your Email" required />
+<div class="container1">
+        <div class="row justify-content-center">
+          <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">Acoba Plateform🔒 </h2>
+            
+          </div>
         </div>
-        <div class="input-box">
-          <span class="details">Password</span>
-          <input type="password" onChange={(e) => { setPassword(e.target.value); } } placeholder="Enter your password" required></input>
+        <div class="row justify-content-center">
+          <div class="col-lg-10 col-md-12">
+            <div class="wrapper">
+              <div class="row justify-content-center">
+                <div class="col-lg-8 mb-5">
+                  <div class="row">
+                  
+                    
+                  </div>
+                </div>
+                <div class="col-lg-8">
+                  <div class="contact-wrap">
+                    <h3 class="mb-4 text-center">Login In</h3>
+                    
+                    
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                          <input type="email" onChange={(e) => { setemail(e.target.value); } } class="form-control" placeholder="Enter your Email" required />
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                          <input type="password" onChange={(e) => { setPassword(e.target.value); } } class="form-control" placeholder="Enter your password" required></input>
+                          </div>
+                        </div>
+                       
+                        
+                        
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <input type="submit" value="Connect" onClick={login} class="btn btn-primary"/>
+                            
+                            <div class="submitting"></div>
+                            
+                          </div>
+                          <div class="form-group">
+                          <a href="/Registration"><input type="submit" value="register"  class="btn btn-primary"></input></a>
+                            
+                          </div>
+                        </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="button">
-        <input type="submit" value="Connect" onClick={login}></input>
-        <a href="/Registration">Not Registred yet</a>
-      </div>
-    </form>
-    <h1>{(loginStatus)}</h1>
-  </div>
 </div>
 </body>
     </>
