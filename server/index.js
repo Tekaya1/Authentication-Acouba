@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "POST","PUT"],
+    methods: ["GET", "POST","PUT","DELETE"],
     credentials: true,
   })
 );
@@ -176,11 +176,9 @@ app.post('/Email/Insert',(req,res) => {
     const EndDate = req.body.EndDate
     const Email = req.body.Email
  
-      const query = "insert into congerequest (username,Email,TypeConge,Requests,StartDate,EndDate,Name,SurName,Status) values (?,?,?,?,?,?,?,?,?)"
-      db.query(query,[user,Email,Select,TextArea,StartDate,EndDate,Name,Surname,"No Action"],(err,result)=> {
+      const query = "insert into congerequest (username,Email,TypeConge,Requests,StartDate,EndDate,Name,SurName,Status,Comment) values (?,?,?,?,?,?,?,?,?,?)"
+      db.query(query,[user,Email,Select,TextArea,StartDate,EndDate,Name,Surname,"No Action","No Comment"],(err,result)=> {
         res.send(result)
-        
-        
       })
 })
 
@@ -302,6 +300,17 @@ app.put("/Admin/StatusDeclined", (req,res) =>{
   const comment = req.body.Comment
   console.log(id);
 db.query("UPDATE congerequest set Status = ?, Comment=? where id = ?",["Declined",comment,id],(err,result)=>{
+    if(err){
+      res.send(err);
+    } else {
+      res.send(result)    }
+  })
+})
+
+app.delete("/DELETE", (req,res) =>{
+  const id = req.body.id
+  console.log(id);
+db.query("DELETE FROM congerequest where id = ?",[id],(err,result)=>{
     if(err){
       res.send(err);
     } else {

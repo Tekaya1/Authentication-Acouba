@@ -36,7 +36,7 @@ export default function Form() {
         icon: "success",
         button: "Ok !",
       }).then(function() {
-        window.location = "/Form";
+        window.location = "/CheckConge";
     });    
   })
 }
@@ -81,7 +81,7 @@ export default function Form() {
     const sendEmail = (e) => {
     e.preventDefault();
 
-    emailjs.sendForm('service_a7ylvfp', 'template_ywg2ae8', form.current, 'hjTAUdY8_qNmjQvmL')
+    emailjs.sendForm('servie_a7ylvfp', 'template_ywg2ae8', form.current, 'hjTAUdY8_qNmjQvmL')
       .then((result) => {
           console.log(result.text);
           submitRev()
@@ -98,6 +98,7 @@ export default function Form() {
     })
     .then((response) => {
       return response.data
+      
     })
     .then(data => {
       setEmailData(data)
@@ -242,7 +243,7 @@ export default function Form() {
                         
                         <div class="col-md-12">
                           <div class="form-group">
-                            <input type="submit" value="Send Message" class="btn btn-primary"/>
+                            <input type="submit" value="Send Message" onClick={submitRev} class="btn btn-primary"/>
                             
                             <div class="submitting"></div>
                             

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import swal from 'sweetalert';
-
+import Button from 'react-bootstrap/Button';
 
 export default function CheckConge() {
   const [ListData, setListData] = useState([]);
@@ -9,7 +9,19 @@ export default function CheckConge() {
     Axios.post('http://localhost:3001/ListConge', {
     })
     .then((response) => {
+     if(response.data.length==0) {
+      swal({
+        title: "Error",
+        text: "No Conges Has been Saved",
+        icon: "error",
+        button: 'Ok',
+      }).then(function() {
+        window.location = "/Home";
+    });    
+     } else {
       return response.data
+     }
+      
     })
     .then(data => {
         setListData(data)
@@ -43,6 +55,33 @@ export default function CheckConge() {
       }) 
     }
 
+    const DeleteCong = (id) => {
+      Axios.delete("http://localhost:3001/DELETE",{
+            id:id
+          }).then((response) =>{
+            console.log(response);
+          })
+      // swal({
+      //   title: "Are you sure?",
+      //   text: "Decline This Request",
+      //   icon: "info",
+      //   buttons: true,
+      //   dangerMode: true,
+      // })
+      // .then((willDelete) => {
+      //   if (willDelete) {
+          
+      //     swal("Request Has Been Declined", {
+      //       icon: "success",
+      //     });
+      //   } else {
+      //     swal("Action has been Canceled", {
+      //       icon: "error",
+      //     })
+      //   }
+      // });
+    }
+
         return (
             <>
     
@@ -50,7 +89,7 @@ export default function CheckConge() {
       <thead class="table-borderless">
         
         <tr>  
-              
+              <th>Action</th>
               <th>username</th>
               <th>Name</th>
               <th>SurName</th>
@@ -69,6 +108,7 @@ export default function CheckConge() {
       {ListData.map(congerequest => (
         
         <><tr key={congerequest.id}>
+          <td class="table-info table-hover"><Button variant="danger" onClick={() => {DeleteCong(congerequest.id);} }>Decline</Button></td>
           <td class="table-info table-hover">{congerequest.username}</td>
           <td class="table-info table-hover">{congerequest.Name}</td>
           <td class="table-info table-hover">{congerequest.SurName}</td>
