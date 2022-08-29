@@ -7,10 +7,10 @@ import Registration from "./User/Register/Registration";
 import Form from "./User/Form/Form";
 import Login from "./User/Login/Login";
 import ADLogin from "./Admin/component/LoginAdmin/ADLogin"
-import Home from "./Admin/component/HomeAdmin/Home"
 import ListCong from "./Admin/component/HomeAdmin/ListCong"
 import PageNotFound from './Error/PageNotFound';
-import Navbar from './User/Dashbored/Dash';
+import Home from './User/Dashbored/Dash';
+import CheckConge from './User/Dashbored/Check';
 import ResetPaasword from './User/ForgetPassword/ForgetPassword';
 
 
@@ -32,16 +32,12 @@ function App() {
     <Switch>
       <Route exact path='/registration' component={Registration} />
       <Route exact path='/Form' component={Form} />
-      <Route exact path='/Admin/ADLogin' component={ADLogin} />
+      <Route exact path='/Admin' component={ADLogin} />
       <Route exact path='/Admin/ListCong' component={ListCong} />
-      <Route exact path='/Admin/Home' component={Home} />
-      <Route exact path='/Navbar' component={Navbar} />
+      <Route exact path='/Home' component={Home} />
       <Route exact path='/ResetPaasword' component={ResetPaasword} />
-
-      <Route exact path='/' component={Login} />
-      ResetPaasword
-
-      
+      <Route exact path='/CheckConge' component={CheckConge} /> 
+      <Route exact path='/' component={Login} /> 
       <Route path="*" component={PageNotFound} />
     </Switch>
   </BrowserRouter>

@@ -7,17 +7,15 @@ import {
   NavbarInnerContainer,
   NavbarLinkContainer,
   NavbarLink,
-  Logo,
   OpenLinksButton,
   NavbarLinkExtended,
 } from "./Navbar.style";
 import Axios from "axios";
 import swal from 'sweetalert';
-export default function Navbar() {
+export default function Home() {
   const [extendNavbar, setExtendNavbar] = useState(false);
    // fetching email with users 
    const [EmailData, setEmailData] = useState([]);
-   const [EmailReg, setEmailReg] = useState("");
    
    const fetchEmail= () => {
      Axios.post('http://localhost:3001/EmailFetch', {
@@ -65,7 +63,7 @@ export default function Navbar() {
           <NavbarLinkContainer>
             <NavbarLink to="/Navbar">Home</NavbarLink>
             <NavbarLink to="/Form">Request Conge</NavbarLink>
-            <NavbarLink to="/contact">Check Conge</NavbarLink>
+            <NavbarLink to="/CheckConge">Check Conge</NavbarLink>
             <NavbarLink><a onClick={logout}>Logout</a></NavbarLink>
             <OpenLinksButton
               onClick={() => {
@@ -79,19 +77,22 @@ export default function Navbar() {
         <RightContainer>
         {EmailData.map(auth => (
                  <>   
-                    <NavbarLink> Hello, {auth.username} </NavbarLink><img src={process.env.PUBLIC_URL + `/upload/${auth.image}`} /></>
+                   <NavbarLink id="hello">Hello, {auth.Name}</NavbarLink><img src={process.env.PUBLIC_URL + `/upload/${auth.image}`} /></>
                        ))} 
         </RightContainer>
  
       </NavbarInnerContainer>
-      {extendNavbar && (
+      
+      {extendNavbar && EmailData.map(auth => (
         <NavbarExtendedContainer>
-          <NavbarLinkExtended to="/Navbar">Home</NavbarLinkExtended>
+          <NavbarLinkExtended readOnly disabled>Hello, {auth.Name}</NavbarLinkExtended>
+          <NavbarLinkExtended to="/Home">Home</NavbarLinkExtended>
           <NavbarLinkExtended to="/Form"> Request Conge</NavbarLinkExtended>
-          <NavbarLinkExtended to="/contact"> Check Conge</NavbarLinkExtended>
-          <NavbarLinkExtended ><a onClick={logout}>Logout</a></NavbarLinkExtended>
+          <NavbarLinkExtended to="/CheckConge"> Check Conge</NavbarLinkExtended>
+          <NavbarLinkExtended><a onClick={logout}>Logout</a></NavbarLinkExtended>
         </NavbarExtendedContainer>
-      )}
+      ))}
+      
     </NavbarContainer>
   );
 }

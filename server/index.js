@@ -11,9 +11,6 @@ const fileUpload = require('express-fileupload');
 const app = express();
 const jwt = require('jsonwebtoken')
 const storage = require('node-sessionstorage');
-const { json } = require('body-parser');
-const { LoginCredentials,Auth } = require("two-step-auth");
-const fs = require('fs');
 const path = require('path');
 const random = require('random')
 
@@ -71,10 +68,10 @@ app.post("/register", (req, res) => {
       [name,Surname,username, hash, email,Phone,Gender],
       (err, result) => {
         if (err) {
-          console.log(err);
+        
           res.send(err)
         } else {
-          console.log(result);
+        
           res.send(result)
         }
 
@@ -178,9 +175,11 @@ app.post('/Email/Insert',(req,res) => {
     const StartDate = req.body.StartDate
     const EndDate = req.body.EndDate
     const Email = req.body.Email
+ 
       const query = "insert into congerequest (username,Email,TypeConge,Requests,StartDate,EndDate,Name,SurName,Status) values (?,?,?,?,?,?,?,?,?)"
       db.query(query,[user,Email,Select,TextArea,StartDate,EndDate,Name,Surname,"No Action"],(err,result)=> {
         res.send(result)
+        
         
       })
 })
@@ -192,10 +191,10 @@ app.post('/Data', (req,res)=> {
   const queryData = "select * from conges where TypeCON= ?"
   db.query(queryData,[Select],(err,result)=>{
     if(err) {
-      console.log(err)
+      res.send(err)
     }else {
       res.send(result)
-      // console.log(result)
+      
       
     }
   })
@@ -205,12 +204,23 @@ app.post('/EmailFetch', (req,res)=> {
   const queryData = "select * from auth where Email= ?"
   db.query(queryData,[storage.getItem('emailid')],(err,result)=>{
     if(err) {
-      console.log(err)
+      res.send(err)
     }else {
       res.send(result)
       
       
       
+    }
+  })
+})
+
+app.post('/ListConge', (req,res)=> {
+  const queryData = "select * from CongeRequest where Email= ?"
+  db.query(queryData,[storage.getItem('emailid')],(err,result)=>{
+    if(err) {
+      res.send(err)
+    }else {
+      res.send(result)
     }
   })
 })
@@ -264,10 +274,10 @@ app.post('/Admin/List', (req,res)=> {
   const queryData = "select * from congerequest"
   db.query(queryData,(err,result)=>{
     if(err) {
-      console.log(err)
+      res.send(err)
     }else {
       res.send(result)
-      // console.log(result);
+     
       
       
     }
@@ -277,8 +287,9 @@ app.post('/Admin/List', (req,res)=> {
 
 app.put("/Admin/StatusApproved", (req,res) =>{
   const id = req.body.id
+  const comment = req.body.Comment
   console.log(id);
-  db.query("UPDATE congerequest set Status = ? where id = ?",["Approved",id],(err,result)=>{
+  db.query("UPDATE congerequest set Status = ?, Comment=? where id = ?",["Approved",comment,id],(err,result)=>{
     if(err){
       res.send(err);
     } else {
@@ -288,8 +299,9 @@ app.put("/Admin/StatusApproved", (req,res) =>{
 
 app.put("/Admin/StatusDeclined", (req,res) =>{
   const id = req.body.id
+  const comment = req.body.Comment
   console.log(id);
-  db.query("UPDATE congerequest set Status = ? where id = ?",["Declined",id],(err,result)=>{
+db.query("UPDATE congerequest set Status = ?, Comment=? where id = ?",["Declined",comment,id],(err,result)=>{
     if(err){
       res.send(err);
     } else {
@@ -366,15 +378,6 @@ app.post('/imgupload', (req, res) => {
   });
 
 });
-
-
-
-
-
-
-
-
-
 
 app.post('/logout',(req,res) => {
   const result = storage.removeItem('emailid'); 

@@ -6,7 +6,7 @@ import swal from 'sweetalert';
 import Lottie from "react-lottie";
 import * as location from "../Loader/1055-world-locations.json";
 import * as success from "../Loader/1127-success.json";
-
+import './Login.css'
 export default function Login() {
     
 const history = useHistory()
@@ -58,7 +58,7 @@ Axios.post("http://localhost:3001/login",{
               icon: "success",
               button: "Ok !",
             }).then(function() {
-              window.location = "/Navbar";
+              window.location = "/Home";
           });    
         }
     })
@@ -157,13 +157,13 @@ return (
                         
                         <div class="col-md-12">
                           <div class="form-group">
-                            <input type="submit" value="Connect" onClick={login} class="btn btn-primary"/>
+                            <input type="submit" id="B1" value="Connect" onClick={login} class="btn btn-primary"/>
                             
                             <div class="submitting"></div>
                             
                           </div>
                           <div class="form-group">
-                          <a href="/Registration"><input type="submit" value="register"  class="btn btn-primary"></input></a>
+                          <a href="/Registration"><input type="submit" id="B1" value="register"  class="btn btn-primary"></input></a>
                             
                           </div>
                         </div>

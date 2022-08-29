@@ -90,7 +90,7 @@ const [error, setError] = useState(null);
                 </div>
                 <div class="col-lg-8">
                   <div class="contact-wrap">
-                    <h3 class="mb-4 text-center">Login In</h3>
+                    <h2 class="heading-section">User Register</h2>
                     
                     
                       <div class="row">

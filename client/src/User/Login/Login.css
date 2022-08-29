@@ -1,0 +1,28 @@
+
+@media (max-width: 1400px) {
+    #B1 {
+      left: 30%;
+    }
+    
+  }
+@media (max-width: 950px) {
+    #B1 {
+      left: 36%;
+    }
+    
+  }
+  
+  @media (max-width: 650px) {
+    #B1 {
+      left: 28%;
+    }
+    
+  }
+  
+
+  @media (max-width: 480px) {
+    #B1 {
+      left: 21%;
+    }
+    
+  }

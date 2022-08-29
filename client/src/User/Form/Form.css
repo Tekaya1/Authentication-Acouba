@@ -8371,9 +8371,19 @@ form .gender-details .gender-title{
  form input[type="radio"]{
    display: none;
  }
- 
- @media screen and (min-device-width: 768px)
- and (max-device-width: 1024px) {
+ input[type=number] {
+  -moz-appearance: textfield;
+}
+
+#BL {
+  left: 0%;
+}
+
+#ADLOG{
+  left: 48%;
+}
+
+ @media (max-width: 1400px) {
   .btn.btn-primary {
     left: 28%;
   }
@@ -8381,10 +8391,12 @@ form .gender-details .gender-title{
     justify-content: space-around;
     width: 103%;
   }
+  #register {
+    height: 160vh;
+  }
 }
 
-@media screen and (max-device-width: 640px)
-and (orientation: landscape) {
+@media (max-width: 900px) {
   .btn.btn-primary {
     left: 34%;
   }
@@ -8392,16 +8404,44 @@ and (orientation: landscape) {
     justify-content: space-around;
     width: 103%;
   }
+  #register {
+    height: 189vh;
+  }
 }
 
 
-@media screen and (max-device-width: 1024px) 
-and (orientation: portrait) {
+@media (max-width: 950px) {
   .btn.btn-primary {
-    left: 32%;
+    left: 37%;
   }
   form .category {
     justify-content: space-around;
-    width: 111%;
+    width: 103%;
+  }
+
+  #register {
+    height: 189vh;
   }
 }
+
+@media (max-width: 650px) {
+  .btn.btn-primary {
+    left: 31%;
+  }
+  form .category {
+    justify-content: space-around;
+    width: 105%;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .btn.btn-primary {
+    left: 22%;
+  }
+  form .category {
+    justify-content: space-around;
+    width: 105%;
+  }
+}
+

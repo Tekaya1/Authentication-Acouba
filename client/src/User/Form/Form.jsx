@@ -133,7 +133,7 @@ export default function Form() {
     }) 
   }
 
-  useEffect(() => {
+  useState(() => {
     window.onbeforeunload = confirmExit;
     function confirmExit()
     {
@@ -176,7 +176,7 @@ export default function Form() {
                         <div class="text">        
                           <span><input type="text"  id="Username" value={auth.username} class="form-control"  onFocus={(e) => { SetUser(e.target.value); }} autoFocus readOnly></input></span>
                           <br />
-                          <button class="btn btn-primary" onClick={logout}>log out</button>
+                          <button class="btn btn-primary" id="BL" onClick={logout}>log out</button>
                         </div>
                       </div>
                       ))}
