@@ -1,10 +1,8 @@
 import React, {  useState ,useRef,useEffect } from "react";
 import Axios from "axios";
-import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
 import emailjs from '@emailjs/browser';
 import swal from 'sweetalert';
-import DatePicker from "react-datepicker";
 import "./Form.css"
 // type conges array \
 export default function Form() {
@@ -29,64 +27,33 @@ export default function Form() {
       StartDate:StartDateReg,
       EndDate:EndDateReg,
       Email:EmailReg
-    }).then(()=> {
-      swal({
-        title: "Good!",
-        text: `Your Message has been sent Successsfely`,
-        icon: "success",
-        button: "Ok !",
-      }).then(function() {
-        window.location = "/CheckConge";
-    });    
-  })
+    })
 }
-  
-
-
-
-  // function show textarea
-  const [showhide,setshowhide] = useState('');
-  const showhandler = (e) =>{
-    const getuser = e.value;
-    setshowhide(getuser);
-  }
-
-  //fetching data (importing typeconge)
-  const [Data, setData] = useState([]);
-  const fetchData = () => {
-    Axios.post('http://localhost:3001/Data', {
-      list:SelectReg
-    })
-    .then((response) => {
-      return response.data
-    })
-    .then(data => {
-      setData(data)
-      // alert("Data fetched")
-    })
-  }
-
-  // tracking function fetchData()
-  useState(() => {
-    fetchData()
-  }, [])
-
-
-  
-
-
-
     //Email service by emailjs
     const form = useRef();
     const sendEmail = (e) => {
     e.preventDefault();
 
-    emailjs.sendForm('servie_a7ylvfp', 'template_ywg2ae8', form.current, 'hjTAUdY8_qNmjQvmL')
+    emailjs.sendForm('service_a7yvfp', 'template_ywg2ae8', form.current, 'hjTAUdY8_qNmjQvmL')
       .then((result) => {
-          console.log(result.text);
-          submitRev()
+        submitRev()
+        swal({
+          title: "Good!",
+          text: `Your Message has been sent Successsfely`,
+          icon: "success",
+          button: "Ok !",
+        }).then(function() {
+          window.location = "/CheckConge";
+      });       
       }, (error) => {
-          console.log(error.text);
+        swal({
+          title: "Error",
+          text: `Error While Sending Data`,
+          icon: "error",
+          button: "Ok !",
+        }).then(function() {
+          window.location = "/Form";
+      });
       });
   };
 
@@ -142,6 +109,13 @@ export default function Form() {
     }
 }, [])
 
+const disablePastDate = () => {
+  const today = new Date();
+  const dd = String(today.getDate() + 1).padStart(2, "0");
+  const mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+  const yyyy = today.getFullYear();
+  return yyyy + "-" + mm + "-" + dd;
+};
   return ( 
    
     <body id="FOR1">
@@ -210,7 +184,7 @@ export default function Form() {
                         
                         <div class="col-md-12">
                           <div class="form-group">
-                         <select required style={{background: "rgba(255, 255, 255, 0.03)"}} class="form-control" onChange={(e) => {setSelectReg(e.target.value);}} name="typeC">
+                         <select required id="IDCOL" class="form-control" onChange={(e) => {setSelectReg(e.target.value);}} name="typeC">
                           <option value="">Select Conge</option>
                           <option value="CONGE_ANNUEL_NON_PAYE">CONGÉ ANNUEL NON PAYÉ</option>
                           <option value="CONGE_MALADIE_NON_PAYE">CONGÉ MALADIE NON PAYÉ</option>
@@ -227,12 +201,12 @@ export default function Form() {
                         </div>
                         <div class="col-md-12">
                           <div class="form-group">
-                          <input required type="date" class="form-control"  name="STD" onChange={(e) => setStartDateReg(e.target.value)}  placeholder="MM/DD/YYYY"/>
+                          <input required type="date" class="form-control"  name="STD" onChange={(e) => setStartDateReg(e.target.value)}  placeholder="MM/DD/YYYY" min={disablePastDate()}/>
                           </div>
                         </div>
                         <div class="col-md-12">
                           <div class="form-group">
-                          <input required type="date" class="form-control" placeholder="Hello" name="END" onChange={(e) => setEndDateReg(e.target.value)}/>
+                          <input required type="date" class="form-control" placeholder="Hello" name="END" onChange={(e) => setEndDateReg(e.target.value)} min={disablePastDate()}/>
                           </div>
                         </div>
                         <div class="col-md-12">
@@ -243,7 +217,7 @@ export default function Form() {
                         
                         <div class="col-md-12">
                           <div class="form-group">
-                            <input type="submit" value="Send Message" onClick={submitRev} class="btn btn-primary"/>
+                            <input type="submit" value="Send Message"  class="btn btn-primary"/>
                             
                             <div class="submitting"></div>
                             

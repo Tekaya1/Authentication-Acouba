@@ -56,30 +56,29 @@ export default function CheckConge() {
     }
 
     const DeleteCong = (id) => {
-      Axios.delete("http://localhost:3001/DELETE",{
-            id:id
-          }).then((response) =>{
-            console.log(response);
+      swal({
+        title: "Are you sure?",
+        text: "Decline This Request",
+        icon: "info",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+        Axios.post("http://localhost:3001/DELETE",{
+          id:id
+        }).then((response) =>{
+          console.log(response);
+        })
+          swal("Row Has Been Deleted", {
+            icon: "success",
+          });
+        } else {
+          swal("Action has been Canceled", {
+            icon: "error",
           })
-      // swal({
-      //   title: "Are you sure?",
-      //   text: "Decline This Request",
-      //   icon: "info",
-      //   buttons: true,
-      //   dangerMode: true,
-      // })
-      // .then((willDelete) => {
-      //   if (willDelete) {
-          
-      //     swal("Request Has Been Declined", {
-      //       icon: "success",
-      //     });
-      //   } else {
-      //     swal("Action has been Canceled", {
-      //       icon: "error",
-      //     })
-      //   }
-      // });
+        }
+      });
     }
 
         return (
@@ -125,7 +124,7 @@ export default function CheckConge() {
                     
       </tbody>
     </table>   
-        <button type="button"  class="btn btn-primary"  required id="ADLOG"><a href="/Home">Back</a></button>  
+    <a href="/Home"><button type="button"  class="btn btn-primary"  required id="ADLOG">Go Back</button></a>
         <button type="button"  class="btn btn-primary"  required id="ADLOG" onClick={logout}>LogOut</button>
         
      

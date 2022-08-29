@@ -307,10 +307,10 @@ db.query("UPDATE congerequest set Status = ?, Comment=? where id = ?",["Declined
   })
 })
 
-app.delete("/DELETE", (req,res) =>{
+app.post("/DELETE", (req,res) =>{
   const id = req.body.id
   console.log(id);
-db.query("DELETE FROM congerequest where id = ?",[id],(err,result)=>{
+db.query("DELETE FROM congerequest where id = ?",id,(err,result)=>{
     if(err){
       res.send(err);
     } else {

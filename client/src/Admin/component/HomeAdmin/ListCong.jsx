@@ -104,6 +104,13 @@ export default function ListConges() {
       }) 
     }
 
+    useState(() => {
+      window.onbeforeunload = confirmExit;
+      function confirmExit()
+      {
+        return logout();
+      }
+  }, [])
         return (
             <>
     
@@ -131,8 +138,8 @@ export default function ListConges() {
                         <><tr key={congerequest.id}>
           <td class="table-info"><Button variant="danger" onClick={() => { SetStatusDeclined(congerequest.id); } }>Decline</Button><Button variant="success" onClick={() => { SetStatusApproved(congerequest.id); } }>Accept</Button></td>
           <td class="table-info table-hover">{congerequest.username}</td>
-          <td class="table-info table-hover">Name</td>
-          <td class="table-info table-hover">SurName</td>
+          <td class="table-info table-hover">{congerequest.Name}</td>
+          <td class="table-info table-hover">{congerequest.SurName}</td>
           <td class="table-info table-hover">{congerequest.TypeConge}</td>
           <td class="table-info table-hover">{congerequest.Requests}</td>
           <td class="table-info table-hover">{congerequest.StartDate}</td>
