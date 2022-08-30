@@ -3,39 +3,36 @@ import {useHistory} from 'react-router-dom'
 import Axios from "axios";
 import './Reset.scss'
 import swal from 'sweetalert';
-export default function ResetPaasword() {
+export default function Finish() {
 
-const [email,setemail] = useState("");
-const [code,setcode] = useState("");
 const [NewPassword,setNewPassword] = useState("");
 Axios.defaults.withCredentials= true
 //Reset function 
-const Reset = () => {
-Axios.post("http://localhost:3001/ResetPassword",{
-    email: email,
-    code : code}).then((response) => {  
-        if (response.data.length===0) {
-            swal({
-              title: "Error!",
-              text: "The Email  or Reset Code is  incorrect ",
-              icon: "error",
-              button: "Ok !",
-            });  
-        } else  {
-          swal({
-            title: "Good!",
-            text: "Verification Success",
-            icon: "success",
-            button: "Ok !",
-          }).then(function(){
-            window.location.href = "/Finish"
-          })
-        }
-        })
-    }
-
-
-
+    const SubmitReset = () => {
+      Axios.post("http://localhost:3001/ForwardResetPassword",{
+        NewPassword : NewPassword}).then((response) => { 
+              if (response.data.affectedRows===0 && response.data.affectedRows===0) {
+                  swal({
+                    title: "Error!",
+                    text: "Failed To Update, please Reconnect",
+                    icon: "error",
+                    button: "Ok !",
+                  }).then(function() {
+                    window.location.href = "/"
+                  })
+              } else  {
+                swal({
+                  title: "Good!",
+                  text: "Update Success",
+                  icon: "success",
+                  button: "Ok !",
+                }).then(function() {
+                  window.location.href = "/"
+                }) 
+              }
+              })
+          }
+        
 // const userauth  = () => {
 //     Axios.get('http://localhost:3001/UserIsAuth', {
 //         headers:
@@ -45,15 +42,6 @@ Axios.post("http://localhost:3001/ResetPassword",{
 //         console.log(response);
 //     })
 // }
-
-
-
-  
-        
-
-
-
-
 
 return (
   
@@ -84,21 +72,12 @@ return (
                       <div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
-                          <input type="email" onChange={(e) => { setemail(e.target.value); } } class="form-control" placeholder="Enter your Email" required />
+                          <input type="text" onChange={(e) => {setNewPassword(e.target.value)}} placeholder="New Password"  class="form-control"></input>
                           </div>
                         </div>
                         <div class="col-md-12">
                           <div class="form-group">
-                          <input type="password" onChange={(e) => { setcode(e.target.value); } } class="form-control" placeholder="Enter your Code" required></input>
-                          </div>
-                        </div>
-                       
-                        
-                        
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <input type="submit" id="F1" value="Check" onClick={Reset} class="btn btn-primary"/>
-                            
+                            <input type="submit" id="B1" value="reset" onClick={SubmitReset} class="btn btn-primary"/>
                             <div class="submitting"></div>
                           </div>
                         </div>

@@ -152,6 +152,11 @@ return (
                           <input type="password" onChange={(e) => { setPassword(e.target.value); } } class="form-control" placeholder="Enter your password" required></input>
                           </div>
                         </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <a href="/ResetPassword" id="Reset1">Reset Password</a>
+                          </div>
+                        </div>
                        
                         
                         

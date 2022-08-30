@@ -1,10 +1,9 @@
 import React, { useState,useRef } from "react";
 import Axios from "axios";
-import "./Register.css";
 import PasswordStrengthBar from 'react-password-strength-bar';
 import swal from 'sweetalert'; 
-import emailjs from '@emailjs/browser';
-export default function Registration() {
+
+export default function Update() {
   const [usernameReg, setUsernameReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
   const [NameReg, setNameReg] = useState("");
@@ -15,42 +14,20 @@ export default function Registration() {
   const [image, setImage] = useState([]);
   Axios.defaults.withCredentials = true;
   
-
-  const onSub = async ()=>{
-    let formData=new FormData();
-    formData.append("imgfile",image[0])
-    formData.append("username",usernameReg)
-    formData.append("Name",NameReg)
-    formData.append("SurName",SurnameReg)
-    formData.append("password",passwordReg)
-    formData.append("Phone",PhoneReg)
-    formData.append("Gender",GenderReg)
-    formData.append("Email",EmailReg)
-    
-
- Axios.post("http://localhost:3001/imgupload",formData).then((response) => {
-  console.log(response)
-  if(response.data.errno===1062) {
-    swal({
-  title: "Error",
-  text: `This email address ${EmailReg} is  already exists, Please login using this email address or use another email`,
-  icon: "error",
-  button: `Retry`,
-}) 
-} else {
-swal({
-  title: "Congratulation!",
-  text: `Welcome To Our Platform, ${usernameReg}`,
-  icon: "success",
-  button: "Go !",
-}).then(function() {
-  window.location = "/";
-});   
-}   
-})
-
-}  
-
+const Update = (id) => {
+    Axios.put("http://localhost:3001/UpdateUser", {
+        username:usernameReg,
+        password:passwordReg,
+        Name:NameReg,
+        SurName:SurnameReg,
+        Email:EmailReg,
+        Phone:PhoneReg,
+        Gender:GenderReg,
+        image:image,
+    }).then((response) => {
+        console.log(response);
+    })
+}
 
 const [message, setMessage] = useState('');
 const [error, setError] = useState(null);
@@ -69,19 +46,24 @@ const [error, setError] = useState(null);
     setMessage(event.target.value);
   };
 
-  
-    const form = useRef();
-    const sendEmail = (e) => {
-      e.preventDefault();
-  
-      emailjs.sendForm('service_ubhjb7p', 'template_0nvkt3y', form.current, 'hjTAUdY8_qNmjQvmL')
-        .then((result) => {
-            onSub()
-            console.log(result.text);
-        }, (error) => {
-            console.log(error.text);
-        });
-    };
+  const [EmailData, setEmailData] = useState([]);
+  const fetchEmail= () => {
+    Axios.post('http://localhost:3001/EmailFetch', {
+    })
+    .then((response) => {
+      return response.data
+      
+    })
+    .then(data => {
+      setEmailData(data)
+      
+    })
+  }
+
+  //tracking function fetchemail
+  useState(() => {
+    fetchEmail()
+  }, [])
 
    
   
@@ -108,11 +90,11 @@ const [error, setError] = useState(null);
                   <div class="contact-wrap">
                     <h2 class="heading-section">User Register</h2>
                     
-                    <form ref={form} onSubmit={sendEmail}>
+                    {EmailData.map(auth => (
                       <div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
-                          <input type="text" class="form-control" onChange={(e) => {setNameReg(e.target.value);}} id="N1" placeholder="Enter your Firstname" name="FN" required />                          </div>
+                          <input type="text" class="form-control" defaultvalue={auth.Name} onChange={(e) => {setNameReg(e.target.value);}} id="N1" placeholder="Enter your Firstname" name="FN" required />                          </div>
                         </div>
                         <div class="col-md-12">
                           <div class="form-group">
@@ -178,7 +160,7 @@ const [error, setError] = useState(null);
                         </div>
 
                   </div>
-                  </form>
+                    ))}
                 </div>
               </div>
             </div>

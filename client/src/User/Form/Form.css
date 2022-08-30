@@ -8383,6 +8383,11 @@ form .gender-details .gender-title{
   left: 48%;
 }
 
+#Reset1{
+  color: #bc9864 !important;
+  font-size:medium;
+  float: right;
+}
 
  @media (max-width: 1400px) {
   .btn.btn-primary {
@@ -8395,6 +8400,10 @@ form .gender-details .gender-title{
   #register {
     height: 160vh;
   }
+}
+
+#ErrorIMG{
+  font-size: medium;
 }
 
 @media (max-width: 900px) {

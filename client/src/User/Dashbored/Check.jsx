@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import swal from 'sweetalert';
 import Button from 'react-bootstrap/Button';
@@ -9,6 +9,7 @@ export default function CheckConge() {
     Axios.post('http://localhost:3001/ListConge', {
     })
     .then((response) => {
+      console.log(response.data.length);
      if(response.data.length==0) {
       swal({
         title: "Error",
@@ -18,7 +19,7 @@ export default function CheckConge() {
       }).then(function() {
         window.location = "/Home";
     });    
-     } else {
+     } else  {
       return response.data
      }
       
@@ -30,15 +31,11 @@ export default function CheckConge() {
   }
 
   //tracking function fetchemail
-  useState(() => {
+  useEffect(() => {
     fetchListUSer()
   }, [])
   
-    useState(() => {
-      if(localStorage.getItem("token")==null) {
-        window.location.href = "/"
-      }
-    }, [])
+  
    
     const logout = () => {
       Axios.post('http://localhost:3001/logout').then((response)=> {
@@ -72,7 +69,9 @@ export default function CheckConge() {
         })
           swal("Row Has Been Deleted", {
             icon: "success",
-          });
+          }).then(function() {
+            fetchListUSer()
+        });  
         } else {
           swal("Action has been Canceled", {
             icon: "error",
@@ -107,7 +106,7 @@ export default function CheckConge() {
       {ListData.map(congerequest => (
         
         <><tr key={congerequest.id}>
-          <td class="table-info table-hover"><Button variant="danger" onClick={() => {DeleteCong(congerequest.id);} }>Decline</Button></td>
+          <td class="table-info table-hover"><Button variant="danger" onClick={() => {DeleteCong(congerequest.id);} }>Delete</Button></td>
           <td class="table-info table-hover">{congerequest.username}</td>
           <td class="table-info table-hover">{congerequest.Name}</td>
           <td class="table-info table-hover">{congerequest.SurName}</td>
@@ -120,12 +119,12 @@ export default function CheckConge() {
           <td class="table-info">{congerequest.RequestTime}</td>
         </tr>
           </>
-                    ))}
+                     ))}
                     
       </tbody>
     </table>   
     <a href="/Home"><button type="button"  class="btn btn-primary"  required id="ADLOG">Go Back</button></a>
-        <button type="button"  class="btn btn-primary"  required id="ADLOG" onClick={logout}>LogOut</button>
+        {/* <button type="button"  class="btn btn-primary"  required id="ADLOG" onClick={logout}>LogOut</button> */}
         
      
             </>

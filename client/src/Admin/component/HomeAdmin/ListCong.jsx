@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import Axios from "axios";
 import Button from 'react-bootstrap/Button';
 import swal from 'sweetalert';
+import { useEffect } from "react";
 
 
 export default function ListConges() {
-
 
   const [ListData, setListData] = useState([]);
   const fetchList= () => {
@@ -19,12 +19,10 @@ export default function ListConges() {
 
     })
   }
-
   //tracking function fetchemail
-  useState(() => {
+  useEffect(() => {
     fetchList()
   }, [])
-
 
     const SetStatusApproved = (id) => {
       swal({
@@ -44,8 +42,10 @@ export default function ListConges() {
           }).then((response) =>{
             console.log(response);
           })
-          swal("Request Has Been Approved", {            icon: "success",
+          swal("Request Has Been Approved", {            
+            icon: "success",
           });
+          fetchList()
         } else {
           swal("Action has been Canceled", {
             icon: "error",
@@ -75,6 +75,7 @@ export default function ListConges() {
           swal("Request Has Been Declined", {
             icon: "success",
           });
+          fetchList()
         } else {
           swal("Action has been Canceled", {
             icon: "error",

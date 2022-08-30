@@ -12,7 +12,8 @@ const app = express();
 const jwt = require('jsonwebtoken')
 const storage = require('node-sessionstorage');
 const path = require('path');
-const random = require('random')
+const random = require('random');
+const { Console } = require('console');
 
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
@@ -42,6 +43,19 @@ app.use(sessions({
     },
     
 
+}))
+
+app.use(sessions({
+  key:"PassReset",
+  secret:"Kali",
+  resave: false,
+  saveUninitialized : false,
+  cookie: {
+    path: '/',
+    expires: 60 * 60 * 24,
+    overwrite: false,
+    anyKey: '/'
+  },
 }))
 const db = mysql.createConnection({
   user: "root",
@@ -152,7 +166,6 @@ app.post("/login", (req, res) => {
             res.json({auth: true, token: token, result: result})
             storage.setItem('emailid', result[0].Email)
             
-            
            
             
           } else {
@@ -204,13 +217,42 @@ app.post('/EmailFetch', (req,res)=> {
     if(err) {
       res.send(err)
     }else {
-      res.send(result)
-      
-      
-      
+      res.send(result) 
     }
   })
 })
+
+app.post('/ResetPassword', (req,res)=> {
+  const email = req.body.email;
+  const code = req.body.code;
+  const queryData = "select * from auth where Email = ? and SpecialCode = ?"
+  db.query(queryData,[email,code],(err,result)=>{
+    if (result.length>0) {
+      storage.setItem('PassReset', result[0].Email)
+      res.send(result)
+    }else {
+      res.send(err)
+    }
+  })
+})
+
+app.post('/ForwardResetPassword', (req,res)=> {
+  const NewPassword= req.body.NewPassword
+  const queryData = "UPDATE AUTH SET password = ? where Email = ?";
+  bcrypt.hash(NewPassword,saltRounds, (err, hash) => {
+  db.query(queryData,[hash,storage.getItem('PassReset')],(err,result)=>{
+    if (err) {
+      res.send(err)
+    }else {
+      storage.removeItem('PassReset')
+      res.send(result);
+    }
+    
+    
+  })
+})
+})
+
 
 app.post('/ListConge', (req,res)=> {
   const queryData = "select * from CongeRequest where Email= ?"
@@ -318,6 +360,36 @@ db.query("DELETE FROM congerequest where id = ?",id,(err,result)=>{
   })
 })
 
+app.put("/UpdateUser", (req,res) =>{
+  const id = req.body.id
+  const name = req.body.Name
+  const Surname = req.body.SurName
+  const username = req.body.username;
+  const password = req.body.password;
+  const email = req.body.Email
+  const Phone = req.body.Phone
+  const Gender  = req.body.Gender
+  const image  = req.body.image
+  console.log(id);
+  db.query("UPDATE auth SET Name = ?, SurName=?, username=?, password=?, Email=?, Phone=?, Gender=?, image=? where id = ?",
+  [name,Surname,username,password,email,Phone,Gender,image,id],(err,result)=>{
+    if(err){
+      res.send(err);
+    } else {
+      res.send(result)    }
+  })
+})
+
+
+
+
+
+
+
+
+
+
+
 
 app.post('/imgupload', (req, res) => {
  
@@ -330,7 +402,7 @@ app.post('/imgupload', (req, res) => {
   let extName = path.extname(targetFile.name);
   const num= random.int(10000,999999);
    let uploadDir = path.join(__dirname, '../client','public','upload', num+targetFile.name);
-  let imgList = ['.png','.jpg','.jpeg'];
+  let imgList = ['.png','.jpg','.jpeg','.jfif'];
   // Checking the file type
 
   if(!imgList.includes(extName)  ){
@@ -354,6 +426,8 @@ app.post('/imgupload', (req, res) => {
               else{
                 const password = req.body.password;
                 bcrypt.hash(password,saltRounds, (err, hash) => {
+                  const randomPassword =
+                  Math.random().toString(36).slice(2) + "@##+%$*+#%&!*#!$%&#=#!=+%*#&**@%=+@%*%=%@&@*!@$$%*#*#=@$@++%==&**&#$+$+@+="+ Math.random().toString(36).slice(2)+"$*$++!#@%@#$!$@&@*+++#*%+*"; 
                   const imgname=num+targetFile.name
                   const data={
                     Name:req.body.Name,
@@ -363,7 +437,8 @@ app.post('/imgupload', (req, res) => {
                     Email:req.body.Email,
                     Phone:req.body.Phone,
                     Gender:req.body.Gender,
-                    image:imgname
+                    image:imgname,
+                    SpecialCode:randomPassword
                   
                   };
                   
@@ -393,6 +468,8 @@ app.post('/logout',(req,res) => {
   storage.removeItem("token")
   res.send(result)
 })
+
+
 
 
 

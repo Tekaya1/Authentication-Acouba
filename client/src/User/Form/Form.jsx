@@ -34,7 +34,7 @@ export default function Form() {
     const sendEmail = (e) => {
     e.preventDefault();
 
-    emailjs.sendForm('service_a7yvfp', 'template_ywg2ae8', form.current, 'hjTAUdY8_qNmjQvmL')
+    emailjs.sendForm('service_a7ylvfp', 'template_ywg2ae8', form.current, 'hjTAUdY8_qNmjQvmL')
       .then((result) => {
         submitRev()
         swal({
@@ -101,13 +101,6 @@ export default function Form() {
     }) 
   }
 
-  useState(() => {
-    window.onbeforeunload = confirmExit;
-    function confirmExit()
-    {
-      return logout();
-    }
-}, [])
 
 const disablePastDate = () => {
   const today = new Date();

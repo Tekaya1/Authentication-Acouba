@@ -1,6 +1,18 @@
 
 @media (max-width: 1400px) {
     #B1 {
+      left: 27%;
+    }
+    #F1 {
+      left: 30%;
+    }
+    
+  }
+@media (max-width: 1024px) {
+    #B1 {
+      left: 37%;
+    }
+    #F1 {
       left: 30%;
     }
     

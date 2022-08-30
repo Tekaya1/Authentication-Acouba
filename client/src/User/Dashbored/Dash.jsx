@@ -12,20 +12,31 @@ import {
 } from "./Navbar.style";
 import Axios from "axios";
 import swal from 'sweetalert';
+
+
 export default function Home() {
   const [extendNavbar, setExtendNavbar] = useState(false);
    // fetching email with users 
    const [EmailData, setEmailData] = useState([]);
-   
    const fetchEmail= () => {
      Axios.post('http://localhost:3001/EmailFetch', {
      })
      .then((response) => {
-       return response.data
+      if(response.data.length===0) {
+        swal({
+          title: "Error",
+          text: "You Are Not Connected",
+          icon: "error",
+          button: 'Ok',
+        }).then(function() {
+          window.location = "/";
+      });    
+       } else {
+        return response.data
+       }
      })
      .then(data => {
        setEmailData(data)
-       
      })
    }
  
@@ -48,7 +59,17 @@ export default function Home() {
     });    
     }) 
   }
-
+  
+  const GetCode = (code) => {
+    swal({
+      title: "Save This Reset Code Please!",
+      text: code,
+      icon: "warning",
+      button: 'Ok',
+  }).then(function() {
+    window.location = "/Home";
+});  
+}
   useState(() => {
     if(localStorage.getItem("token")==null) {
       window.location.href = "/"
@@ -58,12 +79,14 @@ export default function Home() {
 
   return (
     <NavbarContainer extendNavbar={extendNavbar}>
+       {EmailData.map(auth => (
       <NavbarInnerContainer>
         <LeftContainer>
           <NavbarLinkContainer>
             <NavbarLink to="/Navbar">Home</NavbarLink>
             <NavbarLink to="/Form">Request Conge</NavbarLink>
             <NavbarLink to="/CheckConge">Check Conge</NavbarLink>
+            <NavbarLink><a onClick={() => GetCode(auth.SpecialCode, auth.password)}>Get Reset Password Code</a></NavbarLink>
             <NavbarLink><a onClick={logout}>Logout</a></NavbarLink>
             <OpenLinksButton
               onClick={() => {
@@ -75,20 +98,21 @@ export default function Home() {
           </NavbarLinkContainer>
         </LeftContainer>
         <RightContainer>
-        {EmailData.map(auth => (
+       
                  <>   
                    <NavbarLink id="hello">Hello, {auth.Name}</NavbarLink><img src={process.env.PUBLIC_URL + `/upload/${auth.image}`} /></>
-                       ))} 
+                       
         </RightContainer>
  
       </NavbarInnerContainer>
-      
+      ))} 
       {extendNavbar && EmailData.map(auth => (
         <NavbarExtendedContainer>
           <NavbarLinkExtended readOnly disabled>Hello, {auth.Name}</NavbarLinkExtended>
           <NavbarLinkExtended to="/Home">Home</NavbarLinkExtended>
           <NavbarLinkExtended to="/Form"> Request Conge</NavbarLinkExtended>
           <NavbarLinkExtended to="/CheckConge"> Check Conge</NavbarLinkExtended>
+          <NavbarLinkExtended><a onClick={() => GetCode(auth.SpecialCode, auth.password)}>Get Reset Password Code</a></NavbarLinkExtended>
           <NavbarLinkExtended><a onClick={logout}>Logout</a></NavbarLinkExtended>
         </NavbarExtendedContainer>
       ))}
