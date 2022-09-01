@@ -52,7 +52,7 @@ swal({
 }  
 
 
-const [message, setMessage] = useState('');
+const [, setMessage] = useState('');
 const [error, setError] = useState(null);
 
   function isValidEmail(email) {

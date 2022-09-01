@@ -1,35 +1,67 @@
-import React, { useState,useRef } from "react";
+import React, { useState } from "react";
 import Axios from "axios";
 import PasswordStrengthBar from 'react-password-strength-bar';
 import swal from 'sweetalert'; 
 
-export default function Update() {
+export default function Update()   {
   const [usernameReg, setUsernameReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
   const [NameReg, setNameReg] = useState("");
   const [SurnameReg, setSurnameReg] = useState("");
-  const [EmailReg, setEmailReg] = useState("");
+  const [EmailReg, setEmailReg] = useState("")
   const [PhoneReg, setPhoneReg] = useState("");
   const [GenderReg, setGenderReg] = useState("");
-  const [image, setImage] = useState([]);
+  const [Idreg, setIdreg] = useState(null);
+
+  // const [image, setImage] = useState([]);
   Axios.defaults.withCredentials = true;
+
+  const logout = () => {
+    Axios.post('http://localhost:3001/logout').then((response)=> {
+      window.localStorage.clear()
+    }).then(()=> {
+      swal("Are you sure you want to do this?",{
+        title: "Good!",
+        text: `Logged Out`,
+        icon: "info",
+        button: 'Ok',
+      }).then(function() {
+        window.location = "/";
+    });    
+    }) 
+  }
+  
+
   
 const Update = (id) => {
     Axios.put("http://localhost:3001/UpdateUser", {
+        id:id,
         username:usernameReg,
         password:passwordReg,
         Name:NameReg,
         SurName:SurnameReg,
         Email:EmailReg,
         Phone:PhoneReg,
-        Gender:GenderReg,
-        image:image,
-    }).then((response) => {
-        console.log(response);
+        Gender:GenderReg
+    }).then(() => {
+      swal({
+        title: "Done",
+        text: `Update Has been succesfully, Please Reconnect`,
+        icon: "success",
+        button: `Done`,
+      }).then(function() {
+          logout()
+      })
     })
 }
 
-const [message, setMessage] = useState('');
+useState(() => {
+    if(localStorage.getItem("token")==null) {
+      window.location.href = "/"
+    }
+  }, []);
+
+const [, setMessage] = useState('');
 const [error, setError] = useState(null);
 
   function isValidEmail(email) {
@@ -42,29 +74,26 @@ const [error, setError] = useState(null);
     } else {
       setError(null);
     }
-
     setMessage(event.target.value);
   };
 
-  const [EmailData, setEmailData] = useState([]);
   const fetchEmail= () => {
-    Axios.post('http://localhost:3001/EmailFetch', {
-    })
+    Axios.post('http://localhost:3001/EmailFetch')
     .then((response) => {
-      return response.data
-      
-    })
-    .then(data => {
-      setEmailData(data)
-      
-    })
+      setIdreg(response.data[0].id)
+      setUsernameReg(response.data[0].username)
+      setNameReg(response.data[0].Name)
+      setSurnameReg(response.data[0].SurName)
+      setEmailReg(response.data[0].Email)
+      setPhoneReg(response.data[0].Phone)
+      setPasswordReg(response.data[0].password)
+      setGenderReg(response.data[0].Gender)
+      })
   }
-
   //tracking function fetchemail
   useState(() => {
     fetchEmail()
   }, [])
-
    
   
   return (
@@ -88,50 +117,53 @@ const [error, setError] = useState(null);
                 </div>
                 <div class="col-lg-8">
                   <div class="contact-wrap">
-                    <h2 class="heading-section">User Register</h2>
+                    <h2 class="heading-section">User Profile</h2>
                     
-                    {EmailData.map(auth => (
+                    
+                      
                       <div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
-                          <input type="text" class="form-control" defaultvalue={auth.Name} onChange={(e) => {setNameReg(e.target.value);}} id="N1" placeholder="Enter your Firstname" name="FN" required />                          </div>
+                          <input type="text" class="form-control" value={NameReg}  onChange={(e) => {setNameReg(e.target.value)}} id="N1" placeholder="Enter your Firstname" name="FN"   required />                          </div>
+                          
                         </div>
                         <div class="col-md-12">
                           <div class="form-group">
-                          <input type="text" class="form-control" onChange={(e) => {setSurnameReg(e.target.value);}} id="S1" placeholder="Enter your Surname"  required/>                          </div>
+                          <input type="text" class="form-control" value={SurnameReg}  onChange={(e) => {setSurnameReg(e.target.value)}} id="S1" placeholder="Enter your Surname"   required/>                          </div>
                         </div>
                         <div class="col-md-12">
                           <div class="form-group">
-                          <input type="text" class="form-control" onChange={(e) => {setUsernameReg(e.target.value);}}  placeholder="Enter your Username"  required />                          </div>
+                          <input type="text" class="form-control" value={usernameReg}  onChange={(e) => {setUsernameReg(e.target.value)}}  placeholder="Enter your Username"  required />                          </div>
                         </div>
                         <div class="col-md-12">
                           <div class="form-group">
-                          <input type="email" class="form-control" onBlur={handleChange}  onChange={(e) => {setEmailReg(e.target.value);}}  placeholder="Enter your Email"  required/>
+                          <input type="email" class="form-control" value={EmailReg}   onBlur={handleChange}  onChange={(e) => {setEmailReg(e.target.value)}}  placeholder="Enter your Email"   required/>
                           </div>
                           {error && <h2 style={{color: 'red'}}>{error}</h2>}
                         </div>
                         <div class="col-md-12">
                           <div class="form-group">
-                          <input type="number" class="form-control" onChange={(e) => {setPhoneReg(e.target.value)}} placeholder="Enter your number"  ></input>                          </div>
+                          <input type="number" class="form-control" value={PhoneReg}    onChange={(e) => {setPhoneReg(e.target.value)}} placeholder="Enter your number"  ></input>                          </div>
                         </div>
                         <div class="col-md-12">
                           <div class="form-group">
-                          <input type="password" class="form-control" onChange={(e) => {setPasswordReg(e.target.value)}} placeholder="Enter your password" required ></input>
+                          <input type="password" class="form-control" value={passwordReg}   onChange={(e) => {setPasswordReg(e.target.value)}} placeholder="Enter your password" required  ></input>
                           <PasswordStrengthBar password={passwordReg} />                          
                           </div>
                         </div>
                         <div class="col-md-12">
-                          <div class="form-group">                     
-                          <input type="file" name="imgfile" className="form-control"   onChange={(e)=>setImage(e.target.files)}  required />  
-                          <code id="ErrorIMG">Only jpg ,jpeg and png are supported</code>                
+                          <div class="form-group">
+                            <input type="submit" value="Update" disabled={!passwordReg}   onClick={() => {Update(Idreg)}} class="btn btn-primary"/>
+                            <div class="submitting"></div>
                           </div>
                         </div>
                         <div class="col-md-12">
                           <div class="form-group">
                           <div className="gender-details">
+                            <form action="">
         <input type="radio" name="gender" id="dot-1" value="Male" onChange={(e) => {setGenderReg(e.target.value);}}></input>
-          <input type="radio" name="gender" id="dot-2" value="Female" onChange={(e) => {setGenderReg(e.target.value);}}></input>
-          <input type="radio" name="gender" id="dot-3" value="undefined" onChange={(e) => {setGenderReg(e.target.value);}}></input>
+          <input type="radio" name="gender" id="dot-2" value="Female"  onChange={(e) => {setGenderReg(e.target.value);}}></input>
+          <input type="radio" name="gender" id="dot-3" value="Undefined"  onChange={(e) => {setGenderReg(e.target.value);}}></input>
           <span className="gender-title">Gender</span>
           <div className="category">
             <label for="dot-1">
@@ -147,20 +179,14 @@ const [error, setError] = useState(null);
             <span className="gender">Prefer not to say</span>
             </label>
           </div>
+          </form>
         </div>
         
                           </div>
                         </div>
-
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <input type="submit" value="register" disabled={!passwordReg}  class="btn btn-primary"/>
-                            <div class="submitting"></div>
-                          </div>
-                        </div>
-
+                       
                   </div>
-                    ))}
+                   
                 </div>
               </div>
             </div>

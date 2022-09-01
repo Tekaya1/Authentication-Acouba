@@ -1,5 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
-import {useHistory} from 'react-router-dom'
+import React, { useState } from "react";
 import Axios from "axios";
 import './Reset.scss'
 import swal from 'sweetalert';
@@ -7,7 +6,7 @@ export default function ResetPaasword() {
 
 const [email,setemail] = useState("");
 const [code,setcode] = useState("");
-const [NewPassword,setNewPassword] = useState("");
+
 Axios.defaults.withCredentials= true
 //Reset function 
 const Reset = () => {
@@ -59,47 +58,47 @@ return (
   
       <body id="Reset">
 
-<div class="container1">
-        <div class="row justify-content-center">
-          <div class="col-md-6 text-center mb-5">
-            <h2 class="heading-section">Acoba Plateform🔒 </h2>
+<div className="container1">
+        <div className="row justify-content-center">
+          <div className="col-md-6 text-center mb-5">
+            <h2 className="heading-section">Acoba Plateform🔒 </h2>
             
           </div>
         </div>
-        <div class="row justify-content-center">
-          <div class="col-lg-10 col-md-12">
-            <div class="wrapper">
-              <div class="row justify-content-center">
-                <div class="col-lg-8 mb-5">
-                  <div class="row">
+        <div className="row justify-content-center">
+          <div className="col-lg-10 col-md-12">
+            <div className="wrapper">
+              <div className="row justify-content-center">
+                <div className="col-lg-8 mb-5">
+                  <div className="row">
                  
                     
                   </div>
                 </div>
-                <div class="col-lg-8">
-                  <div class="contact-wrap">
-                    <h3 class="mb-4 text-center"></h3>
+                <div className="col-lg-8">
+                  <div className="contact-wrap">
+                    <h3 className="mb-4 text-center"></h3>
                     
                     
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="form-group">
-                          <input type="email" onChange={(e) => { setemail(e.target.value); } } class="form-control" placeholder="Enter your Email" required />
+                      <div className="row">
+                        <div className="col-md-12">
+                          <div className="form-group">
+                          <input type="email" onChange={(e) => { setemail(e.target.value); } } className="form-control" placeholder="Enter your Email" required />
                           </div>
                         </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
-                          <input type="password" onChange={(e) => { setcode(e.target.value); } } class="form-control" placeholder="Enter your Code" required></input>
+                        <div className="col-md-12">
+                          <div className="form-group">
+                          <input type="password" onChange={(e) => { setcode(e.target.value); } } className="form-control" placeholder="Enter your Code" required></input>
                           </div>
                         </div>
                        
                         
                         
-                        <div class="col-md-12">
-                          <div class="form-group">
-                            <input type="submit" id="F1" value="Check" onClick={Reset} class="btn btn-primary"/>
+                        <div className="col-md-12">
+                          <div className="form-group">
+                            <input type="submit" id="F1" value="Check" onClick={Reset} className="btn btn-primary"/>
                             
-                            <div class="submitting"></div>
+                            <div className="submitting"></div>
                           </div>
                         </div>
                   </div>

@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["GET", "POST","PUT","DELETE"],
+    methods: ["GET", "POST","PUT"],
     credentials: true,
   })
 );
@@ -368,17 +368,19 @@ app.put("/UpdateUser", (req,res) =>{
   const password = req.body.password;
   const email = req.body.Email
   const Phone = req.body.Phone
-  const Gender  = req.body.Gender
-  const image  = req.body.image
-  console.log(id);
-  db.query("UPDATE auth SET Name = ?, SurName=?, username=?, password=?, Email=?, Phone=?, Gender=?, image=? where id = ?",
-  [name,Surname,username,password,email,Phone,Gender,image,id],(err,result)=>{
+  const Gender = req.body.Gender
+  bcrypt.hash(password,saltRounds, (err, hash) => {
+  db.query("UPDATE auth set Name = ?, SurName= ?, username= ?, password= ?, Email= ?, Phone= ?, Gender= ? where id = ?",
+  [name,Surname,username,hash,email,Phone,Gender,id],(err,result)=>{
     if(err){
-      res.send(err);
+      res.send(err)
     } else {
-      res.send(result)    }
+      res.send(result)    
+    }
   })
 })
+ })
+
 
 
 
