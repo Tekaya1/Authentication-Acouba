@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
+import {  Link } 
+        from 'react-router-dom'
 import Axios from "axios";
 import swal from 'sweetalert';
 import Button from 'react-bootstrap/Button';
-
 export default function CheckConge() {
   const [ListData, setListData] = useState([]);
   const fetchListUSer= () => {
     Axios.post('http://localhost:3001/ListConge', {
     })
     .then((response) => {
-      console.log(response.data.length);
+      
      if(response.data.length==0) {
       swal({
         title: "Error",
@@ -79,6 +80,7 @@ export default function CheckConge() {
         }
       });
     }
+    
 
         return (
             <>
@@ -106,7 +108,10 @@ export default function CheckConge() {
       {ListData.map(congerequest => (
         
         <><tr key={congerequest.id}>
-          <td class="table-info table-hover"><Button variant="danger" onClick={() => {DeleteCong(congerequest.id);} }>Delete</Button></td>
+          <td class="table-info table-hover"><Button variant="danger" onClick={() => {DeleteCong(congerequest.id);} }>Delete</Button><Button variant="success"> <Link className='link' to={`/UpdateRequest/${(congerequest.id)}`}>
+      BLOG
+      </Link></Button>
+      </td>
           <td class="table-info table-hover">{congerequest.username}</td>
           <td class="table-info table-hover">{congerequest.Name}</td>
           <td class="table-info table-hover">{congerequest.SurName}</td>
@@ -124,7 +129,7 @@ export default function CheckConge() {
       </tbody>
     </table>   
     <a href="/Home"><button type="button"  class="btn btn-primary"  required id="ADLOG">Go Back</button></a>
-        {/* <button type="button"  class="btn btn-primary"  required id="ADLOG" onClick={logout}>LogOut</button> */}
+        <button type="button"  class="btn btn-primary"  required id="ADLOG" onClick={logout}>LogOut</button>
         
      
             </>

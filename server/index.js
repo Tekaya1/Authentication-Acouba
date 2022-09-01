@@ -221,6 +221,17 @@ app.post('/EmailFetch', (req,res)=> {
     }
   })
 })
+app.post('/RequestFetch/:id', (req,res)=> {
+  const id= req.params.id
+  const queryData = "select * from congerequest where id= ?"
+  db.query(queryData,id,(err,result)=>{
+    if(err) {
+      res.send(err)
+    }else {
+      res.send(result) 
+    }
+  })
+})
 
 app.post('/ResetPassword', (req,res)=> {
   const email = req.body.email;
@@ -328,7 +339,6 @@ app.post('/Admin/List', (req,res)=> {
 app.put("/Admin/StatusApproved", (req,res) =>{
   const id = req.body.id
   const comment = req.body.Comment
-  console.log(id);
   db.query("UPDATE congerequest set Status = ?, Comment=? where id = ?",["Approved",comment,id],(err,result)=>{
     if(err){
       res.send(err);
@@ -340,8 +350,25 @@ app.put("/Admin/StatusApproved", (req,res) =>{
 app.put("/Admin/StatusDeclined", (req,res) =>{
   const id = req.body.id
   const comment = req.body.Comment
-  console.log(id);
 db.query("UPDATE congerequest set Status = ?, Comment=? where id = ?",["Declined",comment,id],(err,result)=>{
+    if(err){
+      res.send(err);
+    } else {
+      res.send(result)    }
+  })
+})
+
+app.put("/UpdateRequest/:id", (req,res) =>{
+  const id = req.params.id
+    const Name = req.body.Name
+    const Surname = req.body.SurName
+    const user = req.body.username 
+    const Select = req.body.Select
+    const TextArea = req.body.TextArea
+    const StartDate = req.body.StartDate
+    const EndDate = req.body.EndDate
+db.query("UPDATE congerequest set username = ? ,	Name = ? ,	SurName = ? ,	TypeConge = ? ,	Requests = ? ,	StartDate = ?,	EndDate = ? where id = ?",
+[user,Name,Surname,Select,TextArea,StartDate,EndDate,id],(err,result)=>{
     if(err){
       res.send(err);
     } else {
@@ -351,7 +378,6 @@ db.query("UPDATE congerequest set Status = ?, Comment=? where id = ?",["Declined
 
 app.post("/DELETE", (req,res) =>{
   const id = req.body.id
-  console.log(id);
 db.query("DELETE FROM congerequest where id = ?",id,(err,result)=>{
     if(err){
       res.send(err);
@@ -380,18 +406,6 @@ app.put("/UpdateUser", (req,res) =>{
   })
 })
  })
-
-
-
-
-
-
-
-
-
-
-
-
 
 app.post('/imgupload', (req, res) => {
  

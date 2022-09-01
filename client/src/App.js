@@ -4,6 +4,7 @@ import {  Route, Switch, BrowserRouter }
 import "./App.css";
 import Registration from "./User/Register/Registration";
 import Update from "./User/UpdateProfile/Update";
+import UpdateRequest from "./User/UpdateRequest/UpdateRequest";
 import Form from "./User/Form/Form";
 import Login from "./User/Login/Login";
 import ADLogin from "./Admin/component/LoginAdmin/ADLogin"
@@ -29,6 +30,7 @@ function App() {
       <Route exact path='/ResetPassword' component={ResetPaasword} />
       <Route exact path='/Finish' component={Finish} /> 
       <Route exact path='/CheckConge' component={CheckConge} /> 
+      <Route exact path='/UpdateRequest/:id' component={UpdateRequest} /> 
       <Route exact path='/' component={Login} /> 
       <Route path="*" component={PageNotFound} />
     </Switch>
