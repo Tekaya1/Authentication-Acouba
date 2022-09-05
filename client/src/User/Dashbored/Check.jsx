@@ -109,7 +109,7 @@ export default function CheckConge() {
         
         <><tr key={congerequest.id}>
           <td class="table-info table-hover"><Button variant="danger" onClick={() => {DeleteCong(congerequest.id);} }>Delete</Button><Button variant="success"> <Link className='link' to={`/UpdateRequest/${(congerequest.id)}`}>
-      BLOG
+      Update
       </Link></Button>
       </td>
           <td class="table-info table-hover">{congerequest.username}</td>

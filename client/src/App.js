@@ -13,6 +13,8 @@ import PageNotFound from './Error/PageNotFound';
 import Home from './User/Dashbored/Dash';
 import CheckConge from './User/Dashbored/Check';
 import ResetPaasword from './User/ForgetPassword/ForgetPassword';
+import Verify from './User/ForgetPassword/Verify';
+
 import Finish from './User/ForgetPassword/Finish';
 
 
@@ -28,6 +30,8 @@ function App() {
       <Route exact path='/Admin/ListCong' component={ListCong} />
       <Route exact path='/Home' component={Home} />
       <Route exact path='/ResetPassword' component={ResetPaasword} />
+      <Route exact path='/Verify' component={Verify} />
+
       <Route exact path='/Finish' component={Finish} /> 
       <Route exact path='/CheckConge' component={CheckConge} /> 
       <Route exact path='/UpdateRequest/:id' component={UpdateRequest} /> 

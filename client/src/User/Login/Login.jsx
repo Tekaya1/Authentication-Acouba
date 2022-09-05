@@ -150,6 +150,12 @@ return (
                         <div className="col-md-12">
                           <div className="form-group">
                             <a href="/ResetPassword" id="Reset1">Reset Password</a>
+                            <a href="/registration" id="registration">Register</a>
+                          </div>
+                        </div>
+                        <div className="col-md-12">
+                          <div className="form-group">
+                            
                           </div>
                         </div>
                        
@@ -157,13 +163,9 @@ return (
                         
                         <div className="col-md-12">
                           <div className="form-group">
-                            <input type="submit" id="B1" value="Connect" onClick={login} className="btn btn-primary"/>
+                            <input type="submit" id="B1" value="Log In" onClick={login} className="btn btn-primary"/>
                             
                             <div className="submitting"></div>
-                            
-                          </div>
-                          <div className="form-group">
-                          <a href="/Registration"><input type="submit" id="B1" value="register"  className="btn btn-primary"></input></a>
                             
                           </div>
                         </div>

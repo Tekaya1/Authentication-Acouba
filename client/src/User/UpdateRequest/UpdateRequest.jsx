@@ -53,11 +53,10 @@ const UpdateRequest = () => {
         TextArea:TextAreaReg,
         StartDate:StartDateReg,
         EndDate:EndDateReg
-    }).then((response) => {
-       
+    }).then(() => {
       swal({
         title: "Done",
-        text: `Update Has been succesfully, Please Reconnect`,
+        text: `Update Has been succesfully`,
         icon: "success",
         button: `Done`,
       }).then(function() {

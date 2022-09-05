@@ -148,12 +148,14 @@ const [error, setError] = useState(null);
                         <div class="col-md-12">
                           <div class="form-group">
                           <input type="password" class="form-control" value={passwordReg}   onChange={(e) => {setPasswordReg(e.target.value)}} placeholder="Enter your password" required  ></input>
-                          <PasswordStrengthBar password={passwordReg} />                          
+                          <PasswordStrengthBar password={passwordReg} /> 
+                                        
                           </div>
                         </div>
                         <div class="col-md-12">
                           <div class="form-group">
                             <input type="submit" value="Update" disabled={!passwordReg}   onClick={() => {Update(Idreg)}} class="btn btn-primary"/>
+      
                             <div class="submitting"></div>
                           </div>
                         </div>

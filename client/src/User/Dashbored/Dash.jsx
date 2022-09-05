@@ -87,8 +87,6 @@ export default function Home() {
             <NavbarLink to="/Form">Request Conge</NavbarLink>
             <NavbarLink to="/CheckConge">Check Conge</NavbarLink>
             <NavbarLink to="/Update">Update Profile</NavbarLink>
-
-            <NavbarLink><a onClick={() => GetCode(auth.SpecialCode, auth.password)}> Reset Password Code</a></NavbarLink>
             <NavbarLink><a onClick={logout}>Logout</a></NavbarLink>
             <OpenLinksButton
               onClick={() => {
@@ -115,7 +113,6 @@ export default function Home() {
           <NavbarLinkExtended to="/Form"> Request Conge</NavbarLinkExtended>
           <NavbarLinkExtended to="/CheckConge"> Check Conge</NavbarLinkExtended>
           <NavbarLinkExtended to="/Update">Update Profile</NavbarLinkExtended>
-          <NavbarLinkExtended><a onClick={() => GetCode(auth.SpecialCode, auth.password)}> Reset Password Code</a></NavbarLinkExtended>
           <NavbarLinkExtended><a onClick={logout}>Logout</a></NavbarLinkExtended>
         </NavbarExtendedContainer>
       ))}

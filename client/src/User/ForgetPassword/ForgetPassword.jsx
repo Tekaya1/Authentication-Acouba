@@ -5,14 +5,13 @@ import swal from 'sweetalert';
 export default function ResetPaasword() {
 
 const [email,setemail] = useState("");
-const [code,setcode] = useState("");
+
 
 Axios.defaults.withCredentials= true
 //Reset function 
 const Reset = () => {
 Axios.post("http://localhost:3001/ResetPassword",{
-    email: email,
-    code : code}).then((response) => {  
+    email: email}).then((response) => {  
         if (response.data.length===0) {
             swal({
               title: "Error!",
@@ -27,7 +26,7 @@ Axios.post("http://localhost:3001/ResetPassword",{
             icon: "success",
             button: "Ok !",
           }).then(function(){
-            window.location.href = "/Finish"
+            window.location.href = "/Verify"
           })
         }
         })
@@ -86,11 +85,7 @@ return (
                           <input type="email" onChange={(e) => { setemail(e.target.value); } } className="form-control" placeholder="Enter your Email" required />
                           </div>
                         </div>
-                        <div className="col-md-12">
-                          <div className="form-group">
-                          <input type="password" onChange={(e) => { setcode(e.target.value); } } className="form-control" placeholder="Enter your Code" required></input>
-                          </div>
-                        </div>
+                       
                        
                         
                         

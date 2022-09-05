@@ -1,3 +1,4 @@
+var nodemailer = require('nodemailer');
 var ReactDOM = require('react-dom');
 const express = require("express");
 const mysql = require("mysql");
@@ -235,18 +236,50 @@ app.post('/RequestFetch/:id', (req,res)=> {
 
 app.post('/ResetPassword', (req,res)=> {
   const email = req.body.email;
-  const code = req.body.code;
-  const queryData = "select * from auth where Email = ? and SpecialCode = ?"
-  db.query(queryData,[email,code],(err,result)=>{
-    if (result.length>0) {
-      storage.setItem('PassReset', result[0].Email)
-      res.send(result)
-    }else {
-      res.send(err)
+  const randomPassword =
+  Math.random().toString(36).slice(2) + "@##+%$*+#%&!*#!$%&#=#!=+%*#&**@%=+@%*%=%@&@*!@$$%*#*#=@$@++%==&**&#$+$+@+="+ Math.random().toString(36).slice(2)+"$*$++!#@%@#$!$@&@*+++#*%+*"; 
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    auth: {
+        user: 'ocie.gleason14@ethereal.email',
+        pass: 'CcgXUuWhhK2KbYDthM'
     }
+});
+  db.query("Select * from auth where Email = ? ",[email],(err1,result2)=> {
+          if(result2.length>0) {
+            const queryData = "insert into rst (REmail,RCode) values (?,?)";
+            db.query(queryData,[email,randomPassword],(err,result)=>{
+              if(result2.length>0) {
+                transporter.sendMail({
+                  from: '"Fred Foo 👻" <foo@example.com>', // sender address
+                  to: "bar@example.com, baz@example.com", // list of receivers
+                  subject: `reset Code`, // Subject line
+                  text: `This is your reset Code: ${randomPassword}`, // plain text body
+                  html: "<b>Hello world?</b>", // html body
+                });
+                storage.setItem('PassReset', result2[0].Email)
+                res.send(result)
+              }else {
+                res.send(err)
+              }
+            })           
+          } else {
+            res.send(err1)
+          }
+  }) 
+})
+app.post("/VerifyCode",(req,res) => {
+  const code = req.body.code
+  console.log(code);
+  db.query("select * from rst where RCode = ? ",[code],(err,result)=>{
+      if(err) {
+        res.send(err)
+      }else {
+        res.send(result);
+      } 
   })
 })
-
 app.post('/ForwardResetPassword', (req,res)=> {
   const NewPassword= req.body.NewPassword
   const queryData = "UPDATE AUTH SET password = ? where Email = ?";
@@ -442,8 +475,6 @@ app.post('/imgupload', (req, res) => {
               else{
                 const password = req.body.password;
                 bcrypt.hash(password,saltRounds, (err, hash) => {
-                  const randomPassword =
-                  Math.random().toString(36).slice(2) + "@##+%$*+#%&!*#!$%&#=#!=+%*#&**@%=+@%*%=%@&@*!@$$%*#*#=@$@++%==&**&#$+$+@+="+ Math.random().toString(36).slice(2)+"$*$++!#@%@#$!$@&@*+++#*%+*"; 
                   const imgname=num+targetFile.name
                   const data={
                     Name:req.body.Name,
@@ -453,8 +484,7 @@ app.post('/imgupload', (req, res) => {
                     Email:req.body.Email,
                     Phone:req.body.Phone,
                     Gender:req.body.Gender,
-                    image:imgname,
-                    SpecialCode:randomPassword
+                    image:imgname
                   
                   };
                   
@@ -484,6 +514,13 @@ app.post('/logout',(req,res) => {
   storage.removeItem("token")
   res.send(result)
 })
+
+
+
+
+
+
+
 
 
 

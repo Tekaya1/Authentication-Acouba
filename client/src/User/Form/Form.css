@@ -8388,6 +8388,12 @@ form .gender-details .gender-title{
   float: right;
 }
 
+#registration{
+  color: #bc9864 !important;
+  font-size:medium;
+  float: left;
+}
+
  @media (max-width: 1400px) {
   .btn.btn-primary {
     left: 28%;
