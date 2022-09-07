@@ -3,10 +3,7 @@ import Axios from "axios";
 import './Reset.scss'
 import swal from 'sweetalert';
 export default function ResetPaasword() {
-
 const [email,setemail] = useState("");
-
-
 Axios.defaults.withCredentials= true
 //Reset function 
 const Reset = () => {
@@ -22,17 +19,16 @@ Axios.post("http://localhost:3001/ResetPassword",{
         } else  {
           swal({
             title: "Good!",
-            text: "Verification Success",
+            text: `Verification Success`,
             icon: "success",
             button: "Ok !",
           }).then(function(){
+            sessionStorage.setItem("ResetPass",email);
             window.location.href = "/Verify"
           })
         }
         })
     }
-
-
 
 // const userauth  = () => {
 //     Axios.get('http://localhost:3001/UserIsAuth', {
@@ -44,14 +40,9 @@ Axios.post("http://localhost:3001/ResetPassword",{
 //     })
 // }
 
-
-
-  
-        
-
-
-
-
+// Hey, a popstate event happened!
+window.addEventListener("popstate", e => {  // Nope, go back to your page
+  this.props.history.go(1);});
 
 return (
   

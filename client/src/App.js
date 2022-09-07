@@ -1,5 +1,5 @@
 import React from "react";
-import {  Route, Switch, BrowserRouter } 
+import {  Route, Switch, BrowserRouter,useNavigate} 
         from 'react-router-dom'
 import "./App.css";
 import Registration from "./User/Register/Registration";
@@ -14,12 +14,12 @@ import Home from './User/Dashbored/Dash';
 import CheckConge from './User/Dashbored/Check';
 import ResetPaasword from './User/ForgetPassword/ForgetPassword';
 import Verify from './User/ForgetPassword/Verify';
-
 import Finish from './User/ForgetPassword/Finish';
 
 
 
 function App() {
+
   return (
     <BrowserRouter>
     <Switch>

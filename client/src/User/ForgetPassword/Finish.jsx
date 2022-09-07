@@ -27,6 +27,7 @@ Axios.defaults.withCredentials= true
                   icon: "success",
                   button: "Ok !",
                 }).then(function() {
+                  sessionStorage.removeItem("ResetPass")
                   window.location.href = "/"
                 }) 
               }

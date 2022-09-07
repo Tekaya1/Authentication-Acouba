@@ -1,13 +1,15 @@
 import React, { useEffect, useReducer, useState } from "react";
-import {useHistory} from 'react-router-dom'
 import Axios from "axios";
 import './Reset.scss'
 import swal from 'sweetalert';
+import {useHistory } 
+        from 'react-router-dom'
 export default function Verify() {
 
 const [code,setcode] = useState("");
 Axios.defaults.withCredentials= true
 //Reset function 
+let history = useHistory()
     const Verify = () => {
       Axios.post("http://localhost:3001/VerifyCode",{
         code:code}).then((response) => { 
@@ -30,7 +32,26 @@ Axios.defaults.withCredentials= true
               }
               })
           }
+          useState(() => {
+            if(sessionStorage.getItem("ResetPass")==null) {
+              swal({
+                title: "Error!",
+                text: "Your Session has been Expire, Please Reset Again",
+                icon: "warning",
+                button: "Ok !",
+              }).then(function() {
+                sessionStorage.removeItem("ResetPass")
+                window.location.href = "/"
+              }) 
+            }
+          },[])
+          
+       
+
+          
         
+        
+  
 return (
   
       <body id="Reset">
@@ -60,7 +81,7 @@ return (
                       <div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
-                          <input type="text" onChange={(e) => {setcode(e.target.value)}} placeholder="New Password"  class="form-control"></input>
+                          <input type="text" onChange={(e) => {setcode(e.target.value)}} placeholder="Code "  class="form-control"></input>
                           </div>
                         </div>
                         <div class="col-md-12">
