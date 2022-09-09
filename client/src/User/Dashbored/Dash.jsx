@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   NavbarContainer,
   LeftContainer,
@@ -10,9 +10,11 @@ import {
   OpenLinksButton,
   NavbarLinkExtended,
 } from "./Navbar.style";
+import {  Link } 
+        from 'react-router-dom'
 import Axios from "axios";
 import swal from 'sweetalert';
-
+import Swal from 'sweetalert2'
 
 export default function Home() {
   const [extendNavbar, setExtendNavbar] = useState(false);
@@ -60,21 +62,41 @@ export default function Home() {
     }) 
   }
   
-  const GetCode = (code) => {
-    swal({
-      title: "Save This Reset Code Please!",
-      text: code,
-      icon: "warning",
-      button: 'Ok',
-  }).then(function() {
-    window.location = "/Home";
-});  
-}
-  useState(() => {
-    if(localStorage.getItem("token")==null) {
-      window.location.href = "/"
-    }
-  }, [])
+  useEffect(() => {
+    Axios.get('http://localhost:3001/UserIsAuth', {
+        headers:
+        {"x-access-token":localStorage.getItem('token')
+    }}).then((response)=>{
+        if(response.data.auth==true) {
+          console.log("response")
+        } else {
+          localStorage.removeItem('token')
+          if(localStorage.getItem("token")==null) {
+            Swal.fire({
+                 title: 'Session Expire',
+                   html:
+                     'Please Reconnect<br/><br/>',
+                   timer: 
+                     "3000",
+         didOpen: () => {
+           const content = Swal.getHtmlContainer()
+           content.querySelector.bind(content)
+           Swal.showLoading()
+         }
+         }).then(function() {
+                window.location.href = "/"
+           })
+           }
+        }
+    })
+})
+
+
+// useEffect(() => {
+  
+
+// }, [])
+
 
 
   return (
@@ -83,7 +105,7 @@ export default function Home() {
       <NavbarInnerContainer>
         <LeftContainer>
           <NavbarLinkContainer>
-            <NavbarLink to="/Navbar">Home</NavbarLink>
+            <NavbarLink to="/Home">Home</NavbarLink>
             <NavbarLink to="/Form">Request Conge</NavbarLink>
             <NavbarLink to="/CheckConge">Check Conge</NavbarLink>
             <NavbarLink to="/Update">Update Profile</NavbarLink>

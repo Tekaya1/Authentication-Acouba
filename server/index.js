@@ -108,7 +108,7 @@ const token = req.headers["x-access-token"]
   } else {
     jwt.verify(token, "jwtsecret" , (err, decoded) =>{
       if(err){
-        res.json({auth:false, message :'you are not authenticated' })
+        res.send({auth:false, message :'you are not authenticated'})
       } else{
         req.userid = decoded.id
         next()
@@ -116,11 +116,141 @@ const token = req.headers["x-access-token"]
     });
   }
 }
+const verifyJWTPassword= (req, res, next) => {
+  const tokenPassword = req.headers["x-access-token"]
+    if(!tokenPassword) {
+      res.send('you need a token')
+    } else {
+      jwt.verify(tokenPassword, "jwtsecretPass" , (err, decoded) =>{
+        if(err){
+          res.send({Status:false, message :'Reset failed', err:err })
+        } else{
+          req.userid = decoded.id
+          next()
+        }
+      });
+    }
+  }
 
+  app.get('/ResetVerif',verifyJWTPassword,(req,res)=> {
+    res.send({Status:true, message :'Reset Success' })
+  });
+
+  app.post('/ResetPassword', (req,res)=> {
+    const token = crypto.randomBytes(64).toString('hex');
+    const email = req.body.email; 
+    const randomPassword =
+    Math.random().toString(36).slice(2) + "@##+%$*+#%&!*#!$%&#=#!=+%*#&**@%=+@%*%=%@&@*!@$$%*#*#=@$@++%==&**&#$+$+@+="+ Math.random().toString(36).slice(2)+"$*$++!#@%@#$!$@&@*+++#*%+*"; 
+    try {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',
+      port: 587,
+      auth: {
+          user: 'ocie.gleason14@ethereal.email',
+          pass: 'CcgXUuWhhK2KbYDthM'
+      }
+  });
+    db.query("Select * from auth where Email = ? ",[email],(err1,result2)=> {
+            if(result2.length>0) {
+              const id = result2[0].id
+              const queryData = "insert into rst (REmail,RCode,TokenReset) values (?,?,?)";
+              const tokenPassword  = jwt.sign({id},'jwtsecretPass', {
+                expiresIn:200,
+              })
+              storage.setItem('tokenPassword', tokenPassword)
+              
+              db.query(queryData,[email,randomPassword,storage.getItem('tokenPassword')],(err,result)=>{
+                if(result2.length>0) {
+                  transporter.sendMail({
+                    from: '"Fred Foo 👻" <foo@example.com>', // sender address
+                    to: "bar@example.com, baz@example.com", // list of receivers
+                    subject: `reset Code`, // Subject line
+                    text: `This is your reset Code: ${randomPassword}`, // plain text body
+                    html:`<body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0">
+                    
+                    <table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+                        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;">
+                        <tr>
+                            <td>
+                                <table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                                    align="center" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td style="height:80px;">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center;">
+                                          <a href="https://rakeshmandal.com" title="logo" target="_blank">
+                                            <img width="60" src="https://www.keejob.com/media/recruiter/recruiter_14534/logo-14534-20190523-090022.png" title="logo" alt="logo">
+                                          </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height:20px;">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);">
+                                                <tr>
+                                                    <td style="height:40px;">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding:0 35px;">
+                                                        <h1 style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;">You have
+                                                            requested to reset your password</h1>
+                                                        <span
+                                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"></span>
+                                                        <p style="color:#455056; font-size:15px;line-height:24px; margin:0;">
+                                                            Hello and Welcome To Acoba Reset Section , Here They are your reset Code 
+                                                        </p>
+                                                        <a href="javascript:void(0);"
+                                                            style="background:#1ba6d4;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">${randomPassword}</a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="height:40px;">&nbsp;</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    <tr>
+                                        <td style="height:20px;">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            <p style="font-size:14px; color:rgba(69, 80, 86, 0.7411764705882353); line-height:18px; margin:0 0 0;">&copy; <strong>www.acoba.com</strong></p>
+                                            <p style="color:#455056; font-size:15px;line-height:24px; margin:0;">
+                                            Here is a temporary security code for your Acoba Account. It can only be used once within the next 4 minutes, after which it will expire:
+                                        </p>
+                                            </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height:80px;">&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                   
+                </body>`
+                  });
+                  
+                  res.send({result: result2 , tokenPassword:tokenPassword})
+                }else {
+                  res.send(err)
+                }
+              })           
+            } else {
+              res.send(err1)
+            }
+    }) 
+  } catch (error) {
+    console.log(error);
+  }
+  })
 
 
 app.get('/UserIsAuth',verifyJWT,(req,res)=> {
-  res.send('you are authenticated')
+  res.send({auth:true, message :'you are authenticated' })
 });
 
 
@@ -136,18 +266,9 @@ app.get("/login", (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
-
 app.post("/login", (req, res) => {
   const password = req.body.password;
   const email = req.body.email
-  var  session;
   db.query(
     "SELECT  * FROM auth WHERE Email = ?",
     [email],
@@ -163,7 +284,7 @@ app.post("/login", (req, res) => {
             const token  = jwt.sign({id},'jwtsecret', {
               expiresIn:300,
             })
-            res.json({auth: true, token: token, result: result})
+            res.send({auth: true, token: token, result: result, expiresIn: 300})
             storage.setItem('emailid', result[0].Email)
             
            
@@ -234,113 +355,11 @@ app.post('/RequestFetch/:id', (req,res)=> {
 })
 
 
-app.post('/ResetPassword', (req,res)=> {
-  const token = crypto.randomBytes(64).toString('hex');
-  const email = req.body.email;
-  const randomPassword =
-  Math.random().toString(36).slice(2) + "@##+%$*+#%&!*#!$%&#=#!=+%*#&**@%=+@%*%=%@&@*!@$$%*#*#=@$@++%==&**&#$+$+@+="+ Math.random().toString(36).slice(2)+"$*$++!#@%@#$!$@&@*+++#*%+*"; 
-  try {
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    auth: {
-        user: 'ocie.gleason14@ethereal.email',
-        pass: 'CcgXUuWhhK2KbYDthM'
-    }
-});
-  db.query("Select * from auth where Email = ? ",[email],(err1,result2)=> {
-          if(result2.length>0) {
-            const queryData = "insert into rst (REmail,RCode,TokenReset) values (?,?,?)";
-            db.query(queryData,[email,randomPassword,token],(err,result)=>{
-              if(result2.length>0) {
-                transporter.sendMail({
-                  from: '"Fred Foo 👻" <foo@example.com>', // sender address
-                  to: "bar@example.com, baz@example.com", // list of receivers
-                  subject: `reset Code`, // Subject line
-                  text: `This is your reset Code: ${randomPassword}`, // plain text body
-                  html:`<body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0">
-                  
-                  <table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
-                      style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;">
-                      <tr>
-                          <td>
-                              <table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
-                                  align="center" cellpadding="0" cellspacing="0">
-                                  <tr>
-                                      <td style="height:80px;">&nbsp;</td>
-                                  </tr>
-                                  <tr>
-                                      <td style="text-align:center;">
-                                        <a href="https://rakeshmandal.com" title="logo" target="_blank">
-                                          <img width="60" src="https://www.keejob.com/media/recruiter/recruiter_14534/logo-14534-20190523-090022.png" title="logo" alt="logo">
-                                        </a>
-                                      </td>
-                                  </tr>
-                                  <tr>
-                                      <td style="height:20px;">&nbsp;</td>
-                                  </tr>
-                                  <tr>
-                                      <td>
-                                          <table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
-                                              style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);">
-                                              <tr>
-                                                  <td style="height:40px;">&nbsp;</td>
-                                              </tr>
-                                              <tr>
-                                                  <td style="padding:0 35px;">
-                                                      <h1 style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;">You have
-                                                          requested to reset your password</h1>
-                                                      <span
-                                                          style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"></span>
-                                                      <p style="color:#455056; font-size:15px;line-height:24px; margin:0;">
-                                                          Hello and Welcome To Acoba Reset Section , Here They are your reset Code 
-                                                      </p>
-                                                      <a href="javascript:void(0);"
-                                                          style="background:#1ba6d4;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;">${randomPassword}</a>
-                                                  </td>
-                                              </tr>
-                                              <tr>
-                                                  <td style="height:40px;">&nbsp;</td>
-                                              </tr>
-                                          </table>
-                                      </td>
-                                  <tr>
-                                      <td style="height:20px;">&nbsp;</td>
-                                  </tr>
-                                  <tr>
-                                      <td style="text-align:center;">
-                                          <p style="font-size:14px; color:rgba(69, 80, 86, 0.7411764705882353); line-height:18px; margin:0 0 0;">&copy; <strong>www.acoba.com</strong></p>
-                                      </td>
-                                  </tr>
-                                  <tr>
-                                      <td style="height:80px;">&nbsp;</td>
-                                  </tr>
-                              </table>
-                          </td>
-                      </tr>
-                  </table>
-                  <!--/100% body table-->
-              </body> }, // html body`
-                });
-                storage.setItem('PassReset', result2[0].Email)
-                storage.setItem('TokenReset', token)
-                res.send(result)
-              }else {
-                res.send(err)
-              }
-            })           
-          } else {
-            res.send(err1)
-          }
-  }) 
-} catch (error) {
-  console.log(error);
-}
-})
+
 
 app.post("/VerifyCode",(req,res) => {
   const code = req.body.code
-  db.query("select * from rst where RCode = ? and TokenReset = ?",[code,storage.getItem('TokenReset')],(err,result)=>{
+  db.query("select * from rst where RCode = ? and TokenReset = ?",[code,storage.getItem('tokenPassword')],(err,result)=>{
       if(err) {
         res.send(err)
       }else {

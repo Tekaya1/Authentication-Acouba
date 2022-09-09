@@ -1,10 +1,10 @@
-import React, {  useState ,useRef } from "react";
+import React, {  useState ,useRef,useEffect } from "react";
 import Axios from "axios";
 import "react-datepicker/dist/react-datepicker.css";
 import emailjs from '@emailjs/browser';
 import swal from 'sweetalert';
 import "./Form.css"
-
+import Swal from 'sweetalert2'
 // type conges array \
 export default function Form() {
   const [SelectReg, setSelectReg] = useState("");
@@ -17,6 +17,36 @@ export default function Form() {
   const [EmailReg, setEmailReg] = useState("");
   const [image, setimage] = useState([]);
  
+
+
+  useEffect(() => {
+    Axios.get('http://localhost:3001/UserIsAuth', {
+        headers:
+        {"x-access-token":localStorage.getItem('token')
+    }}).then((response)=>{
+        if(response.data.auth==true) {
+          console.log("response")
+        } else {
+          localStorage.removeItem('token')
+          if(localStorage.getItem("token")==null) {
+            Swal.fire({
+                 title: 'Session Expire',
+                   html:
+                     'Please Reconnect<br/><br/>',
+                   timer: 
+                     "3000",
+         didOpen: () => {
+           const content = Swal.getHtmlContainer()
+           content.querySelector.bind(content)
+           Swal.showLoading()
+         }
+         }).then(function() {
+                window.location.href = "/"
+           })
+           }
+        }
+    })
+})
 
   //Form submission"
   const submitRev = () => {
@@ -38,15 +68,33 @@ export default function Form() {
 
     emailjs.sendForm('service_a7ylvfp', 'template_ywg2ae8', form.current, 'hjTAUdY8_qNmjQvmL')
       .then((result) => {
-        submitRev()
-        swal({
+        if(localStorage.getItem("token")==null) {
+          Swal.fire({
+               title: 'Server Error',
+                 html:
+                   'Session Expire<br/><br/>',
+                 timer: 
+                   "3000",
+       didOpen: () => {
+         const content = Swal.getHtmlContainer()
+         content.querySelector.bind(content)
+         Swal.showLoading()
+       }
+     }).then(function() {
+              window.location.href = "/"
+         })
+         } else {
+          submitRev()
+          swal({
           title: "Good!",
           text: `Your Message has been sent Successsfely`,
           icon: "success",
           button: "Ok !",
         }).then(function() {
           window.location = "/CheckConge";
-      });       
+      }); 
+         }
+              
       }, (error) => {
         swal({
           title: "Error",
@@ -79,11 +127,7 @@ export default function Form() {
   }, [])
 
 
-  useState(() => {
-    if(localStorage.getItem("token")==null) {
-      window.location.href = "/"
-    }
-  }, [])
+
 
   // logout function  
   const logout = () => {
@@ -100,6 +144,10 @@ export default function Form() {
     });    
     }) 
   }
+
+
+
+  
 
 
 const disablePastDate = () => {

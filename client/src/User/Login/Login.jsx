@@ -6,6 +6,7 @@ import * as location from "../Loader/1055-world-locations.json";
 import * as success from "../Loader/1127-success.json";
 import './Login.css'
 export default function Login() {
+
 const [password, setPassword] = useState("");   
 const [email,setemail] = useState("");
 const [, setLoginStatus] = useState(false);
@@ -55,28 +56,24 @@ Axios.post("http://localhost:3001/login",{
             }).then(function() {
               window.location = "/Home";
           });    
+             
         }
     })
+
+    
+
+   
 }
-// useEffect(() => {
-//     Axios.get("http://localhost:3001/login").then((response)  => 
-//     {   if(response.data.loggedIn == true){
-//             setLoginStatus(response.data.email[0].username)
-            
-//         }
-//     })
-// })
 
 
-// const userauth  = () => {
+// useState(() => {
 //     Axios.get('http://localhost:3001/UserIsAuth', {
 //         headers:
 //         {"x-access-token":localStorage.getItem('token')
-
 //     }}).then((response)=>{
-//         console.log(response);
+//        console.log(response);
 //     })
-// }
+// })
 
 const [, setData] = useState([]);
 const [loading, setloading] = useState(undefined);
@@ -96,6 +93,7 @@ const [completed, setcompleted] = useState(undefined);
         });
     }, 2000);
   }, []);
+
 
 
 

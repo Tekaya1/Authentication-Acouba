@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import swal from 'sweetalert'; 
+import Swal from 'sweetalert2'
 import {  useParams } 
         from 'react-router-dom'
 
@@ -67,16 +68,6 @@ const UpdateRequest = () => {
   
 }
 
-useState(() => {
-    if(localStorage.getItem("token")==null) {
-      window.location.href = "/"
-    }
-  }, []);
-
-
-
-
-
   const fetchEmail= () => {
     Axios.post(`http://localhost:3001/RequestFetch/${id}`)
     .then((response) => {
@@ -107,6 +98,34 @@ useState(() => {
     fetchEmail()
   }, [])
    
+  useEffect(() => {
+    Axios.get('http://localhost:3001/UserIsAuth', {
+        headers:
+        {"x-access-token":localStorage.getItem('token')
+    }}).then((response)=>{
+        if(response.data.auth==true) {
+          console.log("response")
+        } else {
+          localStorage.removeItem('token')
+          if(localStorage.getItem("token")==null) {
+            Swal.fire({
+                 title: 'Session Expire',
+                   html:
+                     'Please Reconnect<br/><br/>',
+                   timer: 
+                     "3000",
+         didOpen: () => {
+           const content = Swal.getHtmlContainer()
+           content.querySelector.bind(content)
+           Swal.showLoading()
+         }
+         }).then(function() {
+                window.location.href = "/"
+           })
+           }
+        }
+    })
+})
 
   
   return (

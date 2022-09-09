@@ -4,6 +4,7 @@ import {  Link }
 import Axios from "axios";
 import swal from 'sweetalert';
 import Button from 'react-bootstrap/Button';
+import Swal from 'sweetalert2'
 export default function CheckConge() {
   const [ListData, setListData] = useState([]);
   const fetchListUSer= () => {
@@ -12,12 +13,11 @@ export default function CheckConge() {
     .then((response) => {
       
      if(response.data.length==0) {
-      swal({
-        title: "Error",
-        text: "No Conges Has been Saved",
-        icon: "error",
-        button: 'Ok',
-      }).then(function() {
+      Swal.fire(
+        'Error!',
+        'No Conges Has Been Saved',
+        'error'
+      ).then(function() {
         window.location = "/Home";
     });    
      } else  {
@@ -80,6 +80,35 @@ export default function CheckConge() {
         }
       });
     }
+
+    useEffect(() => {
+      Axios.get('http://localhost:3001/UserIsAuth', {
+          headers:
+          {"x-access-token":localStorage.getItem('token')
+      }}).then((response)=>{
+          if(response.data.auth==true) {
+            console.log("response")
+          } else {
+            localStorage.removeItem('token')
+            if(localStorage.getItem("token")==null) {
+              Swal.fire({
+                   title: 'Session Expire',
+                     html:
+                       'Please Reconnect<br/><br/>',
+                     timer: 
+                       "3000",
+           didOpen: () => {
+             const content = Swal.getHtmlContainer()
+             content.querySelector.bind(content)
+             Swal.showLoading()
+           }
+           }).then(function() {
+                  window.location.href = "/"
+             })
+             }
+          }
+      })
+  })
     
 
         return (

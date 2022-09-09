@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import Axios from "axios";
 import './Reset.scss'
 import swal from 'sweetalert';
@@ -8,7 +8,8 @@ Axios.defaults.withCredentials= true
 //Reset function 
 const Reset = () => {
 Axios.post("http://localhost:3001/ResetPassword",{
-    email: email}).then((response) => {  
+    email: email}).then((response) => { 
+      console.log(response); 
         if (response.data.length===0) {
             swal({
               title: "Error!",
@@ -17,18 +18,20 @@ Axios.post("http://localhost:3001/ResetPassword",{
               button: "Ok !",
             });  
         } else  {
+          localStorage.setItem('TokenPassword',response.data.tokenPassword)
           swal({
             title: "Good!",
             text: `Verification Success`,
             icon: "success",
             button: "Ok !",
           }).then(function(){
-            sessionStorage.setItem("ResetPass",email);
-            window.location.href = "/Verify"
+            window.location = "/Verify";
           })
         }
         })
     }
+
+   
 
 // const userauth  = () => {
 //     Axios.get('http://localhost:3001/UserIsAuth', {
