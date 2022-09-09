@@ -9,10 +9,11 @@ export default function Verify() {
 const [code,setcode] = useState("");
 Axios.defaults.withCredentials= true
 //Reset function 
-let history = useHistory()
+
     const Verify = () => {
       Axios.post("http://localhost:3001/VerifyCode",{
-        code:code}).then((response) => { 
+        code:code}).then((response) => {
+          
               if (response.data.length===0 ) {
                   swal({
                     title: "Error!",
@@ -32,24 +33,41 @@ let history = useHistory()
               }
               })
           }
-          useState(() => {
-            if(sessionStorage.getItem("ResetPass")==null) {
-              swal({
-                title: "Error!",
-                text: "Your Session has been Expire, Please Reset Again",
-                icon: "warning",
-                button: "Ok !",
-              }).then(function() {
-                sessionStorage.removeItem("ResetPass")
-                window.location.href = "/"
-              }) 
+         
+            useEffect(() => {
+              Axios.get('http://localhost:3001/ResetVerif', {
+                  headers:
+                  {"x-access-token":localStorage.getItem('TokenPassword')
+              }}).then((response)=>{
+                
+                if(response.data.Status==true) {
+                  // console.log(response)
+                } else {
+                if(localStorage.getItem("TokenPassword")==null) {
+                swal({
+                  title: "Error!",
+                  text: "Your ResetSession has not Set, Please Reset Again",
+                  icon: "warning",
+                  button: "Ok !",
+                }).then(function() {
+                  window.location.href = "/"
+                })
+              } else if(response.data.err.name=="TokenExpiredError"){
+                localStorage.removeItem("TokenPassword")
+                swal({
+                  title: "Error!",
+                  text: "Your ResetSession has been Expired, Please Reset Again",
+                  icon: "warning",
+                  button: "Ok !",
+                })
+
+              }
             }
-          },[])
-          
-       
+            })
+            })    
+        
 
           
-        
         
   
 return (
