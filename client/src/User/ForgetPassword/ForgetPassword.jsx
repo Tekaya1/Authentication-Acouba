@@ -4,6 +4,7 @@ import './Reset.scss'
 import swal from 'sweetalert';
 export default function ResetPaasword() {
 const [email,setemail] = useState("");
+const [show,setshow] = useState("")
 Axios.defaults.withCredentials= true
 //Reset function 
 const Reset = () => {
@@ -79,6 +80,7 @@ return (
                           <input type="email" onChange={(e) => { setemail(e.target.value); } } className="form-control" placeholder="Enter your Email" required />
                           </div>
                         </div>
+                       
                        
                        
                         

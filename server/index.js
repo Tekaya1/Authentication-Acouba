@@ -1,6 +1,7 @@
 var nodemailer = require('nodemailer');
 var ReactDOM = require('react-dom');
 const express = require("express");
+const twilio = require('twilio');
 const mysql = require("mysql");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -601,6 +602,20 @@ app.post('/logout',(req,res) => {
   storage.removeItem("token")
   res.send(result)
 })
+
+// const accountSid = 'ACbfc20ea65a30b9913ccf506edc78a059'; // Your Account SID from www.twilio.com/console
+// const authToken = '5f0156df0428d6489158db78cfbb447e'; // Your Auth Token from www.twilio.com/console
+
+// const client = new twilio(accountSid, authToken);
+
+// client.messages
+//   .create({
+//     body: 'Hello from Node',
+//     to: '+21622505540', // Text this number
+//     from: '+16282774659', // From a valid Twilio number
+//   })
+//   .then((message) => console.log(message.sid));
+
 
 
 
