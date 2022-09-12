@@ -21,6 +21,7 @@
     "express-session": "^1.17.3",
     "fs": "0.0.1-security",
     "jsonwebtoken": "^8.5.1",
+    "md5": "^2.3.0",
     "moment-timezone": "^0.5.37",
     "mysql": "^2.18.1",
     "node-sessionstorage": "^1.0.0",

@@ -1,5 +1,5 @@
 var nodemailer = require('nodemailer');
-var ReactDOM = require('react-dom');
+var md5 = require('md5');
 const express = require("express");
 const twilio = require('twilio');
 const mysql = require("mysql");
@@ -62,7 +62,7 @@ const db = mysql.createConnection({
   user: "root",
   host: "localhost",
   password: "",
-  database: "emails",
+  database: "acoubaconge",
 });
 
 
@@ -138,10 +138,9 @@ const verifyJWTPassword= (req, res, next) => {
   });
 
   app.post('/ResetPassword', (req,res)=> {
-    const token = crypto.randomBytes(64).toString('hex');
     const email = req.body.email; 
     const randomPassword =
-    Math.random().toString(36).slice(2) + "@##+%$*+#%&!*#!$%&#=#!=+%*#&**@%=+@%*%=%@&@*!@$$%*#*#=@$@++%==&**&#$+$+@+="+ Math.random().toString(36).slice(2)+"$*$++!#@%@#$!$@&@*+++#*%+*"; 
+    Math.random().toString(36).slice(2); 
     try {
     const transporter = nodemailer.createTransport({
       host: 'smtp.ethereal.email',
@@ -154,13 +153,15 @@ const verifyJWTPassword= (req, res, next) => {
     db.query("Select * from auth where Email = ? ",[email],(err1,result2)=> {
             if(result2.length>0) {
               const id = result2[0].id
-              const queryData = "insert into rst (REmail,RCode,TokenReset) values (?,?,?)";
+              const queryData = "insert into resettable (REmail,RPhone,RCode,TokenReset) values (?,?,?,?)";
               const tokenPassword  = jwt.sign({id},'jwtsecretPass', {
                 expiresIn:200,
               })
               storage.setItem('tokenPassword', tokenPassword)
+              storage.setItem('ToKenEmail',result2[0].Email)
+              // console.log(storage.getItem('ToKenEmail'));
               
-              db.query(queryData,[email,randomPassword,storage.getItem('tokenPassword')],(err,result)=>{
+              db.query(queryData,[email,"Empty",randomPassword,storage.getItem('tokenPassword')],(err,result)=>{
                 if(result2.length>0) {
                   transporter.sendMail({
                     from: '"Fred Foo 👻" <foo@example.com>', // sender address
@@ -249,10 +250,84 @@ const verifyJWTPassword= (req, res, next) => {
   }
   })
 
+app.post('/ResetPasswordPhone', (req,res)=> {
+    const Phone = req.body.Phone; 
+    const randomPassword =
+    Math.random().toString(36).slice(2)
+    try {
+      const accountSid = 'ACbfc20ea65a30b9913ccf506edc78a059'; // Your Account SID from www.twilio.com/console
+const authToken = '5f0156df0428d6489158db78cfbb447e'; // Your Auth Token from www.twilio.com/console
+
+const client = new twilio(accountSid, authToken);
+    db.query("Select * from auth where Phone = ? ",[Phone],(err1,result2)=> {
+            if(result2.length>0) {
+              const id = result2[0].id
+              const queryData = "insert into resettable (REmail,RPhone,RCode,TokenReset) values (?,?,?,?)";
+              const tokenPassword  = jwt.sign({id},'jwtsecretPass', {
+                expiresIn:200,
+              })
+              storage.setItem('tokenPassword', tokenPassword)
+              storage.setItem('ToKenPhone',result2[0].Phone)
+              db.query(queryData,["Empty",Phone,randomPassword,storage.getItem('tokenPassword')],(err,result)=>{
+                if(result2.length>0) {
+        
+client.messages
+  .create({
+    body: `Use The Code <${randomPassword}> To Reset Password`,
+    to: `+216${Phone}`, // Text this number
+    from: '+16282774659', // From a valid Twilio number
+  })
+  .then((message) => console.log(message.sid)); 
+                  res.send({result: result2 , tokenPassword:tokenPassword})
+                }else {
+                  res.send(err)
+                }
+              })           
+            } else {
+              res.send(err1)
+            }
+    }) 
+  } catch (error) {
+    console.log(error);
+  }
+  })
+
 
 app.get('/UserIsAuth',verifyJWT,(req,res)=> {
   res.send({auth:true, message :'you are authenticated' })
 });
+
+
+
+app.post("/VerifyCode",(req,res) => {
+  const code = req.body.code
+  db.query("select * from resettable where RCode = ? and TokenReset = ?",[code,storage.getItem('tokenPassword')],(err,result)=>{
+      if(err) {
+        res.send(err)
+      }else {
+        res.send(result);
+      } 
+  })
+})
+app.post('/ForwardResetPassword', (req,res)=> {
+  const NewPassword= req.body.NewPassword
+  const queryData = "UPDATE AUTH SET password = ? where Phone = ? OR Email = ?";
+  const QueryDelete = "Delete From resettable where RPhone = ? OR REmail = ?"
+  bcrypt.hash(NewPassword,saltRounds, (err, hash) => {
+  db.query(queryData,[hash,storage.getItem('ToKenPhone'),storage.getItem('ToKenEmail')],(err,result)=>{
+    if (err) {
+      res.send(err)
+    }else {
+      db.query(QueryDelete,[hash,storage.getItem('ToKenPhone'),storage.getItem('ToKenEmail')])
+      storage.removeItem('TokenPassword')
+      res.send(result);
+    }
+    
+    
+  })
+})
+})
+
 
 
 
@@ -318,20 +393,6 @@ app.post('/Email/Insert',(req,res) => {
 })
 
 
-app.post('/Data', (req,res)=> {
-  Select = req.body.list
-  console.log(Select);
-  const queryData = "select * from conges where TypeCON= ?"
-  db.query(queryData,[Select],(err,result)=>{
-    if(err) {
-      res.send(err)
-    }else {
-      res.send(result)
-      
-      
-    }
-  })
-})
 
 app.post('/EmailFetch', (req,res)=> {
   const queryData = "select * from auth where Email= ?"
@@ -357,33 +418,6 @@ app.post('/RequestFetch/:id', (req,res)=> {
 
 
 
-
-app.post("/VerifyCode",(req,res) => {
-  const code = req.body.code
-  db.query("select * from rst where RCode = ? and TokenReset = ?",[code,storage.getItem('tokenPassword')],(err,result)=>{
-      if(err) {
-        res.send(err)
-      }else {
-        res.send(result);
-      } 
-  })
-})
-app.post('/ForwardResetPassword', (req,res)=> {
-  const NewPassword= req.body.NewPassword
-  const queryData = "UPDATE AUTH SET password = ? where Email = ?";
-  bcrypt.hash(NewPassword,saltRounds, (err, hash) => {
-  db.query(queryData,[hash,storage.getItem('PassReset')],(err,result)=>{
-    if (err) {
-      res.send(err)
-    }else {
-      storage.removeItem('PassReset')
-      res.send(result);
-    }
-    
-    
-  })
-})
-})
 
 
 app.post('/ListConge', (req,res)=> {

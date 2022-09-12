@@ -33,7 +33,7 @@ export default function Registration() {
   if(response.data.errno===1062) {
     swal({
   title: "Error",
-  text: `This email address ${EmailReg} is  already exists, Please login using this email address or use another email`,
+  text: `This email address ${EmailReg} or Phone Number is  already exists, Please login using this email address or use another email`,
   icon: "error",
   button: `Retry`,
 }) 

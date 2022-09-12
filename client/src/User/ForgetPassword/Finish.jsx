@@ -11,7 +11,7 @@ Axios.defaults.withCredentials= true
     const SubmitReset = () => {
       Axios.post("http://localhost:3001/ForwardResetPassword",{
         NewPassword : NewPassword}).then((response) => { 
-              if (response.data.affectedRows===0 && response.data.affectedRows===0) {
+          if (response.data.affectedRows===0) {
                   swal({
                     title: "Error!",
                     text: "Failed To Update, please Reconnect",
@@ -27,22 +27,45 @@ Axios.defaults.withCredentials= true
                   icon: "success",
                   button: "Ok !",
                 }).then(function() {
-                  sessionStorage.removeItem("ResetPass")
+                  sessionStorage.removeItem("TokenPassword")
                   window.location.href = "/"
                 }) 
               }
               })
           }
         
-// const userauth  = () => {
-//     Axios.get('http://localhost:3001/UserIsAuth', {
-//         headers:
-//         {"x-access-token":localStorage.getItem('token')
+          useEffect(() => {
+            Axios.get('http://localhost:3001/ResetVerif', {
+                headers:
+                {"x-access-token":localStorage.getItem('TokenPassword')
+            }}).then((response)=>{
+              
+              if(response.data.Status==true) {
+                // console.log(response)
+              } else {
+              if(localStorage.getItem("TokenPassword")==null) {
+              swal({
+                title: "Error!",
+                text: "Your ResetSession has not Set, Please Reset Again",
+                icon: "warning",
+                button: "Ok !",
+              }).then(function() {
+                window.location.href = "/"
+              })
+            } else if(response.data.err.name=="TokenExpiredError"){
+              localStorage.removeItem("TokenPassword")
+              swal({
+                title: "Error!",
+                text: "Your ResetSession has been Expired, Please Reset Again",
+                icon: "warning",
+                button: "Ok !",
+              })
 
-//     }}).then((response)=>{
-//         console.log(response);
-//     })
-// }
+            }
+          }
+          })
+          })    
+
 
 return (
   
