@@ -118,12 +118,14 @@ const token = req.headers["x-access-token"]
 }
 const verifyJWTPassword= (req, res, next) => {
   const tokenPassword = req.headers["x-access-token"]
+  const QueryDelete = "Delete From resettable where TokenReset = ?"
     if(!tokenPassword) {
       res.send('you need a token')
     } else {
       jwt.verify(tokenPassword, "jwtsecretPass" , (err, decoded) =>{
         if(err){
           res.send({Status:false, message :'Reset failed', err:err })
+          db.query(QueryDelete,[storage.getItem('tokenPassword')])
         } else{
           req.userid = decoded.id
           next()
@@ -154,7 +156,7 @@ const verifyJWTPassword= (req, res, next) => {
               const id = result2[0].id
               const queryData = "insert into resettable (REmail,RPhone,RCode,TokenReset) values (?,?,?,?)";
               const tokenPassword  = jwt.sign({id},'jwtsecretPass', {
-                expiresIn:200,
+                expiresIn:180,
               })
               storage.setItem('tokenPassword', tokenPassword)
               storage.setItem('ToKenEmail',result2[0].Email)
@@ -263,7 +265,7 @@ const client = new twilio(accountSid, authToken);
               const id = result2[0].id
               const queryData = "insert into resettable (REmail,RPhone,RCode,TokenReset) values (?,?,?,?)";
               const tokenPassword  = jwt.sign({id},'jwtsecretPass', {
-                expiresIn:200,
+                expiresIn:180,
               })
               storage.setItem('tokenPassword', tokenPassword)
               storage.setItem('ToKenPhone',result2[0].Phone)

@@ -56,7 +56,7 @@ Axios.post("http://localhost:3001/ResetPassword",{
                   icon: "success",
                   button: "Ok !",
                 }).then(function(){
-                  window.location = "/Verify";
+                  window.location =`/Verify/${localStorage.getItem("TokenPassword")}`;
                 })
               }
               })
