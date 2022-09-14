@@ -30,7 +30,7 @@ function App() {
       <Route exact path='/Admin/ListCong' component={ListCong} />
       <Route exact path='/Home' component={Home} />
       <Route exact path='/ResetPassword' component={ResetPaasword} />
-      <Route exact path='/Verify' component={Verify} />
+      <Route exact path='/Verify/:token' component={Verify} />
 
       <Route exact path='/Finish' component={Finish} /> 
       <Route exact path='/CheckConge' component={CheckConge} /> 

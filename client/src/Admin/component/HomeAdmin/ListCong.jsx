@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Axios from "axios";
 import Button from 'react-bootstrap/Button';
 import swal from 'sweetalert';
+import Swal from 'sweetalert2'
+
 import { useEffect } from "react";
 
 
@@ -112,13 +114,17 @@ export default function ListConges() {
         return logout();
       }
   }, [])
+
+
+
+
         return (
             <>
     
-      <table class="table table-primary table-secondary table-bordered table-striped table-hover" >
-      <thead class="table-borderless">
+      <table className="table table-primary table-secondary table-bordered table-striped table-hover" >
+      <thead className="table-borderless">
         
-        <tr>  <th class="table-borderless">Action</th>
+        <tr>  <th className="table-borderless">Action</th>
               
               <th>username</th>
               <th>Name</th>
@@ -133,21 +139,21 @@ export default function ListConges() {
 
         </tr>
       </thead>
-      <tbody class="table-borderless">
+      <tbody className="table-borderless">
       {ListData.map(congerequest => (
         
                         <><tr key={congerequest.id}>
-          <td class="table-info"><Button variant="danger" onClick={() => { SetStatusDeclined(congerequest.id); } }>Decline</Button><Button variant="success" onClick={() => { SetStatusApproved(congerequest.id); } }>Accept</Button></td>
-          <td class="table-info table-hover">{congerequest.username}</td>
-          <td class="table-info table-hover">{congerequest.Name}</td>
-          <td class="table-info table-hover">{congerequest.SurName}</td>
-          <td class="table-info table-hover">{congerequest.TypeConge}</td>
-          <td class="table-info table-hover">{congerequest.Requests}</td>
-          <td class="table-info table-hover">{congerequest.StartDate}</td>
-          <td class="table-info table-hover">{congerequest.EndDate}</td>
-          <td class="table-danger">{congerequest.Status}</td>
-          <td class="table-info">{congerequest.Comment}</td>
-          <td class="table-info">{congerequest.RequestTime}</td>
+          <td className="table-info"><Button variant="danger" onClick={() => { SetStatusDeclined(congerequest.id); } }>Decline</Button><Button variant="success" onClick={() => { SetStatusApproved(congerequest.id); } }>Accept</Button></td>
+          <td className="table-info table-hover">{congerequest.username}</td>
+          <td className="table-info table-hover">{congerequest.Name}</td>
+          <td className="table-info table-hover">{congerequest.SurName}</td>
+          <td className="table-info table-hover">{congerequest.TypeConge}</td>
+          <td className="table-info table-hover">{congerequest.Requests}</td>
+          <td className="table-info table-hover">{congerequest.StartDate}</td>
+          <td className="table-info table-hover">{congerequest.EndDate}</td>
+          <td className="table-danger">{congerequest.Status}</td>
+          <td className="table-info">{congerequest.Comment}</td>
+          <td className="table-info">{congerequest.RequestTime}</td>
         </tr>
           </>
                     ))}

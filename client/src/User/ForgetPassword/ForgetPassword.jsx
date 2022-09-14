@@ -1,13 +1,15 @@
-import React, { useState , useEffect} from "react";
+import React, { useState } from "react";
 import Axios from "axios";
 import './Reset.scss'
 import swal from 'sweetalert';
+import {  useParams } 
+        from 'react-router-dom'
 export default function ResetPaasword() {
 const [email,setemail] = useState("");
 const [phone,setphone] = useState("");
 const [show,setshow] = useState("")
 Axios.defaults.withCredentials= true
-
+const {token} = useParams()
 //Reset function 
 const Reset = () => {
 Axios.post("http://localhost:3001/ResetPassword",{
@@ -28,7 +30,7 @@ Axios.post("http://localhost:3001/ResetPassword",{
             icon: "success",
             button: "Ok !",
           }).then(function(){
-            window.location = "/Verify";
+            window.location =`/Verify/${localStorage.getItem("TokenPassword")}`;
           })
         }
         })
@@ -86,7 +88,6 @@ return (
                 </div>
                 <div className="col-lg-8">
                   <div className="contact-wrap">
-                    <h3 className="mb-4 text-center"></h3>
                     <form action="javascript:void(0);">
                     <div class="col-md-12">
                           <div class="form-group">
@@ -109,11 +110,11 @@ return (
                           </div>
                         </div>
                         <div className="row">
-                    {show=="Email" && (
+                    {show==="Email" && (
                           
                           <><div className="col-md-12">
                           <div className="form-group">
-                            <input type="text" onChange={(e) => { setemail(e.target.value); } } className="form-control" placeholder="Enter your Phone Number" required />
+                            <input type="text" onChange={(e) => { setemail(e.target.value); } } className="form-control" placeholder="Enter your Email" required />
 
                           </div>
                         </div><div className="col-md-12">
@@ -126,7 +127,7 @@ return (
 
                       }
  
-                      {show=="Phone" && (
+                      {show==="Phone" && (
                           
                           <><div className="col-md-12">
                           <div className="form-group">

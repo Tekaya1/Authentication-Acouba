@@ -1,19 +1,17 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useEffect, useState,  } from "react";
 import Axios from "axios";
 import './Reset.scss'
 import swal from 'sweetalert';
-import {useHistory } 
+import {  useParams } 
         from 'react-router-dom'
 export default function Verify() {
-
 const [code,setcode] = useState("");
 Axios.defaults.withCredentials= true
 //Reset function 
 
     const Verify = () => {
-      Axios.post("http://localhost:3001/VerifyCode",{
+      Axios.post(`http://localhost:3001/VerifyCode/${localStorage.getItem("TokenPassword")}`,{
         code:code}).then((response) => {
-          
               if (response.data.length===0 ) {
                   swal({
                     title: "Error!",
@@ -40,19 +38,19 @@ Axios.defaults.withCredentials= true
                   {"x-access-token":localStorage.getItem('TokenPassword')
               }}).then((response)=>{
                 
-                if(response.data.Status==true) {
+                if(response.data.Status===true) {
                   // console.log(response)
                 } else {
                 if(localStorage.getItem("TokenPassword")==null) {
                 swal({
                   title: "Error!",
-                  text: "Your ResetSession has not Set, Please Reset Again",
+                  text: "Your ResetSession Has Not Set, Please Reset Again",
                   icon: "warning",
                   button: "Ok !",
                 }).then(function() {
                   window.location.href = "/"
                 })
-              } else if(response.data.err.name=="TokenExpiredError"){
+              } else if(response.data.err.name==="TokenExpiredError"){
                 localStorage.removeItem("TokenPassword")
                 swal({
                   title: "Error!",
@@ -92,9 +90,7 @@ return (
                   </div>
                 </div>
                 <div class="col-lg-8">
-                  <div class="contact-wrap">
-                    <h3 class="mb-4 text-center"></h3>
-                    
+                  <div class="contact-wrap">                    
                     
                       <div class="row">
                         <div class="col-md-12">

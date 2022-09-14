@@ -1,5 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
-import {useHistory} from 'react-router-dom'
+import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import './Reset.scss'
 import swal from 'sweetalert';
@@ -40,7 +39,7 @@ Axios.defaults.withCredentials= true
                 {"x-access-token":localStorage.getItem('TokenPassword')
             }}).then((response)=>{
               
-              if(response.data.Status==true) {
+              if(response.data.Status===true) {
                 // console.log(response)
               } else {
               if(localStorage.getItem("TokenPassword")==null) {
@@ -52,7 +51,7 @@ Axios.defaults.withCredentials= true
               }).then(function() {
                 window.location.href = "/"
               })
-            } else if(response.data.err.name=="TokenExpiredError"){
+            } else if(response.data.err.name==="TokenExpiredError"){
               localStorage.removeItem("TokenPassword")
               swal({
                 title: "Error!",

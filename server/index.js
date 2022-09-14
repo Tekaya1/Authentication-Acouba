@@ -1,5 +1,4 @@
 var nodemailer = require('nodemailer');
-var md5 = require('md5');
 const express = require("express");
 const twilio = require('twilio');
 const mysql = require("mysql");
@@ -299,7 +298,7 @@ app.get('/UserIsAuth',verifyJWT,(req,res)=> {
 
 
 
-app.post("/VerifyCode",(req,res) => {
+app.post("/VerifyCode/:token",(req,res) => {
   const code = req.body.code
   db.query("select * from resettable where RCode = ? and TokenReset = ?",[code,storage.getItem('tokenPassword')],(err,result)=>{
       if(err) {
