@@ -27,7 +27,7 @@ Axios.post("http://localhost:3001/Admin/loginAdmin",{
             });
             
         } else {
-            localStorage.setItem('token',response.data.token)
+            localStorage.setItem('tokenAdmin',response.data.token)
             setLoginStatus(true)
             console.log(response);
             swal({
@@ -36,7 +36,7 @@ Axios.post("http://localhost:3001/Admin/loginAdmin",{
               icon: "success",
               button: "Ok !",
             }).then(function() {
-              window.location = "/Admin/ListCong";
+              window.location = "/Admin/HomeAdmin";
           });    
         }
     })

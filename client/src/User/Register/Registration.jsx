@@ -76,7 +76,7 @@ const [error, setError] = useState(null);
   
       emailjs.sendForm('service_ubhjb7p', 'template_0nvkt3y', form.current, 'hjTAUdY8_qNmjQvmL')
         .then((result) => {
-            onSub()
+            
             console.log(result.text);
         }, (error) => {
             console.log(error.text);
@@ -108,7 +108,7 @@ const [error, setError] = useState(null);
                   <div class="contact-wrap">
                     <h2 class="heading-section">User Register</h2>
                     
-                    <form ref={form} onSubmit={sendEmail}>
+                 
                       <div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
@@ -172,13 +172,13 @@ const [error, setError] = useState(null);
 
                         <div class="col-md-12">
                           <div class="form-group">
-                            <input type="submit" value="register" disabled={!passwordReg}  class="btn btn-primary"/>
+                            <input type="submit" value="register" disabled={!passwordReg} onClick={onSub} class="btn btn-primary"/>
                             <div class="submitting"></div>
                           </div>
                         </div>
 
                   </div>
-                  </form>
+                  
                 </div>
               </div>
             </div>

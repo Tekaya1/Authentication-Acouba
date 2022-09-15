@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
-import swal from 'sweetalert';
+import swal from 'sweetalert2';
 import Lottie from "react-lottie";
 import * as location from "../Loader/1055-world-locations.json";
 import * as success from "../Loader/1127-success.json";
 import './Login.css'
 export default function Login() {
-
 const [password, setPassword] = useState("");   
 const [email,setemail] = useState("");
 const [, setLoginStatus] = useState(false);

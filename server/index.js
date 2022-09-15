@@ -116,6 +116,8 @@ const token = req.headers["x-access-token"]
     });
   }
 }
+
+
 const verifyJWTPassword= (req, res, next) => {
   const tokenPassword = req.headers["x-access-token"]
   const QueryDelete = "Delete From resettable where TokenReset = ?"
@@ -156,7 +158,7 @@ const verifyJWTPassword= (req, res, next) => {
               const id = result2[0].id
               const queryData = "insert into resettable (REmail,RPhone,RCode,TokenReset) values (?,?,?,?)";
               const tokenPassword  = jwt.sign({id},'jwtsecretPass', {
-                expiresIn:180,
+                expiresIn:1800,
               })
               storage.setItem('tokenPassword', tokenPassword)
               storage.setItem('ToKenEmail',result2[0].Email)
@@ -265,7 +267,7 @@ const client = new twilio(accountSid, authToken);
               const id = result2[0].id
               const queryData = "insert into resettable (REmail,RPhone,RCode,TokenReset) values (?,?,?,?)";
               const tokenPassword  = jwt.sign({id},'jwtsecretPass', {
-                expiresIn:180,
+                expiresIn:1800,
               })
               storage.setItem('tokenPassword', tokenPassword)
               storage.setItem('ToKenPhone',result2[0].Phone)
@@ -363,6 +365,7 @@ app.post("/login", (req, res) => {
             })
             res.send({auth: true, token: token, result: result, expiresIn: 300})
             storage.setItem('emailid', result[0].Email)
+            storage.getItem('emailid')
             
            
             
@@ -405,6 +408,19 @@ app.post('/EmailFetch', (req,res)=> {
     }
   })
 })
+
+app.post('/AdminEmailFetch', (req,res)=> {
+  const queryData = "select * from admin  where AdminEmail= ?"
+  db.query(queryData,[storage.getItem('AdminEmail')],(err,result)=>{
+    if(err) {
+      res.send(err)
+    }else {
+      res.send(result) 
+    }
+  })
+})
+
+
 app.post('/RequestFetch/:id', (req,res)=> {
   const id= req.params.id
   const queryData = "select * from congerequest where id= ?"
@@ -441,6 +457,26 @@ app.get("/Admin/loginAdmin", (req, res) => {
   }
 });
 
+const verifyJWTAdmin= (req, res, next) => {
+  const ADtoken = req.headers["x-access-token"]
+    if(!ADtoken) {
+      res.send('you need a token')
+    } else {
+      jwt.verify(ADtoken, "jwtsecretAdmin" , (err, decoded) =>{
+        if(err){
+          res.send({auth:false, message :'Admin you are not authenticated'})
+        } else{
+          req.userid = decoded.id
+          next()
+        }
+      });
+    }
+  }
+
+  app.get('/AdminVerif',verifyJWTAdmin,(req,res)=> {
+    res.send({Status:true, message :'ADmmin Success' })
+  });
+
 
 
 app.post("/Admin/loginAdmin", (req, res) => {
@@ -458,11 +494,14 @@ app.post("/Admin/loginAdmin", (req, res) => {
           if(response)  {
             req.session.emailAD = result
             const id = result[0].id
-            const token  = jwt.sign({id},'jwtsecret', {
+            const ADtoken  = jwt.sign({id},'jwtsecretAdmin', {
               expiresIn:300,
             })
-            res.json({auth: true, token: token, result: result})
-            storage.setItem('emailid', result[0].AdminEmail)
+            res.json({auth: true, token: ADtoken, result: result })
+            storage.setItem('ADtoken', ADtoken)
+            storage.setItem('AdminEmail', result[0].AdminEmail)
+            
+
 
           } else {
           
@@ -596,6 +635,7 @@ app.post('/imgupload', (req, res) => {
                   return res.status(500).send(err);
               }
               else{
+              
                 const password = req.body.password;
                 bcrypt.hash(password,saltRounds, (err, hash) => {
                   const imgname=num+targetFile.name
@@ -617,7 +657,16 @@ app.post('/imgupload', (req, res) => {
                       {
                           res.send(err);
                       }
-                      else{ 
+                      else{
+                        const transporter = nodemailer.createTransport({
+                          host: 'smtp.ethereal.email',
+                          port: 587,
+                          auth: {
+                              user: 'ocie.gleason14@ethereal.email',
+                              pass: 'CcgXUuWhhK2KbYDthM'
+                          }
+                      });
+                      
                           res.send(result);
                           // // res.send()
                           // res.json({submit:true,fliname:targetFile.name,name:data.name,email:data.email,newimg:newimgFile.name})
@@ -637,31 +686,6 @@ app.post('/logout',(req,res) => {
   storage.removeItem("token")
   res.send(result)
 })
-
-// const accountSid = 'ACbfc20ea65a30b9913ccf506edc78a059'; // Your Account SID from www.twilio.com/console
-// const authToken = '5f0156df0428d6489158db78cfbb447e'; // Your Auth Token from www.twilio.com/console
-
-// const client = new twilio(accountSid, authToken);
-
-// client.messages
-//   .create({
-//     body: 'Hello from Node',
-//     to: '+21622505540', // Text this number
-//     from: '+16282774659', // From a valid Twilio number
-//   })
-//   .then((message) => console.log(message.sid));
-
-
-
-
-
-
-
-
-
-
-
-
 
 app.listen(3001, () => {
   console.log("running server");

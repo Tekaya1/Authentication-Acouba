@@ -1,5 +1,5 @@
 import React from "react";
-import {  Route, Switch, BrowserRouter,useNavigate} 
+import {  Route, Switch, BrowserRouter} 
         from 'react-router-dom'
 import "./App.css";
 import Registration from "./User/Register/Registration";
@@ -9,6 +9,7 @@ import Form from "./User/Form/Form";
 import Login from "./User/Login/Login";
 import ADLogin from "./Admin/component/LoginAdmin/ADLogin"
 import ListCong from "./Admin/component/HomeAdmin/ListCong"
+import HomeAdmin from "./Admin/component/HomeAdmin/ADDash"
 import PageNotFound from './Error/PageNotFound';
 import Home from './User/Dashbored/Dash';
 import CheckConge from './User/Dashbored/Check';
@@ -27,11 +28,12 @@ function App() {
       <Route exact path='/Update' component={Update} />
       <Route exact path='/Form' component={Form} />
       <Route exact path='/Admin' component={ADLogin} />
+      <Route exact path='/Admin/HomeAdmin' component={HomeAdmin} />
       <Route exact path='/Admin/ListCong' component={ListCong} />
       <Route exact path='/Home' component={Home} />
       <Route exact path='/ResetPassword' component={ResetPaasword} />
       <Route exact path='/Verify/:token' component={Verify} />
-
+      HomeAdmin
       <Route exact path='/Finish' component={Finish} /> 
       <Route exact path='/CheckConge' component={CheckConge} /> 
       <Route exact path='/UpdateRequest/:id' component={UpdateRequest} /> 

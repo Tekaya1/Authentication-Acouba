@@ -87,7 +87,7 @@ export default function ListConges() {
     }
   
     useState(() => {
-      if(localStorage.getItem("token")==null) {
+      if(localStorage.getItem("tokenAdmin")==null) {
         window.location.href = "/"
       }
     }, [])
