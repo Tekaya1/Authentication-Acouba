@@ -105,7 +105,7 @@ export default function HomeAdmin() {
           <NavbarLinkContainer>
             <NavbarLink to="/Admin/HomeAdmin">Home</NavbarLink>
             <NavbarLink to="/Admin/ListCong">Check Requests</NavbarLink>
-            <NavbarLink to="/Update">Update Profile</NavbarLink>
+          
             <NavbarLink><a onClick={logout}>Logout</a></NavbarLink>
             <OpenLinksButton
               onClick={() => {
@@ -119,7 +119,7 @@ export default function HomeAdmin() {
         <RightContainer>
        
                  <>   
-                   <NavbarLink id="hello">Hello, {admin.AdminName}</NavbarLink><img src={process.env.PUBLIC_URL + `/upload/${admin.image}`} /></>
+                   <NavbarLink id="hello">Hello, {admin.AdminName}</NavbarLink></>
                        
         </RightContainer>
  
@@ -130,7 +130,6 @@ export default function HomeAdmin() {
           <NavbarLinkExtended readOnly disabled>Hello, {admin.AdminName}</NavbarLinkExtended>
           <NavbarLinkExtended to="/Home">Home</NavbarLinkExtended>
           <NavbarLinkExtended to="/ListConges">Check Requests</NavbarLinkExtended>
-          <NavbarLinkExtended to="/Update">Update Profile</NavbarLinkExtended>
           <NavbarLinkExtended><a onClick={logout}>Logout</a></NavbarLinkExtended>
         </NavbarExtendedContainer>
       ))}
