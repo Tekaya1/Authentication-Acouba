@@ -657,16 +657,7 @@ app.post('/imgupload', (req, res) => {
                       {
                           res.send(err);
                       }
-                      else{
-                        const transporter = nodemailer.createTransport({
-                          host: 'smtp.ethereal.email',
-                          port: 587,
-                          auth: {
-                              user: 'ocie.gleason14@ethereal.email',
-                              pass: 'CcgXUuWhhK2KbYDthM'
-                          }
-                      });
-                      
+                      else{  
                           res.send(result);
                           // // res.send()
                           // res.json({submit:true,fliname:targetFile.name,name:data.name,email:data.email,newimg:newimgFile.name})

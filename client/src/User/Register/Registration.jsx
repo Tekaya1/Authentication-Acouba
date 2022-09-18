@@ -107,8 +107,6 @@ const [error, setError] = useState(null);
                 <div class="col-lg-8">
                   <div class="contact-wrap">
                     <h2 class="heading-section">User Register</h2>
-                    
-                 
                       <div class="row">
                         <div class="col-md-12">
                           <div class="form-group">
@@ -147,6 +145,7 @@ const [error, setError] = useState(null);
                         <div class="col-md-12">
                           <div class="form-group">
                           <div className="gender-details">
+                            <form action="javascript:void(0)">
         <input type="radio" name="gender" id="dot-1" value="Male" onChange={(e) => {setGenderReg(e.target.value);}}></input>
           <input type="radio" name="gender" id="dot-2" value="Female" onChange={(e) => {setGenderReg(e.target.value);}}></input>
           <input type="radio" name="gender" id="dot-3" value="undefined" onChange={(e) => {setGenderReg(e.target.value);}}></input>
@@ -165,6 +164,7 @@ const [error, setError] = useState(null);
             <span className="gender">Prefer not to say</span>
             </label>
           </div>
+          </form>
         </div>
         
                           </div>
