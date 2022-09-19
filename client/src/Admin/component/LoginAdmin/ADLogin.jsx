@@ -1,6 +1,5 @@
 import React, { useState, useEffect} from "react";
 import Axios from "axios";
-import './AUTH.css'
 import swal from 'sweetalert';
 import Lottie from "react-lottie";
 import * as location from "../Loader/1055-world-locations.json";

@@ -366,9 +366,6 @@ app.post("/login", (req, res) => {
             res.send({auth: true, token: token, result: result, expiresIn: 300})
             storage.setItem('emailid', result[0].Email)
             storage.getItem('emailid')
-            
-           
-            
           } else {
             res.json({ auth: false, message: "Email or Password Incorrect"});
           }       

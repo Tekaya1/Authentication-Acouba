@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
-import swal from 'sweetalert2';
+import swal from 'sweetalert';
 import Lottie from "react-lottie";
 import * as location from "../Loader/1055-world-locations.json";
 import * as success from "../Loader/1127-success.json";
@@ -42,7 +42,6 @@ Axios.post("http://localhost:3001/login",{
               icon: "error",
               button: "Ok !",
             });
-            
         } else {
             localStorage.setItem('token',response.data.token)
             setLoginStatus(true)
