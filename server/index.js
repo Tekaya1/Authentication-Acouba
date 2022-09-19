@@ -587,15 +587,19 @@ app.put("/UpdateUser", (req,res) =>{
   const email = req.body.Email
   const Phone = req.body.Phone
   const Gender = req.body.Gender
-  bcrypt.hash(password,saltRounds, (err, hash) => {
+  
   db.query("UPDATE auth set Name = ?, SurName= ?, username= ?, password= ?, Email= ?, Phone= ?, Gender= ? where id = ?",
-  [name,Surname,username,hash,email,Phone,Gender,id],(err,result)=>{
+  [name,Surname,username,password,email,Phone,Gender,id],(err,result)=>{
     if(err){
       res.send(err)
     } else {
+      bcrypt.hash(password,saltRounds, (err, hash) => {
+        db.query("UPDATE auth set password= ? where id = ?",
+  [hash,id]);
       res.send(result)    
+    })
     }
-  })
+ 
 })
  })
 
@@ -672,6 +676,7 @@ app.post('/imgupload', (req, res) => {
 app.post('/logout',(req,res) => {
   const result = storage.removeItem('emailid'); 
   storage.removeItem("token")
+  res.clearCookie("emailid")
   res.send(result)
 })
 

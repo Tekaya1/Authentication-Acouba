@@ -4,6 +4,9 @@ import PasswordStrengthBar from 'react-password-strength-bar';
 import swal from 'sweetalert'; 
 import Swal from 'sweetalert2'
 
+
+
+
 export default function Update()   {
   const [usernameReg, setUsernameReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
@@ -31,6 +34,7 @@ export default function Update()   {
     });    
     }) 
   }
+  
   useEffect(() => {
     Axios.get('http://localhost:3001/UserIsAuth', {
         headers:
