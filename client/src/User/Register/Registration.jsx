@@ -14,7 +14,13 @@ export default function Registration() {
   const [GenderReg, setGenderReg] = useState("");
   const [image, setImage] = useState([]);
   Axios.defaults.withCredentials = true;
-  
+
+
+if(PhoneReg.slice(0,1)==9 || PhoneReg.slice(0,1)==2 || PhoneReg.slice(0,1)==5) {
+  console.log('yes');
+} else {
+  console.log('no');
+}
 
   const onSub = async ()=>{
     let formData=new FormData();
@@ -26,8 +32,16 @@ export default function Registration() {
     formData.append("Phone",PhoneReg)
     formData.append("Gender",GenderReg)
     formData.append("Email",EmailReg)
-    
 
+    if (PhoneReg.length!==8){
+      swal({
+        title: "Error!",
+        text: `The Phone Number must contain 8 number `,
+        icon: "warning",
+        button: "Retry !",
+      })
+    
+    } else {
  Axios.post("http://localhost:3001/imgupload",formData).then((response) => {
   console.log(response)
   if(response.data.errno===1062) {
@@ -37,18 +51,19 @@ export default function Registration() {
   icon: "error",
   button: `Retry`,
 }) 
-} else {
-swal({
-  title: "Congratulation!",
-  text: `Welcome To Our Platform, ${usernameReg}`,
-  icon: "success",
-  button: "Go !",
-}).then(function() {
-  window.location = "/";
-});   
-}   
-})
+}  else {
+  swal({
+    title: "Congratulation!",
+    text: `Welcome To Our Platform, ${usernameReg}`,
+    icon: "success",
+    button: "Go !",
+  }).then(function() {
+    window.location = "/";
+  }); 
 
+}  
+})
+}
 }  
 
 

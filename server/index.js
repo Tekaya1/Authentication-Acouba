@@ -659,9 +659,10 @@ app.post('/imgupload', (req, res) => {
                           res.send(err);
                       }
                       else{  
+                      
                           res.send(result);
-                          // // res.send()
-                          // res.json({submit:true,fliname:targetFile.name,name:data.name,email:data.email,newimg:newimgFile.name})
+                          // // // res.send()
+                          // // res.json({submit:true,fliname:targetFile.name,name:data.name,email:data.email,newimg:newimgFile.name})
               
                       }
                   })
