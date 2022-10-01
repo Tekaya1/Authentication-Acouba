@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 20, 2022 at 04:38 PM
+-- Generation Time: Oct 01, 2022 at 09:29 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `acoubaconge`
+-- Database: `acobaconge`
 --
 
 -- --------------------------------------------------------
@@ -57,16 +57,16 @@ CREATE TABLE `auth` (
   `Phone` int(8) NOT NULL,
   `Gender` varchar(255) NOT NULL,
   `image` text NOT NULL,
-  `Date` datetime NOT NULL DEFAULT current_timestamp(),
-  `SpecialCode` varchar(10000) NOT NULL
+  `Date` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `auth`
 --
 
-INSERT INTO `auth` (`id`, `Name`, `SurName`, `username`, `password`, `Email`, `Phone`, `Gender`, `image`, `Date`, `SpecialCode`) VALUES
-(189, 'tekayaa123', 'ghassen', 'Tekaya@', '$2b$10$VhSFp0WN7PdsMRVIlyb95e3bVJ5KgyV3QM/meropg9olKbiBji0N2', 'a@a.com', 22505540, 'Male', '715409wallpaperflare.com_wallpaper.jpg', '2022-08-26 09:44:16', 'b80xmjof38v@##+%$*+#%&!*#!$%&#=#!=+%*#&**@%=+@%*%=%@&@*!@$$%*#*#=@$@++%==&**&#$+$+@+=fpbj05g7cv$*$++!#@%@#$!$@&@*+++#*%+*');
+INSERT INTO `auth` (`id`, `Name`, `SurName`, `username`, `password`, `Email`, `Phone`, `Gender`, `image`, `Date`) VALUES
+(217, 'q', 'w', 'e', '$2b$10$OePAMtW/DxQ1.CUXZc0Qu.TcNWVOYkyTcSdSDMf.PRRpW2Ajzz6Ce', '33e@q.com', 21232146, 'Male', '361374acoba.png', '2022-09-20 17:05:13'),
+(218, 'q', 'q', 'q', '$2b$10$svTR9DidjLtfSFqKDr9B0uSWFJJccSVQ9NH2jLPMjn0hXUAO5tNJ6', 'q@q.com', 22554433, 'Male', '520315acoba.png', '2022-09-20 17:23:23');
 
 -- --------------------------------------------------------
 
@@ -195,7 +195,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `auth`
 --
 ALTER TABLE `auth`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=203;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=219;
 
 --
 -- AUTO_INCREMENT for table `congerequest`

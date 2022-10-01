@@ -61,41 +61,41 @@ const db = mysql.createConnection({
   user: "root",
   host: "localhost",
   password: "",
-  database: "acoubaconge",
+  database: "acobaconge",
 });
 
 
-app.post("/register", (req, res) => {
-  const name = req.body.Name
-  const Surname = req.body.SurName
-  const username = req.body.username;
-  const password = req.body.password;
-  const email = req.body.Email
-  const Phone = req.body.Phone
-  const Gender  = req.body.Gender
-  bcrypt.hash(password,saltRounds, (err, hash) => {
-    if(err) {
-      console.log(err)
-    }
-    db.query(
-      "INSERT INTO auth(Name,SurName,username, password, Email, Phone, Gender) VALUES (?,?,?,?,?,?,?,?)",
-      [name,Surname,username, hash, email,Phone,Gender],
-      (err, result) => {
-        if (err) {
+// app.post("/register", (req, res) => {
+//   const name = req.body.Name
+//   const Surname = req.body.SurName
+//   const username = req.body.username;
+//   const password = req.body.password;
+//   const email = req.body.Email
+//   const Phone = req.body.Phone
+//   const Gender  = req.body.Gender
+//   bcrypt.hash(password,saltRounds, (err, hash) => {
+//     if(err) {
+//       console.log(err)
+//     }
+//     db.query(
+//       "INSERT INTO auth(Name,SurName,username, password, Email, Phone, Gender) VALUES (?,?,?,?,?,?,?,?)",
+//       [name,Surname,username, hash, email,Phone,Gender],
+//       (err, result) => {
+//         if (err) {
         
-          res.send(err)
-        } else {
+//           res.send(err)
+//         } else {
         
-          res.send(result)
-        }
+//           res.send(result)
+//         }
 
 
         
-      }
-    );
-    })
+//       }
+//     );
+//     })
     
-  });
+//   });
 
 
 
@@ -388,7 +388,7 @@ app.post('/Email/Insert',(req,res) => {
     const Email = req.body.Email
  
       const query = "insert into congerequest (username,Email,TypeConge,Requests,StartDate,EndDate,Name,SurName,Status,Comment) values (?,?,?,?,?,?,?,?,?,?)"
-      db.query(query,[user,Email,Select,TextArea,StartDate,EndDate,Name,Surname,"No Action","No Comment"],(err,result)=> {
+      db.query(query,[user,Email,Select,TextArea,StartDate,EndDate,Name,Surname,"Pending","No Comment"],(err,result)=> {
         res.send(result)
       })
 })

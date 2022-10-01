@@ -17,7 +17,7 @@ export default function UpdateRequest()   {
   const [User, SetUser] = useState("");
   const [SelectReg, setSelectReg] = useState("");
   const { id } = useParams()
-  console.log(id);
+
   Axios.defaults.withCredentials = true;
 
   const logout = () => {
