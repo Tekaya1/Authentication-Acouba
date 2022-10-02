@@ -31,6 +31,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "redirect": "^0.2.0",
+    "twilio": "^3.82.1",
     "two-step-auth": "^1.1.2",
     "uninstall": "0.0.0"
   }

@@ -201,13 +201,6 @@ const [error, setError] = useState(null);
                         </div>
                         <div class="col-md-12">
                           <div class="form-group">
-                            <input type="submit" value="Update" disabled={!passwordReg}   onClick={() => {Update(Idreg)}} class="btn btn-primary"/>
-      
-                            <div class="submitting"></div>
-                          </div>
-                        </div>
-                        <div class="col-md-12">
-                          <div class="form-group">
                           <div className="gender-details">
                             <form action="">
         <input type="radio" name="gender" id="dot-1" value="Male" onChange={(e) => {setGenderReg(e.target.value);}}></input>
@@ -231,6 +224,20 @@ const [error, setError] = useState(null);
           </form>
         </div>
         
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <input type="submit" value="Update" disabled={!passwordReg}   onClick={() => {Update(Idreg)}} class="btn btn-primary"/>
+      
+                            <div class="submitting"></div>
+                          </div>
+                        </div>
+
+                        <div class="col-md-12">
+                          <div class="form-group">
+                          <a href="/Home"><input  value="Back" class="btn btn-primary"/></a>
+                            <div class="submitting"></div>
                           </div>
                         </div>
                        
